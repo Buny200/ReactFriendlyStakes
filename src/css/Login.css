@@ -1,0 +1,79 @@
+/* Login.css */
+body {
+    background-color: #fff; /* Color de fondo del cuerpo de la página */
+  }
+  
+  .login-container {
+    width: 500px; /* Ancho del contenedor */
+    margin: 50px auto; /* Margen superior e inferior automático, centrado horizontalmente */
+    padding: 40px; /* Espaciado interno */
+    border: 2px solid #292929; /* Color de borde */
+    border-radius: 15px; /* Borde redondeado */
+    background-color: #f9f9f9; /* Color de fondo */
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3); /* Sombra */
+  }
+  /* Login.css */
+.login-description {
+    font-size: 18px; /* Tamaño de fuente */
+    text-align: center; /* Alineación centrada */
+    margin-bottom: 20px; /* Margen inferior */
+    color: #666; /* Color del texto */
+  }
+  
+  .login-title {
+    text-align: center; /* Alinea el texto al centro */
+  }
+  
+  .form-group {
+    margin-bottom: 30px; /* Espaciado inferior */
+    width: 90%; /* Ancho del form-group */
+    margin-left: -0px; /* Margen izquierdo automático */
+  }
+
+  input[type="email"],
+  input[type="password"],
+  button {
+    width: 100%; /* Ancho completo */
+    padding: 15px; /* Espaciado interno */
+    border: 2px solid #ccc; /* Borde */
+    border-radius: 8px; /* Borde redondeado */
+    font-size: 16px; /* Tamaño de fuente */
+    margin-top: 10px;
+  }
+  
+  button {
+    background-color: #ffcc00; /* Color de fondo del botón */
+    color: #fff; /* Color de texto del botón */
+    cursor: pointer; /* Cursor apuntador */
+  }
+  
+  button:hover {
+    background-color: #ffa500; /* Color de fondo del botón al pasar el ratón */
+  }
+
+  .forgot-password a {
+    color: #007bff; /* Color del enlace */
+    text-decoration: none; /* Sin subrayado */
+    margin-left: -250px;
+    top: 0%;
+}
+
+
+  .forgot-password,
+  .register-link {
+    text-align: center; /* Alineación centrada */
+    margin-top: 30px; 
+  }
+  
+  .forgot-password a,
+  .register-link a {
+    color: #007bff; /* Color del enlace */
+
+    text-decoration: none; /* Sin subrayado */
+  }
+  
+  .forgot-password a:hover,
+  .register-link a:hover {
+    text-decoration: underline; /* Subrayado al pasar el ratón */
+  }
+  

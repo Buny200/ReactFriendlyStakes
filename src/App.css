@@ -1,38 +1,43 @@
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+/* App.css */
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.App-logo-container {
+  margin-left: 100px; /* Agrega un espacio a la izquierda del logo */
 }
-
+/* App.css */
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background-color: #292929; /* Color de fondo para la barra de navegación */
+  padding: 10px 20px; /* Espaciado interno */
+  border-bottom: 2px solid #ffcc00; /* Borde inferior */
 }
 
-.App-link {
-  color: #61dafb;
+.nav-list {
+  list-style-type: none; /* Eliminar viñetas de la lista */
+  margin: 0;
+  padding: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.nav-item {
+  display: inline-block; /* Asegura que los elementos estén en línea */
+  padding: 8px; /* Espaciado interno */
+  margin: 0 100px; /* Margen entre elementos */
+  border: 2px solid #ff0000; /* Borde rojo */
+  border-radius: 6px; /* Borde redondeado */
+  transition: border-color 0.1s; /* Transición suave del color del borde */
 }
+
+
+.nav-item a {
+ text-decoration: none; /* Eliminar subrayado de enlaces */
+  color: #ffffff; /* Color de texto */
+  font-size: 16px; /* Tamaño de fuente */
+  transition: color 0.3s; /* Transición suave de color */
+}
+.nav-item:hover {
+  border-color: #ffcc00; /* Cambia el color del borde al pasar el cursor */
+}
+.nav-item a:hover {
+  color: #ffcc00; /* Cambiar color al pasar el cursor */}

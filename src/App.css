@@ -23,7 +23,7 @@
 .nav-item {
   display: inline-block; /* Asegura que los elementos estén en línea */
   padding: 8px; /* Espaciado interno */
-  margin: 0 100px; /* Margen entre elementos */
+  margin: 0 40px; /* Margen entre elementos */
   border: 2px solid #ff0000; /* Borde rojo */
   border-radius: 6px; /* Borde redondeado */
   transition: border-color 0.1s; /* Transición suave del color del borde */

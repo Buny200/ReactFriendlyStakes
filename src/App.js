@@ -1,3 +1,4 @@
+// App.js
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import Modal from 'react-modal';
@@ -50,7 +51,8 @@ function App() {
         </header>
         <Routes>
           <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login setLoggedIn={setLoggedIn} />} />
+          {/* Aquí pasamos loggedIn como una prop al componente Login */}
+          <Route path="/login" element={<Login setLoggedIn={setLoggedIn} loggedIn={loggedIn} />} />
           <Route path="/profile" element={loggedIn ? <Profile /> : <Navigate to="/login" />} />
         </Routes>
       </div>

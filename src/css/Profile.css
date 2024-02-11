@@ -1,22 +1,29 @@
+/* Profile.css */
+
 .profile-container {
-    margin: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 .profile-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 20px;
 }
 
 .profile-section {
-    background-color: #f0f0f0;
+    background-color: #f8f9fa;
     padding: 20px;
-    border-radius: 5px;
-    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 .profile-section:hover {
-    background-color: #e0e0e0;
+    background-color: #e9ecef;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
 }
 
 .popup {
@@ -32,29 +39,104 @@
 }
 
 .popup-content {
-    background-color: white;
+    background-color: #fff;
     padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.popup-content h2 {
-    margin-bottom: 10px;
+.user-table {
+    margin-top: 20px;
 }
 
-.popup-content p {
-    margin-bottom: 5px;
+.user-table table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.popup-content button {
+.user-table th,
+.user-table td {
+    padding: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.user-table th {
+    background-color: #343a40;
+    color: #fff;
+    text-align: left;
+}
+
+.user-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.popup-close-btn {
+    margin-top: 20px;
     padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
+    background-color: #dc3545;
+    color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-.popup-content button:hover {
+.popup-close-btn:hover {
+    background-color: #c82333;
+}
+
+/* Estilos adicionales para secciones de Información Personal y Cuenta */
+.sections {
+    display: flex;
+    flex-direction: column;
+}
+
+.section-wrapper {
+    margin-bottom: 10px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    padding: 5px;
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+}
+
+.section-wrapper:hover {
+    border-color: #007bff;
+}
+
+.section-title {
+    margin: 0;
+    color: #007bff;
+}
+.password-change-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.password-change-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.password-change-form input {
+    width: calc(100% - 10px);
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.password-change-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.password-change-form button:hover {
     background-color: #0056b3;
 }

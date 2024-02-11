@@ -7,10 +7,10 @@ const Profile = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showVerificationPopup, setShowVerificationPopup] = useState(false);
   const [nickname, setNickname] = useState("");
-  const [betHistory, setBetHistory] = useState(null); // Nuevo estado para el historial de apuestas
+  const [betHistory, setBetHistory] = useState(null);
   const [selectedSection, setSelectedSection] = useState("");
-  const [showBetHistoryPopup, setShowBetHistoryPopup] = useState(false); // Nuevo state
-  const [showSettingsPopup, setShowSettingsPopup] = useState(false); // Nuevo state
+  const [showBetHistoryPopup, setShowBetHistoryPopup] = useState(false);
+  const [showSettingsPopup, setShowSettingsPopup] = useState(false);
   const [changePasswordData, setChangePasswordData] = useState({
     email: "",
     currentPassword: "",
@@ -23,15 +23,16 @@ const Profile = () => {
   const [documentBack, setDocumentBack] = useState(null);
   const [confirmDisable, setConfirmDisable] = useState(false);
 
-const handleConfirmDisableChange = (event) => {
-  setConfirmDisable(event.target.checked);
-};
+  const handleConfirmDisableChange = (event) => {
+    setConfirmDisable(event.target.checked);
+  };
 
   useEffect(() => {
     if (showSettingsPopup) {
       setSelectedSection("exclude");
     }
   }, [showSettingsPopup]);
+
   useEffect(() => {
     const storedNickname = window.sessionStorage.getItem("NICKNAME");
     setNickname(storedNickname);
@@ -43,7 +44,7 @@ const handleConfirmDisableChange = (event) => {
         const userId = window.sessionStorage.getItem("USER_ID");
         const response = await fetch(
           `http://localhost:8080/api/users/${userId}/bets`
-        ); // Actualiza la URL aquí
+        );
         if (response.ok) {
           const historyData = await response.json();
           setBetHistory(historyData);
@@ -61,12 +62,14 @@ const handleConfirmDisableChange = (event) => {
     };
     fetchBetHistory();
   }, []);
+
   const handleExclusionDateChange = (event) => {
     setExclusionData({
       ...exclusionData,
       [event.target.name]: event.target.value,
     });
   };
+
   const handleExcludeUser = async (event) => {
     event.preventDefault();
     try {
@@ -98,6 +101,7 @@ const handleConfirmDisableChange = (event) => {
       console.error("Error al excluir al usuario:", error);
     }
   };
+
   const handleDisableAccount = async (event) => {
     event.preventDefault();
     try {
@@ -123,6 +127,7 @@ const handleConfirmDisableChange = (event) => {
       console.error("Error al deshabilitar la cuenta:", error);
     }
   };
+
   const handleUserInfoClick = async () => {
     try {
       const userId = window.sessionStorage.getItem("USER_ID");
@@ -559,7 +564,8 @@ const handleConfirmDisableChange = (event) => {
                         {selectedSection === "exclude" && (
                           <div className="form-section">
                             <h4>Excluir Usuario</h4>
-                            <form onSubmit={handleExcludeUser}>
+                            <form onSubmit={handleExcludeUser} className="centered-form">
+                                <p>NOTA: Cuando te excluyas de usar nuestros servicios no podrás usar nuestra página hasta que se cumpla el tiempo que hayas decidido abandonarnos.</p>
                               <label htmlFor="exclusionDate">
                                 Fecha de Exclusión:
                               </label>
@@ -578,10 +584,15 @@ const handleConfirmDisableChange = (event) => {
                         {selectedSection === "disable" && (
                           <div className="form-section">
                             <h4>Deshabilitar Cuenta</h4>
-                            <form onSubmit={handleDisableAccount}>
-                              <p>
+                            <form onSubmit={handleExcludeUser} className="centered-form">                              <p>
                                 ¿Estás seguro de que deseas deshabilitar tu
                                 cuenta? Esta acción no se puede deshacer.
+                              </p>
+                              <p>
+                                NOTA: Mantendremos sus datos en nuestra base de
+                                datos durante un intervalo de 30 Días, por razones de seguridad y cuando
+                                se cumpla, eliminaremos todos sus datos de forma
+                                irreversible.
                               </p>
                               <label htmlFor="confirmDisable">
                                 <input
@@ -592,7 +603,20 @@ const handleConfirmDisableChange = (event) => {
                                 />
                                 Confirmar deshabilitación de cuenta
                               </label>
-                              <button type="submit" disabled={!confirmDisable}>
+                              <button
+                                type="submit"
+                                disabled={!confirmDisable}
+                                className="disable-account-btn"
+                                style={{
+                                  backgroundColor: confirmDisable
+                                    ? "#007bff"
+                                    : "#ccc",
+                                  cursor: confirmDisable
+                                    ? "pointer"
+                                    : "not-allowed",
+                                  color: confirmDisable ? "#fff" : "#666",
+                                }}
+                              >
                                 Deshabilitar Cuenta
                               </button>
                             </form>

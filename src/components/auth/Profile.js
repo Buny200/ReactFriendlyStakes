@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import '../../css/Profile.css';
+import BetHistoryPopup from '../auth/BetHistoryPopup';
 
 const Profile = () => {
     const [userInfo, setUserInfo] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
     const [showVerificationPopup, setShowVerificationPopup] = useState(false);
     const [nickname, setNickname] = useState('');
+    const [betHistory, setBetHistory] = useState(null); // Nuevo estado para el historial de apuestas
     const [selectedSection, setSelectedSection] = useState('');
+    const [showBetHistoryPopup, setShowBetHistoryPopup] = useState(false); // Nuevo state
     const [changePasswordData, setChangePasswordData] = useState({
         email: '',
         currentPassword: '',
@@ -18,6 +21,24 @@ const Profile = () => {
     useEffect(() => {
         const storedNickname = window.sessionStorage.getItem('NICKNAME');
         setNickname(storedNickname);
+    }, []);
+
+    useEffect(() => {
+        const fetchBetHistory = async () => {
+            try {
+                const userId = window.sessionStorage.getItem('USER_ID');
+                const response = await fetch(`http://localhost:8080/api/users/${userId}/bets`); // Actualiza la URL aquí
+                if (response.ok) {
+                    const historyData = await response.json();
+                    setBetHistory(historyData);
+                } else {
+                    console.error('Error al obtener el historial de apuestas del usuario');
+                }
+            } catch (error) {
+                console.error('Error al obtener el historial de apuestas del usuario:', error);
+            }
+        };
+        fetchBetHistory();
     }, []);
 
     const handleUserInfoClick = async () => {
@@ -232,7 +253,7 @@ const Profile = () => {
                     </div>
                 </div>
                 <div className="profile-section">
-                    <div className="section-wrapper">
+                <div className="section-wrapper" onClick={() => setShowBetHistoryPopup(true)}>
                         <h3 className="section-title">Historial de Apuestas</h3>
                     </div>
                 </div>
@@ -260,6 +281,18 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
+            {showBetHistoryPopup && (
+                <div className="popup">
+                    <div className="popup-content">
+                        {betHistory !== null ? (
+                            <BetHistoryPopup betHistory={betHistory} /> 
+                        ) : (
+                            <p>Cargando historial de apuestas...</p>
+                        )}
+                        <button className="popup-close-btn" onClick={() => setShowBetHistoryPopup(false)}>Cerrar</button>
+                    </div>
+                </div>
+            )}
             {showPopup && (
                 <div className="popup">
                     <div className="popup-content">

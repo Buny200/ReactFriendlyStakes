@@ -4,7 +4,7 @@ import '../../css/Profile.css';
 const Profile = () => {
     const [userInfo, setUserInfo] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
-    const [showVerificationPopup, setShowVerificationPopup] = useState(false); // Nueva variable de estado para controlar el segundo popup
+    const [showVerificationPopup, setShowVerificationPopup] = useState(false);
     const [nickname, setNickname] = useState('');
     const [selectedSection, setSelectedSection] = useState('');
     const [changePasswordData, setChangePasswordData] = useState({
@@ -230,40 +230,34 @@ const Profile = () => {
                     <div className="section-wrapper">
                         <h3 className="section-title">Información Personal</h3>
                     </div>
-                    {/* Contenido de Información Personal */}
                 </div>
                 <div className="profile-section">
                     <div className="section-wrapper">
                         <h3 className="section-title">Historial de Apuestas</h3>
                     </div>
-                    {/* Contenido de Historial de Apuestas */}
                 </div>
                 <div className="profile-section">
                      <div className="section-wrapper" onClick={() => {
                         setSelectedSection('verify-account');
-                        setShowVerificationPopup(true); // Cambiar el estado para mostrar el segundo popup
+                        setShowVerificationPopup(true);
                     }}>
                         <h3 className="section-title">Verificar Cuenta</h3>
                     </div>
-                    {/* Contenido de Verificar Cuenta */}
                 </div>
                 <div className="profile-section">
                     <div className="section-wrapper">
                         <h3 className="section-title">Depositar</h3>
                     </div>
-                    {/* Contenido de Depositar */}
                 </div>
                 <div className="profile-section">
                     <div className="section-wrapper">
                         <h3 className="section-title">Historial de Transacciones</h3>
                     </div>
-                    {/* Contenido de Historial de Transacciones */}
                 </div>
                 <div className="profile-section">
                     <div className="section-wrapper">
                         <h3 className="section-title">Modificar Ajustes de Cuenta</h3>
                     </div>
-                    {/* Contenido de Modificar Ajustes de Cuenta */}
                 </div>
             </div>
             {showPopup && (
@@ -301,41 +295,49 @@ const Profile = () => {
                 </div>
             )}
             {showVerificationPopup && (
-    <div className="popup">
-        <div className="popup-content">
-            <h3>Verificar Cuenta</h3>
-            <p>Por favor, adjunta los documentos necesarios para verificar tu cuenta. Esto puede tardar hasta 24 horas en procesarse.</p>
-            <form onSubmit={handleVerifyAccount}>
-                <div className="verification-docs">
-                    <div className="doc-input">
-                        <label htmlFor="documentFront">Documento de Identidad (DNI) - Cara:</label>
-                        <input
-                            type="file"
-                            id="documentFront"
-                            name="documentFront"
-                            onChange={handleDocumentFrontChange}
-                            required
-                        />
-                    </div>
-                    <div className="doc-input">
-                        <label htmlFor="documentBack">Documento de Identidad (DNI) - Dorso:</label>
-                        <input
-                            type="file"
-                            id="documentBack"
-                            name="documentBack"
-                            onChange={handleDocumentBackChange}
-                            required
-                        />
+                <div className="popup">
+                    <div className="popup-content">
+                        {userInfo && userInfo.verified ? (
+                            <>
+                                <h3>Proceso de Verificación Completo</h3>
+                                <p>Disfruta de la experiencia de nuestra página web al 100% 🎉</p>
+                            </>
+                        ) : (
+                            <>
+                                <h3>Verificar Cuenta</h3>
+                                <p>Por favor, adjunta los documentos necesarios para verificar tu cuenta. Esto puede tardar hasta 24 horas en procesarse.</p>
+                                <form onSubmit={handleVerifyAccount}>
+                                    <div className="verification-docs">
+                                        <div className="doc-input">
+                                            <label htmlFor="documentFront">Documento de Identidad (DNI) - Cara:</label>
+                                            <input
+                                                type="file"
+                                                id="documentFront"
+                                                name="documentFront"
+                                                onChange={handleDocumentFrontChange}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="doc-input">
+                                            <label htmlFor="documentBack">Documento de Identidad (DNI) - Dorso:</label>
+                                            <input
+                                                type="file"
+                                                id="documentBack"
+                                                name="documentBack"
+                                                onChange={handleDocumentBackChange}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                    <button type="submit">Enviar Documentos</button>
+                                </form>
+                                <p>Nota: El proceso de verificación puede tardar hasta 24 horas en completarse.</p>
+                            </>
+                        )}
+                        <button className="popup-close-btn" onClick={() => setShowVerificationPopup(false)}>Cerrar</button>
                     </div>
                 </div>
-                <button type="submit">Enviar Documentos</button>
-            </form>
-            <p>Nota: El proceso de verificación puede tardar hasta 24 horas en completarse.</p>
-            <button className="popup-close-btn" onClick={() => setShowVerificationPopup(false)}>Cerrar</button>
-        </div>
-    </div>
-)}
-
+            )}
         </div>
     );
 };

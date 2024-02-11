@@ -107,6 +107,7 @@
     margin: 0;
     color: #007bff;
 }
+
 .password-change-form {
     max-width: 400px;
     margin: 0 auto;
@@ -139,4 +140,38 @@
 
 .password-change-form button:hover {
     background-color: #0056b3;
+}
+
+/* Estilos para el formulario de verificación de cuenta */
+.verification-docs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.doc-input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.doc-input label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.doc-input input[type="file"] {
+    width: calc(100% - 20px); /* Reducimos el padding del input para que sea más ancho */
+    padding: 8px 10px; /* Ajustamos el padding para mantener la apariencia */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px; /* Aumentamos el tamaño del texto */
+}
+
+.verification-docs label {
+    font-weight: bold;
+}
+
+.verification-docs p {
+    margin-bottom: 10px;
 }

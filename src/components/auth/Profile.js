@@ -4,6 +4,7 @@ import '../../css/Profile.css';
 const Profile = () => {
     const [userInfo, setUserInfo] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
+    const [showVerificationPopup, setShowVerificationPopup] = useState(false); // Nueva variable de estado para controlar el segundo popup
     const [nickname, setNickname] = useState('');
     const [selectedSection, setSelectedSection] = useState('');
     const [changePasswordData, setChangePasswordData] = useState({
@@ -11,6 +12,8 @@ const Profile = () => {
         currentPassword: '',
         newPassword: ''
     });
+    const [documentFront, setDocumentFront] = useState(null);
+    const [documentBack, setDocumentBack] = useState(null);
 
     useEffect(() => {
         const storedNickname = window.sessionStorage.getItem('NICKNAME');
@@ -46,21 +49,20 @@ const Profile = () => {
                     email: changePasswordData.email,
                     password: changePasswordData.currentPassword,
                     newPassword: changePasswordData.newPassword,
-                    userId: userId, // Si es necesario enviar el ID del usuario
+                    userId: userId,
                 }),
             });
     
             if (response.ok) {
-                // La contraseña se cambió correctamente
                 console.log('Contraseña cambiada exitosamente');
             } else {
-                // Error al cambiar la contraseña
                 console.error('Error al cambiar la contraseña:', response.statusText);
             }
         } catch (error) {
             console.error('Error al cambiar la contraseña:', error);
         }
     };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setChangePasswordData({
@@ -69,89 +71,117 @@ const Profile = () => {
         });
     };
 
+    const handleVerifyAccount = async () => {
+        try {
+            const userId = window.sessionStorage.getItem('USER_ID');
+            const formData = new FormData();
+            formData.append('userId', userId);
+            formData.append('documentFront', documentFront);
+            formData.append('documentBack', documentBack);
+            
+            const response = await fetch('http://localhost:8080/api/verification/submit', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const message = await response.text();
+                console.log(message);
+            } else {
+                console.error('Error al verificar la cuenta:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error al verificar la cuenta:', error);
+        }
+    };
+
+    const handleDocumentFrontChange = (e) => {
+        setDocumentFront(e.target.files[0]);
+    };
+
+    const handleDocumentBackChange = (e) => {
+        setDocumentBack(e.target.files[0]);
+    };
+
     const renderUserInfo = () => {
         if (!userInfo) return null;
 
         if (selectedSection === 'personal') {
             return (
-                <div className="user-details">
-                    <div className="personal-info">
-                        <h3 className="section-title">Información Personal</h3>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td>Email:</td>
-                                    <td>{userInfo.email}</td>
-                                </tr>
-                                <tr>
-                                    <td>Nombre:</td>
-                                    <td>{userInfo.name}</td>
-                                </tr>
-                                <tr>
-                                    <td>Apellido:</td>
-                                    <td>{userInfo.surname}</td>
-                                </tr>
-                                <tr>
-                                    <td>DNI:</td>
-                                    <td>{userInfo.dni}</td>
-                                </tr>
-                                <tr>
-                                    <td>Contraseña:</td>
-                                    <td>******</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div className="personal-info">
+                    <h3 className="section-title">Información Personal</h3>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Email:</td>
+                                <td>{userInfo.email}</td>
+                            </tr>
+                            <tr>
+                                <td>Nombre:</td>
+                                <td>{userInfo.name}</td>
+                            </tr>
+                            <tr>
+                                <td>Apellido:</td>
+                                <td>{userInfo.surname}</td>
+                            </tr>
+                            <tr>
+                                <td>DNI:</td>
+                                <td>{userInfo.dni}</td>
+                            </tr>
+                            <tr>
+                                <td>Contraseña:</td>
+                                <td>******</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             );
         } else if (selectedSection === 'account') {
             return (
-                <div className="user-details">
-                    <div className="account-info">
-                        <h3 className="section-title">Información de Cuenta</h3>
-                        <table>
-                            <tbody>
-                                {userInfo && (
-                                    <>
+                <div className="account-info">
+                    <h3 className="section-title">Información de Cuenta</h3>
+                    <table>
+                        <tbody>
+                            {userInfo && (
+                                <>
+                                    <tr>
+                                        <td>Verificado:</td>
+                                        <td>{userInfo.verified ? 'Sí' : 'No'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Apostado:</td>
+                                        <td>{userInfo.wagered}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ganancias o Pérdidas:</td>
+                                        <td>{userInfo.earningsLosses}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fecha de Creación:</td>
+                                        <td>{userInfo.createdAt}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Excluído:</td>
+                                        <td>{userInfo.excluded ? 'Sí' : 'No'}</td>
+                                    </tr>
+                                    {userInfo.excluded && (
                                         <tr>
-                                            <td>Verificado:</td>
-                                            <td>{userInfo.verified ? 'Sí' : 'No'}</td>
+                                            <td>Fecha de Exclusión:</td>
+                                            <td>{userInfo.exclusionDate}</td>
                                         </tr>
-                                        <tr>
-                                            <td>Total Apostado:</td>
-                                            <td>{userInfo.wagered}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Ganancias o Pérdidas:</td>
-                                            <td>{userInfo.earningsLosses}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Fecha de Creación:</td>
-                                            <td>{userInfo.createdAt}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Excluído:</td>
-                                            <td>{userInfo.excluded ? 'Sí' : 'No'}</td>
-                                        </tr>
-                                        {userInfo.excluded && (
-                                            <tr>
-                                                <td>Fecha de Exclusión:</td>
-                                                <td>{userInfo.exclusionDate}</td>
-                                            </tr>
-                                        )}
-                                        <tr>
-                                            <td>Cuenta Habilitada:</td>
-                                            <td>{userInfo.enabled ? 'Sí' : 'No'}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Saldo:</td>
-                                            <td>{userInfo.balance}</td>
-                                        </tr>
-                                    </>
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
+                                    )}
+                                    <tr>
+                                        <td>Cuenta Habilitada:</td>
+                                        <td>{userInfo.enabled ? 'Sí' : 'No'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Saldo:</td>
+                                        <td>{userInfo.balance}</td>
+                                    </tr>
+                                </>
+                            )}
+                        </tbody>
+                    </table>
                 </div>
             );
         } else if (selectedSection === 'password') {
@@ -209,7 +239,10 @@ const Profile = () => {
                     {/* Contenido de Historial de Apuestas */}
                 </div>
                 <div className="profile-section">
-                    <div className="section-wrapper">
+                     <div className="section-wrapper" onClick={() => {
+                        setSelectedSection('verify-account');
+                        setShowVerificationPopup(true); // Cambiar el estado para mostrar el segundo popup
+                    }}>
                         <h3 className="section-title">Verificar Cuenta</h3>
                     </div>
                     {/* Contenido de Verificar Cuenta */}
@@ -267,6 +300,42 @@ const Profile = () => {
                     </div>
                 </div>
             )}
+            {showVerificationPopup && (
+    <div className="popup">
+        <div className="popup-content">
+            <h3>Verificar Cuenta</h3>
+            <p>Por favor, adjunta los documentos necesarios para verificar tu cuenta. Esto puede tardar hasta 24 horas en procesarse.</p>
+            <form onSubmit={handleVerifyAccount}>
+                <div className="verification-docs">
+                    <div className="doc-input">
+                        <label htmlFor="documentFront">Documento de Identidad (DNI) - Cara:</label>
+                        <input
+                            type="file"
+                            id="documentFront"
+                            name="documentFront"
+                            onChange={handleDocumentFrontChange}
+                            required
+                        />
+                    </div>
+                    <div className="doc-input">
+                        <label htmlFor="documentBack">Documento de Identidad (DNI) - Dorso:</label>
+                        <input
+                            type="file"
+                            id="documentBack"
+                            name="documentBack"
+                            onChange={handleDocumentBackChange}
+                            required
+                        />
+                    </div>
+                </div>
+                <button type="submit">Enviar Documentos</button>
+            </form>
+            <p>Nota: El proceso de verificación puede tardar hasta 24 horas en completarse.</p>
+            <button className="popup-close-btn" onClick={() => setShowVerificationPopup(false)}>Cerrar</button>
+        </div>
+    </div>
+)}
+
         </div>
     );
 };

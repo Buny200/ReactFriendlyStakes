@@ -10,11 +10,12 @@ import Modal from "react-modal";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Profile from "./components/auth/Profile";
+import DropdownMenu from "./components/auth/DropdownMenu"; // Importa el componente de lista desplegable
 import friendlyImage from "../src/photos/FRIENDLY.jpg";
 import userImage from "../src/photos/usuario.png";
 import logoutImage from "../src/photos/logout.png"; // Importa el logo de logout
 import "./App.css";
-
+import { FiChevronDown } from "react-icons/fi"; 
 Modal.setAppElement("#root");
 
 function App() {
@@ -49,7 +50,7 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header">
-          <div className="App-logo-container">
+          <div className="header-content">
             <Link to="/">
               <img
                 src={friendlyImage}
@@ -58,11 +59,17 @@ function App() {
                 style={{ width: "145px", height: "auto" }}
               />
             </Link>
+            {/* Muestra la sección de Apuestas Personalizadas */}
+            {loggedIn && (
+              <div className="dropdown-container">
+                <DropdownMenu />
+              </div>
+            )}
           </div>
           <nav>
             <ul className="nav-list">
               {/* Muestra el logo de usuario solo si el usuario está loggeado */}
-              {
+              {loggedIn && (
                 <li className="nav-item">
                   <Link to="/profile">
                     <img
@@ -72,11 +79,10 @@ function App() {
                       style={{ width: "25px", height: "auto" }}
                     />
                   </Link>
-                  <span className="nav-link-text"></span>
                 </li>
-              }
+              )}
               {/* Muestra el logo de logout solo si el usuario está loggeado */}
-              {
+              {loggedIn && (
                 <li className="nav-item" onClick={handleLogout}>
                   <img
                     src={logoutImage}
@@ -84,9 +90,8 @@ function App() {
                     alt="Logout"
                     style={{ width: "25px", height: "auto" }}
                   />
-                  <span className="nav-link-text"></span>
                 </li>
-              }
+              )}
             </ul>
           </nav>
         </header>

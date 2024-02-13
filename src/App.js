@@ -15,6 +15,7 @@ import Profile from "./components/auth/Profile";
 import DropdownMenu from "./components/auth/DropdownMenu";
 import AllBetsPage from "./components/auth/AllBetsPage.js";
 import MyBetsPage from "./components/auth/MyBetsPage.js";
+import JoinBetPage from "./components/auth/JoinBetPage.js";
 import friendlyImage from "../src/photos/FRIENDLY.jpg";
 import userImage from "../src/photos/usuario.png";
 import logoutImage from "../src/photos/logout.png";
@@ -134,6 +135,7 @@ function App() {
               />
               <Route path="/custom-bets/all" element={<AllBetsPage />} /> 
               <Route path="/custom-bets/created-by-me" element={<MyBetsPage />} /> 
+              <Route path="custom-bets/join" element={<JoinBetPage updateUserBalance={updateUserBalance} />} /> 
             </Routes>
           </div>
         </div>

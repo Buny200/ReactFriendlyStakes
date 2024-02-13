@@ -50,7 +50,7 @@ const BetHistoryPopup = ({ betHistory }) => {
       <div className="pagination">
         <button
           className="pagination-button"
-          onClick={() => handlePageChange(currentPage - 1)}
+          onClick={() => handlePageChange(1)}
           disabled={currentPage === 1}
         >
           {"<<"}
@@ -74,7 +74,7 @@ const BetHistoryPopup = ({ betHistory }) => {
         </span>
         <button
           className="pagination-button"
-          onClick={() => handlePageChange(currentPage + 1)}
+          onClick={() => handlePageChange(totalPages)}
           disabled={currentPage === totalPages}
         >
           {">>"}

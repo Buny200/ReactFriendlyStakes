@@ -1,5 +1,3 @@
-// En CreateBetForm.js
-
 import React, { useState, useEffect } from "react";
 import "../../css/CreateBetPage.css";
 

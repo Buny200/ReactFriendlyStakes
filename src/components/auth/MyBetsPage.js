@@ -42,9 +42,6 @@ const MyBetsPage = () => {
     }
   };
 
-  const closePopup = () => {
-    setShowPopup(false);
-  };
 
   const handlePopupClose = () => {
     setShowPopup(false);
@@ -77,7 +74,37 @@ const MyBetsPage = () => {
         ))}
       </ul>
       <div className="pagination">
-        {/* Botones de paginación */}
+        <button
+          className="pagination-button"
+          onClick={() => handlePageChange(1)}
+          disabled={currentPage === 1}
+        >
+          {"<<"}
+        </button>
+        <button
+          className="pagination-arrow"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          {"<"}
+        </button>
+        <span className="pagination-info">
+          Página {currentPage} de {totalPages}
+        </span>
+        <button
+          className="pagination-arrow"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          {">"}
+        </button>
+        <button
+          className="pagination-button"
+          onClick={() => handlePageChange(totalPages)}
+          disabled={currentPage === totalPages}
+        >
+          {">>"}
+        </button>
       </div>
       {showPopup && selectedBet && (
         <div className="popup" onClick={handlePopupClose}>

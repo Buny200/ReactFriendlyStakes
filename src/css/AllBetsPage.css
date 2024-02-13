@@ -1,72 +1,83 @@
 .bet-item {
-    border: 1px solid #e91616;
-    border-radius: 5px; /* Reducir el radio del borde para hacerlo más pequeño */
-    margin: 5px auto; /* Centrar horizontalmente y reducir el margen inferior */
-    padding: 5px; /* Reducir el relleno interno */
-    display: flex; /* Usar flexbox para alinear el contenido */
-    flex-direction: column; /* Apilar los elementos verticalmente */
-    align-items: center; /* Alinear los elementos al centro horizontalmente */
-    max-width: 400px; /* Establecer un ancho máximo para el elemento */
-  }
-  
-  .bet-info {
-    flex-grow: 1; /* Permitir que la información de la apuesta ocupe todo el espacio disponible */
-    text-align: center; /* Alinear el texto al centro */
-  }
-  
-  .bet-title {
-    font-weight: bold;
-    font-size: 16px; /* Tamaño del título de la apuesta */
-    margin-bottom: 5px; /* Espaciado entre el título y los detalles */
-    text-align: center; 
-  }
-  
-  .title-prefix {
-    font-weight: bold;
-    color: #007bff; /* Cambia el color según tu preferencia */
-  }
-  
-  .bet-details {
-    text-align: center; /* Alinear los detalles al centro */
-  }
-  
-  
-  .pagination {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .pagination-button,
-  .pagination-arrow {
-    background-color: #007bff;
-    border: none;
-    color: white;
-    cursor: pointer;
-    margin: 0 5px;
-    padding: 5px 10px;
-    border-radius: 5px;
-  }
-  
-  .pagination-button:disabled,
-  .pagination-arrow:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  .popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+  border: 1px solid #e91616;
+  border-radius: 5px;
+  margin: 5px auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+}
+
+.bet-info {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.bet-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+  text-align: center; 
+}
+
+.title-prefix {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.bet-details {
+  text-align: center;
+}
+
+.pagination {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  .popup-inner {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra alrededor del pop-up */
-  }
+    margin-top: 10px;
+    padding: 5px; /* Reducir el padding para hacer el contenedor más pequeño */
+}
+
+.pagination-button,
+.pagination-arrow {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin: 0 5px; /* Reducir el margen para que sea igual al de las flechas */
+  padding: 5px 8px; /* Ajuste del padding para reducir el tamaño */
+  border-radius: 3px;
+  flex: 0.05;
+  font-size: 14px; /* Reducir el tamaño de fuente */
+}
+
+
+.pagination-button:hover {
+    background-color: #45a049;
+}
+
+.pagination-info {
+    display: flex;
+    align-items: center;
+    margin: 0; /* Elimina el margen */
+}
+
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-inner {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}

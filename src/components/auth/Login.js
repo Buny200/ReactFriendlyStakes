@@ -3,8 +3,7 @@ import axios from "axios";
 import { Link, Navigate } from "react-router-dom";
 import "../../css/Login.css";
 
-const Login = ({ setLoggedIn, loggedIn }) => {
-  // Aquí agregamos loggedIn como una prop
+const Login = ({ setLoggedIn, loggedIn, updateUserBalance }) => {
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -30,6 +29,7 @@ const Login = ({ setLoggedIn, loggedIn }) => {
       window.sessionStorage.setItem("SURNAME", surname); // Store the email in sessionStorage
       window.sessionStorage.setItem("NAME", name); // Store the email in sessionStorage
       setLoggedIn(true); // Update the loggedIn state
+      updateUserBalance();
     } catch (error) {
       console.error(error.response.data.errors[0].detail);
       setError("Usuario o contraseña incorrectos");

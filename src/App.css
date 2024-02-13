@@ -40,4 +40,16 @@
   border-color: #ffcc00; /* Cambia el color del borde al pasar el cursor */
 }
 .nav-item a:hover {
-  color: #ffcc00; /* Cambiar color al pasar el cursor */}
+  color: #ffcc00; /* Cambiar color al pasar el cursor */
+}
+  .balance-item {
+    color: #fff; /* Color del texto */
+    font-size: 17px; /* Tamaño de fuente aumentado */
+    margin-left: 20px; /* Espacio a la izquierda */
+  }
+  
+  
+  .balance-item::after {
+    content: "\20AC "; /* Símbolo del euro */
+    font-size: 18px; /* Tamaño del símbolo del euro */
+  }

@@ -581,47 +581,43 @@ const Profile = () => {
                             </form>
                           </div>
                         )}
-                        {selectedSection === "disable" && (
-                          <div className="form-section">
-                            <h4>Deshabilitar Cuenta</h4>
-                            <form onSubmit={handleExcludeUser} className="centered-form">                              <p>
-                                ¿Estás seguro de que deseas deshabilitar tu
-                                cuenta? Esta acción no se puede deshacer.
-                              </p>
-                              <p>
-                                NOTA: Mantendremos sus datos en nuestra base de
-                                datos durante un intervalo de 30 Días, por razones de seguridad y cuando
-                                se cumpla, eliminaremos todos sus datos de forma
-                                irreversible.
-                              </p>
-                              <label htmlFor="confirmDisable">
-                                <input
-                                  type="checkbox"
-                                  id="confirmDisable"
-                                  checked={confirmDisable}
-                                  onChange={handleConfirmDisableChange}
-                                />
-                                Confirmar deshabilitación de cuenta
-                              </label>
-                              <button
-                                type="submit"
-                                disabled={!confirmDisable}
-                                className="disable-account-btn"
-                                style={{
-                                  backgroundColor: confirmDisable
-                                    ? "#007bff"
-                                    : "#ccc",
-                                  cursor: confirmDisable
-                                    ? "pointer"
-                                    : "not-allowed",
-                                  color: confirmDisable ? "#fff" : "#666",
-                                }}
-                              >
-                                Deshabilitar Cuenta
-                              </button>
-                            </form>
-                          </div>
-                        )}
+                         {selectedSection === "disable" && (
+        <div className="form-section">
+          <h4>Deshabilitar Cuenta</h4>
+          <form onSubmit={handleDisableAccount} className="centered-form">
+            <p>
+              ¿Estás seguro de que deseas deshabilitar tu cuenta? Esta acción
+              no se puede deshacer.
+            </p>
+            <p>
+              NOTA: Mantendremos sus datos en nuestra base de datos durante un
+              intervalo de 30 Días, por razones de seguridad y cuando se
+              cumpla, eliminaremos todos sus datos de forma irreversible.
+            </p>
+            <label htmlFor="confirmDisable">
+              <input
+                type="checkbox"
+                id="confirmDisable"
+                checked={confirmDisable}
+                onChange={handleConfirmDisableChange}
+              />
+              Confirmar deshabilitación de cuenta
+            </label>
+            <button
+              type="submit"
+              disabled={!confirmDisable}
+              className="disable-account-btn"
+              style={{
+                backgroundColor: confirmDisable ? "#007bff" : "#ccc",
+                cursor: confirmDisable ? "pointer" : "not-allowed",
+                color: confirmDisable ? "#fff" : "#666",
+              }}
+            >
+              Deshabilitar Cuenta
+            </button>
+          </form>
+        </div>
+      )}
                       </div>
                     </td>
                   </tr>

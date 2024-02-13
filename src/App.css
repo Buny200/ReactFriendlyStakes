@@ -53,3 +53,7 @@
     content: "\20AC "; /* Símbolo del euro */
     font-size: 18px; /* Tamaño del símbolo del euro */
   }
+  .dropdown-container {
+    position: absolute; /* Establece la posición absoluta para el contenedor */
+    margin-top: -36px;
+  }

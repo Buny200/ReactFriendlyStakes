@@ -10,8 +10,22 @@ const CreateBetForm = ({ updateUserBalance }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [userBalance, setUserBalance] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para verificar si el usuario está loggeado
 
   useEffect(() => {
+    const checkLoggedIn = async () => {
+      const userId = window.sessionStorage.getItem("USER_ID");
+      if (userId) {
+        setIsLoggedIn(true);
+        return true;
+      } else {
+        setIsLoggedIn(false);
+        setErrorMessage("Debes iniciar sesión para crear una apuesta.");
+        return false;
+      }
+    };
+
+    checkLoggedIn();
     fetchUserBalance();
   }, []);
 
@@ -76,29 +90,28 @@ const CreateBetForm = ({ updateUserBalance }) => {
   return (
     <div className="container">
       <h1 className="title">Crear Apuesta</h1>
+      { errorMessage && (
+        <div className="error-message">
+          {errorMessage}
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="title">Título:</label>
-          <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required />
+          <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required disabled={!isLoggedIn} />
         </div>
         
         <div className="form-group">
           <label htmlFor="betAmount">Cantidad de Apuesta:</label>
-          <input type="text" id="betAmount" name="betAmount" value={formData.betAmount} onChange={handleChange} required />
-          {/* Mostrar el mensaje de error si existe */}
-          {errorMessage && (
-            <div className="error-message">
-              {errorMessage}
-            </div>
-          )}
+          <input type="text" id="betAmount" name="betAmount" value={formData.betAmount} onChange={handleChange} required disabled={!isLoggedIn} />
         </div>
         
         <div className="form-group">
           <label htmlFor="betPassword">Contraseña de la Apuesta:</label>
-          <input type="password" id="betPassword" name="betPassword" value={formData.betPassword} onChange={handleChange} required />
+          <input type="password" id="betPassword" name="betPassword" value={formData.betPassword} onChange={handleChange} required disabled={!isLoggedIn} />
         </div>
         
-        <button type="submit" className="submit-button">Crea tu Apuesta</button>
+        <button type="submit" className="submit-button" disabled={!isLoggedIn}>Crea tu Apuesta</button>
       </form>
       {/* Mostrar el mensaje de éxito si existe */}
       {successMessage && (
@@ -111,4 +124,3 @@ const CreateBetForm = ({ updateUserBalance }) => {
 };
 
 export default CreateBetForm;
-

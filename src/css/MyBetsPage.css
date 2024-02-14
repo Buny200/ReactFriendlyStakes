@@ -70,3 +70,24 @@
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra alrededor del pop-up */
   }
+  .error-message {
+    color: #ff0000; /* Cambia el color del texto a rojo */
+    font-size: 24px; /* Tamaño de fuente aumentado */
+    text-align: center;
+    padding: 20px;
+    border: 2px solid #dc3545; /* Borde rojo */
+    border-radius: 10px;
+    max-width: 600px; /* Ancho máximo */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.error-message-link {
+    color: #ff0000; /* Cambia el color del enlace a rojo */
+    text-decoration: none; /* Quita el subrayado del enlace */
+    font-weight: bold; /* Hace que el texto del enlace sea más visible */
+}
+
+  

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../css/CreateBetPage.css";
-
+{/* aqui tendras que habilitar el tipo texto en vez de numerico  */}
 const CreateBetForm = ({ updateUserBalance }) => {
   const [formData, setFormData] = useState({
     title: "",

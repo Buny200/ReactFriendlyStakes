@@ -9,7 +9,11 @@ const MyBetsPage = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [selectedBet, setSelectedBet] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para verificar si el usuario está loggeado
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessages, setSuccessMessages] = useState({});
+  const [filter, setFilter] = useState("ALL");
+
   const betsPerPage = 10;
 
   useEffect(() => {
@@ -17,15 +21,31 @@ const MyBetsPage = () => {
       try {
         const userId = window.sessionStorage.getItem("USER_ID");
         const response = await axios.get(`http://localhost:8080/api/users/${userId}/bets`);
-        setBets(response.data.betList); // Ajustando a la estructura del DTO
-        const totalBets = response.data.betList.length; // Ajustando a la estructura del DTO
+        setBets(response.data.betList);
+        const totalBets = response.data.betList.length;
         const totalPages = Math.ceil(totalBets / betsPerPage);
         setTotalPages(totalPages);
       } catch (error) {
         console.error("Error fetching bets:", error);
+        setErrorMessage("Error al cargar las apuestas. Por favor, inténtalo de nuevo más tarde.");
       }
     };
-
+    const handleCancelBet = async (betId) => {
+      try {
+        const response = await axios.post(`http://localhost:8080/api/bets/${window.sessionStorage.getItem('USER_ID')}/delete/${betId}`);
+        if (response.data) {
+          // La apuesta se canceló exitosamente
+          console.log("Apuesta cancelada:", betId);
+        } else {
+          // Si el servidor devuelve false, significa que hubo un problema al cancelar la apuesta
+          setErrorMessage("Hubo un problema al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde.");
+        }
+      } catch (error) {
+        console.error("Error cancelling bet:", error);
+        setErrorMessage("Error al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde.");
+      }
+    };
+    
     const checkLoggedIn = async () => {
       const userId = window.sessionStorage.getItem("USER_ID");
       if (userId) {
@@ -48,10 +68,11 @@ const MyBetsPage = () => {
   const handleBetClick = async (betId) => {
     try {
       const response = await axios.get(`http://localhost:8080/api/bets/${betId}`);
-      setSelectedBet(response.data); // Suponiendo que response.data contiene los detalles de la apuesta
+      setSelectedBet(response.data);
       setShowPopup(true);
     } catch (error) {
       console.error("Error fetching bet details:", error);
+      setErrorMessage("Error al cargar los detalles de la apuesta. Por favor, inténtalo de nuevo más tarde.");
     }
   };
 
@@ -59,17 +80,75 @@ const MyBetsPage = () => {
     setShowPopup(false);
   };
 
-  const firstBetIndex = (currentPage - 1) * betsPerPage;
-  const lastBetIndex = Math.min(firstBetIndex + betsPerPage, bets.length);
-  const currentBets = bets.slice(firstBetIndex, lastBetIndex);
+  const handleStartBet = async (creatorId, betId) => {
+    try {
+      await axios.post(`http://localhost:8080/api/bets/${creatorId}/start/${betId}`);
+      const updatedBets = bets.map(bet => {
+        if (bet.betId === betId) {
+          return { ...bet, status: "PENDING" };
+        }
+        return bet;
+      });
+      setBets(updatedBets);
+      if (selectedBet && selectedBet.betId === betId) {
+        setSelectedBet({ ...selectedBet, status: "PENDING" });
+      }
+      setSuccessMessages(prevState => ({
+        ...prevState,
+        [betId]: true
+      }));
+    } catch (error) {
+      console.error("Error starting bet:", error);
+      setErrorMessage("Error al iniciar la apuesta. Por favor, inténtalo de nuevo más tarde.");
+    }
+  };
+
+  const handleSendResults = async (betId) => {
+    try {
+      console.log("Resultados enviados para la apuesta:", betId);
+    } catch (error) {
+      console.error("Error sending results:", error);
+      setErrorMessage("Error al enviar los resultados. Por favor, inténtalo de nuevo más tarde.");
+    }
+  };
+
+  const handleCancelBet = async (betId) => {
+    try {
+      console.log("Apuesta cancelada:", betId);
+    } catch (error) {
+      console.error("Error cancelling bet:", error);
+      setErrorMessage("Error al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde.");
+    }
+  };
+
+  const filterBets = (bet) => {
+    if (filter === "ALL") {
+      return true;
+    } else {
+      return bet.status === filter;
+    }
+  };
 
   return (
     <div>
       {isLoggedIn ? (
         <>
           <h2 className="title">Todas las Apuestas Activas</h2>
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          <div className="filters-container">
+            <div className="filters">
+              <span>Filtrar por estado:</span>
+              <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+                <option value="ALL">Todos</option>
+                <option value="JOINING">Unirse</option>
+                <option value="PENDING">Pendiente</option>
+                <option value="VERIFICATION">Verificación</option>
+                <option value="FINISH">Finalizado</option>
+              </select>
+            </div>
+          </div>
           <ul className="bet-list">
-            {currentBets.map((bet) => (
+            {bets.filter(filterBets).map((bet) => (
               <li key={bet.betId} className="bet-item" onClick={() => handleBetClick(bet.betId)}>
                 <div className="bet-info">
                   <div className="bet-title">
@@ -77,11 +156,25 @@ const MyBetsPage = () => {
                     {bet.title}
                   </div>
                   <div className="bet-details">
-                    <p>Creador: {bet.creator.userNickname}</p> {/* Ajustando a la estructura del DTO */}
+                    <p>Creador: {bet.creator.userNickname}</p>
                     <p>Fecha de inicio: {new Date(bet.startDate).toLocaleDateString()}</p>
                     <p>Monto de la apuesta: {bet.betAmount}</p>
                     <p>Número de participantes: {bet.participantsNumber}</p>
                     <p>Estado: {bet.status}</p>
+                    {bet.status === "JOINING" && (
+                      <button onClick={(e) => { e.stopPropagation(); handleStartBet(window.sessionStorage.getItem('USER_ID'), bet.betId); }}>Comenzar Apuesta</button>
+                    )}
+                    {bet.status === "PENDING" && (
+                      <>
+                        <button onClick={(e) => { e.stopPropagation(); handleSendResults(bet.betId); }}>Enviar Resultados</button>
+                        <button className="cancel-button" onClick={(e) => { e.stopPropagation(); handleCancelBet(bet.betId); }}>Cancelar Apuesta</button>
+                      </>
+                    )}
+                    {successMessages[bet.betId] && (
+                      <div className="success-message">
+                        ¡La apuesta seleccionada se ha iniciado correctamente!
+                      </div>
+                    )}
                   </div>
                 </div>
               </li>

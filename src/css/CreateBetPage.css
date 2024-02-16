@@ -38,7 +38,7 @@ input[type="password"]:disabled {
 .error-message {
   color: #dc3545;
   font-size: 14px;
-  margin-top: 5px;
+  margin-top: -270px;
 }
 
 .submit-button {

@@ -90,4 +90,43 @@
     font-weight: bold; /* Hace que el texto del enlace sea más visible */
 }
 
-  
+.filters-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.filters {
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.filters select {
+  padding: 5px;
+}
+
+/* Estilos para el botón */
+button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+.cancel-button {
+  background-color: #ff5555; /* Red */
+}
+
+.cancel-button:hover {
+  background-color: #ff0000; /* Darker Red */
+}

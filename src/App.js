@@ -1,5 +1,3 @@
-// En App.js
-
 import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -20,6 +18,7 @@ import friendlyImage from "../src/photos/FRIENDLY.jpg";
 import userImage from "../src/photos/usuario.png";
 import logoutImage from "../src/photos/logout.png";
 import CreateBetPage from "./components/auth/CreateBetPage.js"; // Importa el componente CreateBetForm
+import Roulette from "./components/auth/Roulette"; // Importa el componente Roulette
 import "./App.css";
 Modal.setAppElement("#root");
 
@@ -135,7 +134,9 @@ function App() {
               />
               <Route path="/custom-bets/all" element={<AllBetsPage />} /> 
               <Route path="/custom-bets/created-by-me" element={<MyBetsPage />} /> 
-              <Route path="custom-bets/join" element={<JoinBetPage updateUserBalance={updateUserBalance} />} /> 
+              <Route path="/custom-bets/join" element={<JoinBetPage updateUserBalance={updateUserBalance} />} /> 
+              {/* Agregar ruta para la ruleta */}
+              <Route path="/roulette" element={<Roulette />} />
             </Routes>
           </div>
         </div>

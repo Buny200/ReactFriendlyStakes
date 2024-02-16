@@ -189,7 +189,9 @@ const Profile = () => {
       formData.append("userId", userId);
       formData.append("documentFront", documentFront);
       formData.append("documentBack", documentBack);
-
+  
+      await handleUserInfoClick();
+  
       const response = await fetch(
         "http://localhost:8080/api/verification/submit",
         {
@@ -197,7 +199,7 @@ const Profile = () => {
           body: formData,
         }
       );
-
+  
       if (response.ok) {
         const message = await response.text();
         console.log(message);
@@ -208,7 +210,6 @@ const Profile = () => {
       console.error("Error al verificar la cuenta:", error);
     }
   };
-
   const handleDocumentFrontChange = (e) => {
     setDocumentFront(e.target.files[0]);
   };

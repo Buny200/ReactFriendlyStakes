@@ -27,6 +27,7 @@ const Register = () => {
       console.error(error.response.data.message);
     }
   };
+//devolver success msg
 
   return (
     <div className="register-container">
@@ -61,6 +62,7 @@ const Register = () => {
           <input type="text" id="nickname" name="nickname" value={formData.nickname} onChange={handleInputChange} />
         </div>
         <button type="button" onClick={handleRegister}>Registrarse</button>
+        {/* aqui podrias añadir algun tipo de respuesta al usuario, redirigir al inicio de sesion   */}
       </form>
       {/* Enlace para ir a la página de registro */}
       <Link to="/login" className="login-link">¿Ya tienes una cuenta? Inicia sesión</Link>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../css/CreateBetPage.css";
-{/* aqui tendras que habilitar el tipo texto en vez de numerico  */}
+
 const CreateBetForm = ({ updateUserBalance }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -44,15 +44,23 @@ const CreateBetForm = ({ updateUserBalance }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Validar la entrada del usuario para permitir solo valores numéricos y decimales
-    if (/^\d*\.?\d{0,2}$/.test(value)) {
+    if (name === "betAmount") {
+      // Validar la entrada del usuario para permitir solo valores numéricos y decimales
+      if (/^\d*\.?\d{0,2}$/.test(value)) {
+        setFormData({
+          ...formData,
+          [name]: value
+        });
+        setErrorMessage(""); // Limpiar el mensaje de error cuando el usuario comienza a escribir nuevamente
+      } else {
+        setErrorMessage("Por favor, introduce un valor numérico válido.");
+      }
+    } else {
       setFormData({
         ...formData,
         [name]: value
       });
       setErrorMessage(""); // Limpiar el mensaje de error cuando el usuario comienza a escribir nuevamente
-    } else {
-      setErrorMessage("Por favor, introduce un valor numérico válido.");
     }
   };
 

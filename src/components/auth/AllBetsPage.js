@@ -41,9 +41,6 @@ const AllBetsPage = () => {
     }
   };
 
-  const closePopup = () => {
-    setShowPopup(false);
-  };
 
   const handlePopupClose = () => {
     setShowPopup(false);
@@ -53,8 +50,7 @@ const AllBetsPage = () => {
   const lastBetIndex = Math.min(firstBetIndex + betsPerPage, bets.length);
   const currentBets = bets.slice(firstBetIndex, lastBetIndex);
 
-  {/* AQUI tendras que añadir el cancelar apuesta al status joining un usuario puede cancelar una apuesta en joining status */}
-  {/* SELECCIONA CORRECTAMENTE EL CREATOR USER EN LA PANTALLA PRINCIPAL  */}
+
   return (
     <div>
       <h2 className="title">Todas las Apuestas Activas</h2>

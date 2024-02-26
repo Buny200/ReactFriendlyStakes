@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -14,6 +15,8 @@ import DropdownMenu from "./components/auth/DropdownMenu";
 import AllBetsPage from "./components/auth/AllBetsPage.js";
 import MyBetsPage from "./components/auth/MyBetsPage.js";
 import JoinBetPage from "./components/auth/JoinBetPage.js";
+import ForgotPasswordPage from "./components/auth/ForgotPasswordPage.js";
+import ResetPasswordPage from "./components/auth/ResetPasswordPage.js";
 import friendlyImage from "../src/photos/FRIENDLY.jpg";
 import userImage from "../src/photos/usuario.png";
 import logoutImage from "../src/photos/logout.png";
@@ -133,9 +136,10 @@ function App() {
                 element={<CreateBetPage updateUserBalance={updateUserBalance} />}
               />
               <Route path="/custom-bets/all" element={<AllBetsPage />} /> 
-              <Route path="/custom-bets/created-by-me" element={<MyBetsPage />} /> 
+              <Route path="/custom-bets/created-by-me" element={<MyBetsPage updateUserBalance={updateUserBalance} />} /> 
               <Route path="/custom-bets/join" element={<JoinBetPage updateUserBalance={updateUserBalance} />} /> 
-              {/* Agregar ruta para la ruleta */}
+              <Route path="/reset-password" element={<ResetPasswordPage />} /> 
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} /> 
               <Route path="/roulette" element={<Roulette />} />
             </Routes>
           </div>

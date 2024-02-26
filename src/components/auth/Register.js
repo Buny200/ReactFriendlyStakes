@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'; // Importa Link desde react-router-dom
-import '../../css/Register.css'; // Importa los estilos CSS
+import { Link } from 'react-router-dom';
+import '../../css/Register.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +13,8 @@ const Register = () => {
     dni: '',
     nickname: '',
   });
+  const [successMessage, setSuccessMessage] = useState('');
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState(''); // Nuevo estado para el correo electrónico olvidado
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,12 +24,21 @@ const Register = () => {
     try {
       const response = await axios.post('http://localhost:8080/auth/register', formData);
       console.log(response.data);
-      // Aquí podrías redirigir al usuario a otra página si el registro fue exitoso
+      setSuccessMessage('Te hemos enviado un correo electrónico para verificar tu cuenta.');
     } catch (error) {
       console.error(error.response.data.message);
     }
   };
-//devolver success msg
+
+  const handleForgotPassword = async () => {
+    try {
+      const response = await axios.post('http://localhost:8080/auth/forgot-password', { email: forgotPasswordEmail });
+      console.log(response.data);
+      setSuccessMessage(response.data.message);
+    } catch (error) {
+      console.error(error.response.data.message);
+    }
+  };
 
   return (
     <div className="register-container">
@@ -62,9 +73,9 @@ const Register = () => {
           <input type="text" id="nickname" name="nickname" value={formData.nickname} onChange={handleInputChange} />
         </div>
         <button type="button" onClick={handleRegister}>Registrarse</button>
-        {/* aqui podrias añadir algun tipo de respuesta al usuario, redirigir al inicio de sesion   */}
+        <button type="button" onClick={handleForgotPassword}>Olvidé mi contraseña</button> {/* Nuevo botón para "olvidé mi contraseña" */}
+        {successMessage && <div className="success-message">{successMessage}</div>}
       </form>
-      {/* Enlace para ir a la página de registro */}
       <Link to="/login" className="login-link">¿Ya tienes una cuenta? Inicia sesión</Link>
     </div>
   );

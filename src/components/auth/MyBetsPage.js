@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "../../css/MyBetsPage.css";
 
-const MyBetsPage = () => {
+const MyBetsPage = ({ updateUserBalance }) => {
   const [bets, setBets] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -16,36 +16,21 @@ const MyBetsPage = () => {
 
   const betsPerPage = 10;
 
+  const fetchBets = async () => {
+    try {
+      const userId = window.sessionStorage.getItem("USER_ID");
+      const response = await axios.get(`http://localhost:8080/api/users/${userId}/bets-created`);
+      setBets(response.data.betList);
+      const totalBets = response.data.betList.length;
+      const totalPages = Math.ceil(totalBets / betsPerPage);
+      setTotalPages(totalPages);
+    } catch (error) {
+      console.error("Error fetching bets:", error);
+      setErrorMessage("Error al cargar las apuestas. Por favor, inténtalo de nuevo más tarde.");
+    }
+  };
+
   useEffect(() => {
-    const fetchBets = async () => {
-      try {
-        const userId = window.sessionStorage.getItem("USER_ID");
-        const response = await axios.get(`http://localhost:8080/api/users/${userId}/bets`);
-        setBets(response.data.betList);
-        const totalBets = response.data.betList.length;
-        const totalPages = Math.ceil(totalBets / betsPerPage);
-        setTotalPages(totalPages);
-      } catch (error) {
-        console.error("Error fetching bets:", error);
-        setErrorMessage("Error al cargar las apuestas. Por favor, inténtalo de nuevo más tarde.");
-      }
-    };
-    const handleCancelBet = async (betId) => {
-      try {
-        const response = await axios.post(`http://localhost:8080/api/bets/${window.sessionStorage.getItem('USER_ID')}/delete/${betId}`);
-        if (response.data) {
-          // La apuesta se canceló exitosamente
-          console.log("Apuesta cancelada:", betId);
-        } else {
-          // Si el servidor devuelve false, significa que hubo un problema al cancelar la apuesta
-          setErrorMessage("Hubo un problema al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde.");
-        }
-      } catch (error) {
-        console.error("Error cancelling bet:", error);
-        setErrorMessage("Error al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde.");
-      }
-    };
-    
     const checkLoggedIn = async () => {
       const userId = window.sessionStorage.getItem("USER_ID");
       if (userId) {
@@ -114,7 +99,14 @@ const MyBetsPage = () => {
 
   const handleCancelBet = async (betId) => {
     try {
-      console.log("Apuesta cancelada:", betId);
+      const response = await axios.delete(`http://localhost:8080/api/bets/${window.sessionStorage.getItem('USER_ID')}/delete/${betId}`);
+      if (response.data) {
+        console.log("Apuesta cancelada:", betId);
+        fetchBets(); // Obtener las apuestas actualizadas después de cancelar una apuesta
+        updateUserBalance();
+      } else {
+        setErrorMessage("Hubo un problema al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde.");
+      }
     } catch (error) {
       console.error("Error cancelling bet:", error);
       setErrorMessage("Error al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde.");
@@ -133,86 +125,95 @@ const MyBetsPage = () => {
     <div>
       {isLoggedIn ? (
         <>
-          <h2 className="title">Todas las Apuestas Activas</h2>
+          <h2 className="title">Todas tus apuestas </h2>
           {errorMessage && <div className="error-message">{errorMessage}</div>}
-          <div className="filters-container">
-            <div className="filters">
-              <span>Filtrar por estado:</span>
-              <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-                <option value="ALL">Todos</option>
-                <option value="JOINING">Unirse</option>
-                <option value="PENDING">Pendiente</option>
-                <option value="VERIFICATION">Verificación</option>
-                <option value="FINISH">Finalizado</option>
-              </select>
-            </div>
-          </div>
-          <ul className="bet-list">
-            {bets.filter(filterBets).map((bet) => (
-              <li key={bet.betId} className="bet-item" onClick={() => handleBetClick(bet.betId)}>
-                <div className="bet-info">
-                  <div className="bet-title">
-                    <span className="title-prefix">Título de la apuesta: </span>
-                    {bet.title}
-                  </div>
-                  <div className="bet-details">
-                    <p>Creador: {bet.creator.userNickname}</p>
-                    <p>Fecha de inicio: {new Date(bet.startDate).toLocaleDateString()}</p>
-                    <p>Monto de la apuesta: {bet.betAmount}</p>
-                    <p>Número de participantes: {bet.participantsNumber}</p>
-                    <p>Estado: {bet.status}</p>
-                    {bet.status === "JOINING" && (
-                      <button onClick={(e) => { e.stopPropagation(); handleStartBet(window.sessionStorage.getItem('USER_ID'), bet.betId); }}>Comenzar Apuesta</button>
-                    )}
-                    {bet.status === "PENDING" && (
-                      <>
-                        <button onClick={(e) => { e.stopPropagation(); handleSendResults(bet.betId); }}>Enviar Resultados</button>
-                        <button className="cancel-button" onClick={(e) => { e.stopPropagation(); handleCancelBet(bet.betId); }}>Cancelar Apuesta</button>
-                      </>
-                    )}
-                    {successMessages[bet.betId] && (
-                      <div className="success-message">
-                        ¡La apuesta seleccionada se ha iniciado correctamente!
-                      </div>
-                    )}
-                  </div>
+          {bets.length === 0 ? (
+            <div className="no-bets-message">Todavía no has creado ninguna apuesta. ¡Anímate a hacer un depósito y comienza a disfrutar!</div>
+          ) : (
+            <>
+              <div className="filters-container">
+                <div className="filters">
+                  <span>Filtrar por estado:</span>
+                  <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+                    <option value="ALL">Todos</option>
+                    <option value="JOINING">Unirse</option>
+                    <option value="PENDING">Pendiente</option>
+                    <option value="VERIFICATION">Verificación</option>
+                    <option value="FINISH">Finalizado</option>
+                  </select>
                 </div>
-              </li>
-            ))}
-          </ul>
-          <div className="pagination">
-            <button
-              className="pagination-button"
-              onClick={() => handlePageChange(1)}
-              disabled={currentPage === 1}
-            >
-              {"<<"}
-            </button>
-            <button
-              className="pagination-arrow"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              {"<"}
-            </button>
-            <span className="pagination-info">
-              Página {currentPage} de {totalPages}
-            </span>
-            <button
-              className="pagination-arrow"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              {">"}
-            </button>
-            <button
-              className="pagination-button"
-              onClick={() => handlePageChange(totalPages)}
-              disabled={currentPage === totalPages}
-            >
-              {">>"}
-            </button>
-          </div>
+              </div>
+              <ul className="bet-list">
+                {bets.filter(filterBets).map((bet) => (
+                  <li key={bet.betId} className="bet-item" onClick={() => handleBetClick(bet.betId)}>
+                    <div className="bet-info">
+                      <div className="bet-title">
+                        <span className="title-prefix">Título de la apuesta: </span>
+                        {bet.title}
+                      </div>
+                      <div className="bet-details">
+                        <p>Creador: {bet.creator.userNickname}</p>
+                        <p>Fecha de inicio: {new Date(bet.startDate).toLocaleDateString()}</p>
+                        <p>Monto de la apuesta: {bet.betAmount}</p>
+                        <p>Número de participantes: {bet.participantsNumber}</p>
+                        <p>Estado: {bet.status}</p>
+                        {bet.status === "JOINING" && (
+                          <>
+                            <button onClick={(e) => { e.stopPropagation(); handleStartBet(window.sessionStorage.getItem('USER_ID'), bet.betId); }}>Comenzar Apuesta</button>
+                            <button className="cancel-button" onClick={(e) => { e.stopPropagation(); handleCancelBet(bet.betId); }}>Cancelar Apuesta</button>
+                          </>
+                        )}
+                        {bet.status === "PENDING" && (
+                          <>
+                            <button onClick={(e) => { e.stopPropagation(); handleSendResults(bet.betId); }}>Enviar Resultados</button>
+                            <button className="cancel-button" onClick={(e) => { e.stopPropagation(); handleCancelBet(bet.betId); }}>Cancelar Apuesta</button>
+                          </>
+                        )}
+                        {successMessages[bet.betId] && (
+                          <div className="success-message">
+                            ¡La apuesta seleccionada se ha iniciado correctamente!
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <div className="pagination">
+                <button
+                  className="pagination-button"
+                  onClick={() => handlePageChange(1)}
+                  disabled={currentPage === 1}
+                >
+                  {"<<"}
+                </button>
+                <button
+                  className="pagination-arrow"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  {"<"}
+                </button>
+                <span className="pagination-info">
+                  Página {currentPage} de {totalPages}
+                </span>
+                <button
+                  className="pagination-arrow"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  {">"}
+                </button>
+                <button
+                  className="pagination-button"
+                  onClick={() => handlePageChange(totalPages)}
+                  disabled={currentPage === totalPages}
+                >
+                  {">>"}
+                </button>
+              </div>
+            </>
+          )}
         </>
       ) : (
         <div className="error-message">

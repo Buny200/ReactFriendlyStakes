@@ -130,3 +130,17 @@ button:hover {
 .cancel-button:hover {
   background-color: #ff0000; /* Darker Red */
 }
+.no-bets-message {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8d7da; /* Color de fondo */
+  color: #721c24; /* Color del texto */
+  border: 1px solid #f5c6cb; /* Borde */
+  border-radius: 5px; /* Borde redondeado */
+}
+
+/* Estilo para el enlace dentro del mensaje */
+.no-bets-message a {
+  color: #721c24; /* Color del enlace */
+  text-decoration: underline; /* Subrayado del enlace */
+}

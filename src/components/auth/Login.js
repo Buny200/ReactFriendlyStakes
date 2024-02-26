@@ -79,7 +79,7 @@ const Login = ({ setLoggedIn, loggedIn, updateUserBalance }) => {
             onChange={handleInputChange}
           />
           <div className="forgot-password">
-            <a href="#">¿Olvidaste tu contraseña?</a>
+          <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
           </div>
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}

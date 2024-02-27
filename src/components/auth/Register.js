@@ -14,7 +14,7 @@ const Register = () => {
     nickname: '',
   });
   const [successMessage, setSuccessMessage] = useState('');
-  const [forgotPasswordEmail, setForgotPasswordEmail] = useState(''); // Nuevo estado para el correo electrónico olvidado
+  const [forgotPasswordEmail] = useState(''); // Nuevo estado para el correo electrónico olvidado
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

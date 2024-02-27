@@ -17,6 +17,9 @@ import MyBetsPage from "./components/auth/MyBetsPage.js";
 import JoinBetPage from "./components/auth/JoinBetPage.js";
 import ForgotPasswordPage from "./components/auth/ForgotPasswordPage.js";
 import ResetPasswordPage from "./components/auth/ResetPasswordPage.js";
+import DepositPage from "./components/auth/Deposito.js";
+import PaymentSuccess from './components/auth/PaymentSuccess.js'; 
+import PaymentError from './components/auth/PaymentError.js'; 
 import friendlyImage from "../src/photos/FRIENDLY.jpg";
 import userImage from "../src/photos/usuario.png";
 import logoutImage from "../src/photos/logout.png";
@@ -139,6 +142,9 @@ function App() {
               <Route path="/custom-bets/created-by-me" element={<MyBetsPage updateUserBalance={updateUserBalance} />} /> 
               <Route path="/custom-bets/join" element={<JoinBetPage updateUserBalance={updateUserBalance} />} /> 
               <Route path="/reset-password" element={<ResetPasswordPage />} /> 
+              <Route path="/deposito" element={<DepositPage />} /> 
+              <Route path="/PaymentSuccess" element={<PaymentSuccess />} /> 
+              <Route path="/PaymentError" element={<PaymentError />} /> 
               <Route path="/forgot-password" element={<ForgotPasswordPage />} /> 
               <Route path="/roulette" element={<Roulette />} />
             </Routes>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../css/Profile.css";
 import BetHistoryPopup from "../auth/BetHistoryPopup";
-
+import { Link } from "react-router-dom"; 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -374,10 +374,12 @@ const Profile = () => {
           </div>
         </div>
         <div className="profile-section">
-          <div className="section-wrapper">
+        <div className="section-wrapper">
+          <Link to="/deposito">
             <h3 className="section-title">Depositar</h3>
-          </div>
+          </Link>
         </div>
+      </div>
         <div className="profile-section">
           <div className="section-wrapper">
             <h3 className="section-title">Historial de Transacciones</h3>

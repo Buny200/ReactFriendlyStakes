@@ -1,0 +1,18 @@
+.payment-error-container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb; 
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .payment-error-container h2 {
+    color: #721c24; 
+  }
+  
+  .payment-error-container p {
+    color: #721c24; 
+  }
+  

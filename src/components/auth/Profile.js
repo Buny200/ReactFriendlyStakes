@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "../../css/Profile.css";
 import BetHistoryPopup from "../auth/BetHistoryPopup";
+import TransactionHistoryPopup from "../auth/TransactionHistoryPopup";
 import { Link } from "react-router-dom"; 
+
 const Profile = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -22,7 +24,24 @@ const Profile = () => {
   const [documentFront, setDocumentFront] = useState(null);
   const [documentBack, setDocumentBack] = useState(null);
   const [confirmDisable, setConfirmDisable] = useState(false);
-
+  const [showTransactionHistoryPopup, setShowTransactionHistoryPopup] = useState(false);
+  const [transactionHistory, setTransactionHistory] = useState(null);
+  
+  const handleTransactionHistoryClick = async () => {
+    try {
+      const userId = window.sessionStorage.getItem("USER_ID");
+      const response = await fetch(`http://localhost:8080/api/transactions/user/${userId}`);
+      if (response.ok) {
+        const historyData = await response.json();
+        setTransactionHistory(historyData);
+        setShowTransactionHistoryPopup(true);
+      } else {
+        console.error("Error al obtener el historial de transacciones del usuario");
+      }
+    } catch (error) {
+      console.error("Error al obtener el historial de transacciones del usuario:", error);
+    }
+  };
   const handleConfirmDisableChange = (event) => {
     setConfirmDisable(event.target.checked);
   };
@@ -380,11 +399,17 @@ const Profile = () => {
           </Link>
         </div>
       </div>
-        <div className="profile-section">
-          <div className="section-wrapper">
-            <h3 className="section-title">Historial de Transacciones</h3>
-          </div>
+      <div className="profile-section">
+        <div className="section-wrapper" onClick={handleTransactionHistoryClick}>
+          <h3 className="section-title">Historial de Transacciones</h3>
         </div>
+        {showTransactionHistoryPopup && (
+        <TransactionHistoryPopup
+          transactionHistory={transactionHistory}
+          onClose={() => setShowTransactionHistoryPopup(false)}
+        />
+      )}
+      </div>
       </div>
       {showBetHistoryPopup && (
         <div className="popup">

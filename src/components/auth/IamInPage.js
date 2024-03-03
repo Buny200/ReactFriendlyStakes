@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "../../css/MyBetsPage.css";
 
-const MyBetsPage = ({ updateUserBalance }) => {
+const IamInBetsPage = ({ updateUserBalance }) => {
   const [bets, setBets] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -19,7 +19,7 @@ const MyBetsPage = ({ updateUserBalance }) => {
   const fetchBets = async () => {
     try {
       const userId = window.sessionStorage.getItem("USER_ID");
-      const response = await axios.get(`http://localhost:8080/api/users/${userId}/bets-created`);
+      const response = await axios.get(`http://localhost:8080/api/users/${userId}/bets`);
       setBets(response.data.betList);
       const totalBets = response.data.betList.length;
       const totalPages = Math.ceil(totalBets / betsPerPage);
@@ -49,22 +49,6 @@ const MyBetsPage = ({ updateUserBalance }) => {
       setCurrentPage(page);
     }
   };
-
-  const handleBetClick = async (betId) => {
-    try {
-      const response = await axios.get(`http://localhost:8080/api/bets/${betId}`);
-      setSelectedBet(response.data);
-      setShowPopup(true);
-    } catch (error) {
-      console.error("Error fetching bet details:", error);
-      setErrorMessage("Error al cargar los detalles de la apuesta. Por favor, inténtalo de nuevo más tarde.");
-    }
-  };
-
-  const handlePopupClose = () => {
-    setShowPopup(false);
-  };
-
   const handleStartBet = async (creatorId, betId) => {
     try {
       await axios.post(`http://localhost:8080/api/bets/${creatorId}/start/${betId}`);
@@ -85,6 +69,36 @@ const MyBetsPage = ({ updateUserBalance }) => {
     } catch (error) {
       console.error("Error starting bet:", error);
       setErrorMessage("Error al iniciar la apuesta. Por favor, inténtalo de nuevo más tarde.");
+    }
+  };
+  const handleBetClick = async (betId) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/bets/${betId}`);
+      setSelectedBet(response.data);
+      setShowPopup(true);
+    } catch (error) {
+      console.error("Error fetching bet details:", error);
+      setErrorMessage("Error al cargar los detalles de la apuesta. Por favor, inténtalo de nuevo más tarde.");
+    }
+  };
+
+  const handlePopupClose = () => {
+    setShowPopup(false);
+  };
+
+  const handleLeaveBet = async (betId) => {
+    try {
+      const userId = window.sessionStorage.getItem("USER_ID");
+      await axios.post(`http://localhost:8080/api/bets/${userId}/leave/${betId}`);
+      fetchBets(); // Obtener las apuestas actualizadas después de cancelar una apuesta
+      updateUserBalance();
+      setSuccessMessages(prevState => ({
+        ...prevState,
+        [betId]: true
+      }));
+    } catch (error) {
+      console.error("Error starting bet:", error);
+      setErrorMessage("Error al salir de la apuesta. Por favor, inténtalo de nuevo más tarde.");
     }
   };
 
@@ -128,7 +142,7 @@ const MyBetsPage = ({ updateUserBalance }) => {
           <h2 className="title">Todas tus apuestas </h2>
           {errorMessage && <div className="error-message">{errorMessage}</div>}
           {bets.length === 0 ? (
-            <div className="no-bets-message">Todavía no has creado ninguna apuesta. ¡Anímate a hacer un depósito y comienza a disfrutar!</div>
+            <div className="no-bets-message">Todavía no participas en ninguna apuesta. ¡Anímate a hacer un depósito y comienza a disfrutar!</div>
           ) : (
             <>
               <div className="filters-container">
@@ -138,6 +152,7 @@ const MyBetsPage = ({ updateUserBalance }) => {
                     <option value="ALL">Todos</option>
                     <option value="JOINING">Unirse</option>
                     <option value="PENDING">Pendiente</option>
+                    <option value="PENDING_RESULTS">Pendiente</option>
                     <option value="VERIFICATION">Verificación</option>
                     <option value="FINISH">Finalizado</option>
                   </select>
@@ -152,21 +167,34 @@ const MyBetsPage = ({ updateUserBalance }) => {
                         {bet.title}
                       </div>
                       <div className="bet-details">
-                        <p>Creador: {bet.creator.userNickname}</p>
+                        <p>Creador de la apuesta: {bet.creator.userNickname}</p>
                         <p>Fecha de inicio: {new Date(bet.startDate).toLocaleDateString()}</p>
                         <p>Cantidad de la apuesta: {bet.betAmount}</p>
                         <p>Número de participantes: {bet.participantsNumber}</p>
                         <p>Estado: {bet.status}</p>
                         {bet.status === "JOINING" && (
-                          <>
+                        <>
+                            {bet.creator.userId === parseInt(window.sessionStorage.getItem("USER_ID")) ? (
+                            <>
                             <button onClick={(e) => { e.stopPropagation(); handleStartBet(window.sessionStorage.getItem('USER_ID'), bet.betId); }}>Comenzar Apuesta</button>
                             <button className="cancel-button" onClick={(e) => { e.stopPropagation(); handleCancelBet(bet.betId); }}>Cancelar Apuesta</button>
-                          </>
+                            </>
+                            ) : (
+                            <>
+                                <button onClick={(e) => { e.stopPropagation(); handleLeaveBet(bet.betId); }}>
+                                Salir de la Apuesta
+                                </button>
+                                <p className="wait-message">Espera a que el creador inicie la apuesta</p>
+                            </>
+                            )}
+                        </>
                         )}
                         {bet.status === "PENDING" && (
                           <>
                             <button onClick={(e) => { e.stopPropagation(); handleSendResults(bet.betId); }}>Enviar Resultados</button>
-                            <button className="cancel-button" onClick={(e) => { e.stopPropagation(); handleCancelBet(bet.betId); }}>Cancelar Apuesta</button>
+                            {bet.creator.userId === parseInt(window.sessionStorage.getItem("USER_ID")) && (
+                              <button className="cancel-button" onClick={(e) => { e.stopPropagation(); handleCancelBet(bet.betId); }}>Cancelar Apuesta</button>
+                            )}
                           </>
                         )}
                         {successMessages[bet.betId] && (
@@ -239,4 +267,4 @@ const MyBetsPage = ({ updateUserBalance }) => {
   );
 };
 
-export default MyBetsPage;
+export default IamInBetsPage;

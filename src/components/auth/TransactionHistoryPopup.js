@@ -14,18 +14,16 @@ const TransactionHistoryPopup = ({ transactionHistory, onClose }) => {
               <th>Cantidad</th>
               <th>Tipo</th>
               <th>Estado</th>
-              {/* Agrega más encabezados si es necesario */}
             </tr>
           </thead>
           <tbody>
-            {transactionHistory.map((transaction) => (
-              <tr key={transaction.transactionId}>
-                <td>{transaction.transactionId}</td>
+          {transactionHistory.map((transaction, index) => (
+              <tr key={index + 1}>
+                <td>{index + 1}</td>
                 <td>{transaction.transactionDate}</td>
                 <td>{transaction.amount}</td>
                 <td>{transaction.transactionType}</td>
                 <td>{transaction.status}</td>
-                {/* Agrega más columnas según los datos de la transacción */}
               </tr>
             ))}
           </tbody>

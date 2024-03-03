@@ -14,6 +14,7 @@ import Profile from "./components/auth/Profile";
 import DropdownMenu from "./components/auth/DropdownMenu";
 import AllBetsPage from "./components/auth/AllBetsPage.js";
 import MyBetsPage from "./components/auth/MyBetsPage.js";
+import IamInBetsPage from "./components/auth/IamInPage.js";
 import JoinBetPage from "./components/auth/JoinBetPage.js";
 import ForgotPasswordPage from "./components/auth/ForgotPasswordPage.js";
 import ResetPasswordPage from "./components/auth/ResetPasswordPage.js";
@@ -140,6 +141,7 @@ function App() {
               />
               <Route path="/custom-bets/all" element={<AllBetsPage />} /> 
               <Route path="/custom-bets/created-by-me" element={<MyBetsPage updateUserBalance={updateUserBalance} />} /> 
+              <Route path="/custom-bets/in" element={<IamInBetsPage updateUserBalance={updateUserBalance} />} /> 
               <Route path="/custom-bets/join" element={<JoinBetPage updateUserBalance={updateUserBalance} />} /> 
               <Route path="/reset-password" element={<ResetPasswordPage />} /> 
               <Route path="/deposito" element={<DepositPage />} /> 

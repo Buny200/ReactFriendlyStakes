@@ -30,7 +30,7 @@ const BetHistoryPopup = ({ betHistory }) => {
           <tr>
             <th>Título</th>
             <th>Fecha de Inicio</th>
-            <th>Monto de Apuesta</th>
+            <th>Cantidad de Apuesta</th>
             <th>Número de Participantes</th>
             <th>Estado</th>
           </tr>

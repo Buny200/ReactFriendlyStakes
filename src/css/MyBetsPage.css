@@ -144,3 +144,11 @@ button:hover {
   color: #721c24; /* Color del enlace */
   text-decoration: underline; /* Subrayado del enlace */
 }
+.wait-message {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  color: #800000;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center; /* Alinea el texto al centro */
+}

@@ -31,7 +31,6 @@ const Login = ({ setLoggedIn, loggedIn, updateUserBalance }) => {
       setLoggedIn(true); // Update the loggedIn state
       updateUserBalance();
     } catch (error) {
-      console.error(error.response.data.errors[0].detail);
       setError("Usuario o contraseña incorrectos");
     }
   };

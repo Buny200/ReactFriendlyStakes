@@ -5,7 +5,7 @@ import "../../css/AllBetsPage.css";
 const AllBetsPage = () => {
   const [bets, setBets] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const [selectedBet, setSelectedBet] = useState(null); // Estado para almacenar la información de la apuesta seleccionada
   const [showPopup, setShowPopup] = useState(false); // Estado para controlar la visibilidad del pop-up
   const betsPerPage = 10;
@@ -17,7 +17,10 @@ const AllBetsPage = () => {
         setBets(response.data);
         const totalBets = response.data.length;
         const totalPages = Math.ceil(totalBets / betsPerPage);
-        setTotalPages(totalPages);
+        if(totalBets = 0){
+          setTotalPages('1');
+        }else  setTotalPages(totalPages);
+
       } catch (error) {
         console.error("Error fetching bets:", error);
       }
@@ -65,7 +68,7 @@ const AllBetsPage = () => {
               <div className="bet-details">
                 <p>Creador: {bet.creatorId.nickname}</p>
                 <p>Fecha de inicio: {new Date(bet.startDate).toLocaleDateString()}</p>
-                <p>Monto de la apuesta: {bet.betAmount}</p>
+                <p>Cantidad de la apuesta: {bet.betAmount}</p>
                 <p>Número de participantes: {bet.participantsNumber}</p>
                 <p>Estado: {bet.status}</p>
               </div>
@@ -113,7 +116,7 @@ const AllBetsPage = () => {
             <p>Título: {selectedBet.title}</p>
             <p>Creador: {selectedBet.creator.nickname}</p>
             <p>Fecha de inicio: {new Date(selectedBet.startDate).toLocaleString()}</p>
-            <p>Monto de la apuesta: {selectedBet.betAmount}</p>
+            <p>Cantidad de la apuesta: {selectedBet.betAmount}</p>
             <p>Número de participantes: {selectedBet.participantsNumber}</p>
             <p>Estado: {selectedBet.status}</p>
           </div>

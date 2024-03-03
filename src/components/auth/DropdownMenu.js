@@ -23,7 +23,7 @@ const DropdownMenu = () => {
         <ul className="dropdown-menu">
           <li>
             <Link to="/custom-bets/create" onClick={handleMenuItemClick}>
-              🎲 Crear Apuesta
+              🎲 Crear apuesta
             </Link>
           </li>
           <li>
@@ -33,12 +33,17 @@ const DropdownMenu = () => {
           </li>
           <li>
             <Link to="/custom-bets/all" onClick={handleMenuItemClick}>
-              🔍 Ver todas las Apuestas
+              🔍 Ver todas las apuestas
+            </Link>
+          </li>
+          <li>
+            <Link to="/custom-bets/in" onClick={handleMenuItemClick}>
+              📝 Ver todas las apuestas en las que participo
             </Link>
           </li>
           <li>
             <Link to="/custom-bets/created-by-me" onClick={handleMenuItemClick}>
-              📝 Ver Creadas por mí
+              📝 Ver creadas por mí
             </Link>
           </li>
         </ul>

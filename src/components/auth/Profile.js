@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../../css/Profile.css";
 import BetHistoryPopup from "../auth/BetHistoryPopup";
 import TransactionHistoryPopup from "../auth/TransactionHistoryPopup";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -11,6 +11,8 @@ const Profile = () => {
   const [nickname, setNickname] = useState("");
   const [betHistory, setBetHistory] = useState(null);
   const [selectedSection, setSelectedSection] = useState("");
+  const [handleInfoForVerificationCalled, setHandleInfoForVerificationCalled] = useState(false);
+
   const [showBetHistoryPopup, setShowBetHistoryPopup] = useState(false);
   const [showSettingsPopup, setShowSettingsPopup] = useState(false);
   const [changePasswordData, setChangePasswordData] = useState({
@@ -24,22 +26,30 @@ const Profile = () => {
   const [documentFront, setDocumentFront] = useState(null);
   const [documentBack, setDocumentBack] = useState(null);
   const [confirmDisable, setConfirmDisable] = useState(false);
-  const [showTransactionHistoryPopup, setShowTransactionHistoryPopup] = useState(false);
+  const [showTransactionHistoryPopup, setShowTransactionHistoryPopup] =
+    useState(false);
   const [transactionHistory, setTransactionHistory] = useState(null);
-  
+
   const handleTransactionHistoryClick = async () => {
     try {
       const userId = window.sessionStorage.getItem("USER_ID");
-      const response = await fetch(`http://localhost:8080/api/transactions/user/${userId}`);
+      const response = await fetch(
+        `http://localhost:8080/api/transactions/user/${userId}`
+      );
       if (response.ok) {
         const historyData = await response.json();
         setTransactionHistory(historyData);
         setShowTransactionHistoryPopup(true);
       } else {
-        console.error("Error al obtener el historial de transacciones del usuario");
+        console.error(
+          "Error al obtener el historial de transacciones del usuario"
+        );
       }
     } catch (error) {
-      console.error("Error al obtener el historial de transacciones del usuario:", error);
+      console.error(
+        "Error al obtener el historial de transacciones del usuario:",
+        error
+      );
     }
   };
   const handleConfirmDisableChange = (event) => {
@@ -56,7 +66,12 @@ const Profile = () => {
     const storedNickname = window.sessionStorage.getItem("NICKNAME");
     setNickname(storedNickname);
   }, []);
-
+  useEffect(() => {
+    if (!handleInfoForVerificationCalled) {
+      setHandleInfoForVerification();
+      setHandleInfoForVerificationCalled(true);
+    }
+  }, []);
   useEffect(() => {
     const fetchBetHistory = async () => {
       try {
@@ -164,6 +179,20 @@ const Profile = () => {
     }
   };
 
+  const setHandleInfoForVerification = async () => {
+    try {
+      const userId = window.sessionStorage.getItem("USER_ID");
+      const response = await fetch(`http://localhost:8080/api/users/${userId}`);
+      if (response.ok) {
+        const userData = await response.json();
+        setUserInfo(userData);
+      } else {
+        console.error("Error al obtener la información del usuario");
+      }
+    } catch (error) {
+      console.error("Error al obtener la información del usuario:", error);
+    }
+  };
   const handleChangePasswordClick = async () => {
     try {
       const userId = window.sessionStorage.getItem("USER_ID");
@@ -208,9 +237,6 @@ const Profile = () => {
       formData.append("userId", userId);
       formData.append("documentFront", documentFront);
       formData.append("documentBack", documentBack);
-  
-      await handleUserInfoClick();
-  
       const response = await fetch(
         "http://localhost:8080/api/verification/submit",
         {
@@ -218,7 +244,6 @@ const Profile = () => {
           body: formData,
         }
       );
-  
       if (response.ok) {
         const message = await response.text();
         console.log(message);
@@ -378,6 +403,7 @@ const Profile = () => {
             className="section-wrapper"
             onClick={() => {
               setSelectedSection("verify-account");
+              setHandleInfoForVerification(true);
               setShowVerificationPopup(true);
             }}
           >
@@ -393,23 +419,26 @@ const Profile = () => {
           </div>
         </div>
         <div className="profile-section">
-        <div className="section-wrapper">
-          <Link to="/deposito">
-            <h3 className="section-title">Depositar</h3>
-          </Link>
+          <div className="section-wrapper">
+            <Link to="/deposito">
+              <h3 className="section-title">Depositar</h3>
+            </Link>
+          </div>
         </div>
-      </div>
-      <div className="profile-section">
-        <div className="section-wrapper" onClick={handleTransactionHistoryClick}>
-          <h3 className="section-title">Historial de Transacciones</h3>
+        <div className="profile-section">
+          <div
+            className="section-wrapper"
+            onClick={handleTransactionHistoryClick}
+          >
+            <h3 className="section-title">Historial de Transacciones</h3>
+          </div>
+          {showTransactionHistoryPopup && (
+            <TransactionHistoryPopup
+              transactionHistory={transactionHistory}
+              onClose={() => setShowTransactionHistoryPopup(false)}
+            />
+          )}
         </div>
-        {showTransactionHistoryPopup && (
-        <TransactionHistoryPopup
-          transactionHistory={transactionHistory}
-          onClose={() => setShowTransactionHistoryPopup(false)}
-        />
-      )}
-      </div>
       </div>
       {showBetHistoryPopup && (
         <div className="popup">
@@ -483,7 +512,8 @@ const Profile = () => {
           </div>
         </div>
       )}
-      {showVerificationPopup && (
+      {/* reenderizar la info del user */}
+      {showVerificationPopup &&  (
         <div className="popup">
           <div className="popup-content">
             {userInfo && userInfo.verified ? (
@@ -592,8 +622,16 @@ const Profile = () => {
                         {selectedSection === "exclude" && (
                           <div className="form-section">
                             <h4>Excluir Usuario</h4>
-                            <form onSubmit={handleExcludeUser} className="centered-form">
-                                <p>NOTA: Cuando te excluyas de usar nuestros servicios no podrás usar nuestra página hasta que se cumpla el tiempo que hayas decidido abandonarnos.</p>
+                            <form
+                              onSubmit={handleExcludeUser}
+                              className="centered-form"
+                            >
+                              <p>
+                                NOTA: Cuando te excluyas de usar nuestros
+                                servicios no podrás usar nuestra página hasta
+                                que se cumpla el tiempo que hayas decidido
+                                abandonarnos.
+                              </p>
                               <label htmlFor="exclusionDate">
                                 Fecha de Exclusión:
                               </label>
@@ -609,43 +647,52 @@ const Profile = () => {
                             </form>
                           </div>
                         )}
-                         {selectedSection === "disable" && (
-        <div className="form-section">
-          <h4>Deshabilitar Cuenta</h4>
-          <form onSubmit={handleDisableAccount} className="centered-form">
-            <p>
-              ¿Estás seguro de que deseas deshabilitar tu cuenta? Esta acción
-              no se puede deshacer.
-            </p>
-            <p>
-              NOTA: Mantendremos sus datos en nuestra base de datos durante un
-              intervalo de 30 Días, por razones de seguridad y cuando se
-              cumpla, eliminaremos todos sus datos de forma irreversible.
-            </p>
-            <label htmlFor="confirmDisable">
-              <input
-                type="checkbox"
-                id="confirmDisable"
-                checked={confirmDisable}
-                onChange={handleConfirmDisableChange}
-              />
-              Confirmar deshabilitación de cuenta
-            </label>
-            <button
-              type="submit"
-              disabled={!confirmDisable}
-              className="disable-account-btn"
-              style={{
-                backgroundColor: confirmDisable ? "#007bff" : "#ccc",
-                cursor: confirmDisable ? "pointer" : "not-allowed",
-                color: confirmDisable ? "#fff" : "#666",
-              }}
-            >
-              Deshabilitar Cuenta
-            </button>
-          </form>
-        </div>
-      )}
+                        {selectedSection === "disable" && (
+                          <div className="form-section">
+                            <h4>Deshabilitar Cuenta</h4>
+                            <form
+                              onSubmit={handleDisableAccount}
+                              className="centered-form"
+                            >
+                              <p>
+                                ¿Estás seguro de que deseas deshabilitar tu
+                                cuenta? Esta acción no se puede deshacer.
+                              </p>
+                              <p>
+                                NOTA: Mantendremos sus datos en nuestra base de
+                                datos durante un intervalo de 30 Días, por
+                                razones de seguridad y cuando se cumpla,
+                                eliminaremos todos sus datos de forma
+                                irreversible.
+                              </p>
+                              <label htmlFor="confirmDisable">
+                                <input
+                                  type="checkbox"
+                                  id="confirmDisable"
+                                  checked={confirmDisable}
+                                  onChange={handleConfirmDisableChange}
+                                />
+                                Confirmar deshabilitación de cuenta
+                              </label>
+                              <button
+                                type="submit"
+                                disabled={!confirmDisable}
+                                className="disable-account-btn"
+                                style={{
+                                  backgroundColor: confirmDisable
+                                    ? "#007bff"
+                                    : "#ccc",
+                                  cursor: confirmDisable
+                                    ? "pointer"
+                                    : "not-allowed",
+                                  color: confirmDisable ? "#fff" : "#666",
+                                }}
+                              >
+                                Deshabilitar Cuenta
+                              </button>
+                            </form>
+                          </div>
+                        )}
                       </div>
                     </td>
                   </tr>

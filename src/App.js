@@ -12,6 +12,7 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Profile from "./components/auth/Profile";
 import DropdownMenu from "./components/auth/DropdownMenu";
+import TraditionalBets from "./components/auth/TraditionalBets";
 import AllBetsPage from "./components/auth/AllBetsPage.js";
 import MyBetsPage from "./components/auth/MyBetsPage.js";
 import IamInBetsPage from "./components/auth/IamInPage.js";
@@ -26,6 +27,8 @@ import userImage from "../src/photos/usuario.png";
 import logoutImage from "../src/photos/logout.png";
 import CreateBetPage from "./components/auth/CreateBetPage.js"; // Importa el componente CreateBetForm
 import Roulette from "./components/auth/Roulette"; // Importa el componente Roulette
+import Coinflip from "./components/auth/Coinflip.js"; // Importa el componente Roulette
+import Blackjack from "./components/auth/Blackjack.js"; // Importa el componente Roulette
 import "./App.css";
 Modal.setAppElement("#root");
 
@@ -88,7 +91,13 @@ function App() {
                 <DropdownMenu />
               </div>
             )}
+             {(
+              <div className="dropdown-container-traditional">
+                <TraditionalBets />
+              </div>
+            )}
           </div>
+
           <nav>
             <ul className="nav-list">
               {(
@@ -148,7 +157,9 @@ function App() {
               <Route path="/PaymentSuccess" element={<PaymentSuccess />} /> 
               <Route path="/PaymentError" element={<PaymentError />} /> 
               <Route path="/forgot-password" element={<ForgotPasswordPage />} /> 
-              <Route path="/roulette" element={<Roulette />} />
+              <Route path="/traditional-Bets/roulette" element={<Roulette updateUserBalance={updateUserBalance}/>} />
+              <Route path="/traditional-Bets/Coinflip" element={<Coinflip updateUserBalance={updateUserBalance}/>} />
+    {/*  <Route path="/traditional-Bets/Blackjack" element={<Blackjack updateUserBalance={updateUserBalance}  />} />*/} 
             </Routes>
           </div>
         </div>

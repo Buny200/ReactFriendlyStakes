@@ -13,6 +13,7 @@ const IamInBetsPage = ({ updateUserBalance }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessages, setSuccessMessages] = useState({});
   const [filter, setFilter] = useState("ALL");
+  const [selectedWinner, setSelectedWinner] = useState(null);
 
   const betsPerPage = 10;
 
@@ -49,6 +50,11 @@ const IamInBetsPage = ({ updateUserBalance }) => {
       setCurrentPage(page);
     }
   };
+
+  const handleWinnerSelection = (participantId) => {
+    setSelectedWinner(participantId);
+  };
+  
   const handleStartBet = async (creatorId, betId) => {
     try {
       await axios.post(`http://localhost:8080/api/bets/${creatorId}/start/${betId}`);
@@ -71,6 +77,7 @@ const IamInBetsPage = ({ updateUserBalance }) => {
       setErrorMessage("Error al iniciar la apuesta. Por favor, inténtalo de nuevo más tarde.");
     }
   };
+
   const handleBetClick = async (betId) => {
     try {
       const response = await axios.get(`http://localhost:8080/api/bets/${betId}`);
@@ -101,16 +108,33 @@ const IamInBetsPage = ({ updateUserBalance }) => {
       setErrorMessage("Error al salir de la apuesta. Por favor, inténtalo de nuevo más tarde.");
     }
   };
-
-  const handleSendResults = async (betId) => {
+  
+  const handleConfirmWinner = async (betId) => {
     try {
+      await axios.post(`http://localhost:8080/api/bets/${window.sessionStorage.getItem('USER_ID')}/results/${betId}`, {
+        winnerId: selectedWinner
+      });
       console.log("Resultados enviados para la apuesta:", betId);
+      setShowPopup(false); // Cerrar el popup después de enviar los resultados
+      setSelectedWinner(null); // Reiniciar el estado del ganador seleccionado
     } catch (error) {
       console.error("Error sending results:", error);
       setErrorMessage("Error al enviar los resultados. Por favor, inténtalo de nuevo más tarde.");
     }
   };
 
+  const handleSendResults = async (betId) => {
+    try {
+      // Obtener los detalles de la apuesta, incluidos los participantes
+      const response = await axios.get(`http://localhost:8080/api/bets/${betId}`);
+      setSelectedBet(response.data);
+      setShowPopup(true); // Abrir el popup para seleccionar al ganador
+    } catch (error) {
+      console.error("Error sending results:", error);
+      setErrorMessage("Error al enviar los resultados. Por favor, inténtalo de nuevo más tarde.");
+    }
+  };
+  
   const handleCancelBet = async (betId) => {
     try {
       const response = await axios.delete(`http://localhost:8080/api/bets/${window.sessionStorage.getItem('USER_ID')}/delete/${betId}`);
@@ -173,21 +197,21 @@ const IamInBetsPage = ({ updateUserBalance }) => {
                         <p>Número de participantes: {bet.participantsNumber}</p>
                         <p>Estado: {bet.status}</p>
                         {bet.status === "JOINING" && (
-                        <>
+                          <>
                             {bet.creator.userId === parseInt(window.sessionStorage.getItem("USER_ID")) ? (
-                            <>
-                            <button onClick={(e) => { e.stopPropagation(); handleStartBet(window.sessionStorage.getItem('USER_ID'), bet.betId); }}>Comenzar Apuesta</button>
-                            <button className="cancel-button" onClick={(e) => { e.stopPropagation(); handleCancelBet(bet.betId); }}>Cancelar Apuesta</button>
-                            </>
+                              <>
+                                <button onClick={(e) => { e.stopPropagation(); handleStartBet(window.sessionStorage.getItem('USER_ID'), bet.betId); }}>Comenzar Apuesta</button>
+                                <button className="cancel-button" onClick={(e) => { e.stopPropagation(); handleCancelBet(bet.betId); }}>Cancelar Apuesta</button>
+                              </>
                             ) : (
-                            <>
+                              <>
                                 <button onClick={(e) => { e.stopPropagation(); handleLeaveBet(bet.betId); }}>
-                                Salir de la Apuesta
+                                  Salir de la Apuesta
                                 </button>
                                 <p className="wait-message">Espera a que el creador inicie la apuesta</p>
-                            </>
+                              </>
                             )}
-                        </>
+                          </>
                         )}
                         {bet.status === "PENDING" && (
                           <>
@@ -260,6 +284,15 @@ const IamInBetsPage = ({ updateUserBalance }) => {
             <p>Cantidad de la apuesta: {selectedBet.betAmount}</p>
             <p>Número de participantes: {selectedBet.participantsNumber}</p>
             <p>Estado: {selectedBet.status}</p>
+            <h3>Seleccionar Ganador</h3>
+            <ul>
+              {selectedBet.participantsList.map((participant) => (
+                <li key={participant.userId} onClick={() => handleWinnerSelection(participant.userId)}>
+                  {participant.nickname}
+                </li>
+              ))}
+            </ul>
+            <button onClick={() => handleConfirmWinner(selectedBet.betId)}>Enviar Resultados</button>
           </div>
         </div>
       )}

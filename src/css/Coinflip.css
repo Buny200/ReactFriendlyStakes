@@ -1,0 +1,92 @@
+
+.success-message {
+  color: #28a745;
+  font-size: 16px;
+  margin-top: 10px;
+}
+.coinflip-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.bet-history {
+  margin-top: 20px;
+}
+
+.bet-history h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.bet-history ul {
+  list-style: none;
+  padding: 0;
+}
+
+.bet-history li {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.bet-history li p {
+  margin: 5px 0;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination-button {
+  background-color: #a7b85f;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: background-color 0.1s;
+}
+
+.pagination-button:hover {
+  background-color: #631151;
+}
+
+.pagination-info {
+  margin: 0 10px;
+  font-size: 16px;
+}
+.coin-buttons button {
+  border: none;
+  background-color: blue; /* Color de fondo inicial */
+  cursor: pointer;
+  outline: none;
+}
+
+.coin-buttons button img {
+  width: 35px;
+  height: auto;
+}
+
+.coin-buttons button:hover,
+.coin-buttons button.selected {
+  background-color: green; /* Color de fondo al pasar el mouse o cuando está seleccionado */
+}
+.error-message {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.possibility-message {
+  margin-top: 20px;
+  font-size: 14px;
+}

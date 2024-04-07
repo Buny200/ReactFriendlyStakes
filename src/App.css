@@ -57,3 +57,8 @@
     position: absolute; /* Establece la posición absoluta para el contenedor */
     margin-top: -36px;
   }
+  .dropdown-container-traditional {
+    position: absolute; 
+    margin-top: -36px;
+    margin-left: 300px;
+  }

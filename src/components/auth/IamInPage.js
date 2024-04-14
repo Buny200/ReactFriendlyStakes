@@ -111,13 +111,20 @@ const IamInBetsPage = ({ updateUserBalance }) => {
   
   const handleConfirmWinner = async (betId) => {
     try {
-      await axios.post(`http://localhost:8080/api/bets/${window.sessionStorage.getItem('USER_ID')}/results/${betId}`, {
-        winnerId: selectedWinner
+      if (!selectedWinner) {
+        // Si no se ha seleccionado un ganador, mostrar un mensaje de error
+        throw new Error("Por favor, selecciona un ganador antes de enviar los resultados.");
+      }
+      const response = await axios.post(`http://localhost:8080/api/bets/${window.sessionStorage.getItem('USER_ID')}/results/${betId}`, {
+        userId: selectedWinner
       });
+      console.log(response);
       console.log("Resultados enviados para la apuesta:", betId);
       setShowPopup(false); // Cerrar el popup después de enviar los resultados
       setSelectedWinner(null); // Reiniciar el estado del ganador seleccionado
+      fetchBets();
     } catch (error) {
+
       console.error("Error sending results:", error);
       setErrorMessage("Error al enviar los resultados. Por favor, inténtalo de nuevo más tarde.");
     }
@@ -129,6 +136,7 @@ const IamInBetsPage = ({ updateUserBalance }) => {
       const response = await axios.get(`http://localhost:8080/api/bets/${betId}`);
       setSelectedBet(response.data);
       setShowPopup(true); // Abrir el popup para seleccionar al ganador
+      fetchBets();
     } catch (error) {
       console.error("Error sending results:", error);
       setErrorMessage("Error al enviar los resultados. Por favor, inténtalo de nuevo más tarde.");
@@ -288,11 +296,13 @@ const IamInBetsPage = ({ updateUserBalance }) => {
             <ul>
               {selectedBet.participantsList.map((participant) => (
                 <li key={participant.userId} onClick={() => handleWinnerSelection(participant.userId)}>
-                  {participant.nickname}
+                  <button>{participant.nickname}</button>
                 </li>
               ))}
             </ul>
-            <button onClick={() => handleConfirmWinner(selectedBet.betId)}>Enviar Resultados</button>
+            <button onClick={() => handleConfirmWinner(selectedBet.betId)} disabled={!selectedWinner}>
+              Enviar Resultados
+            </button>
           </div>
         </div>
       )}

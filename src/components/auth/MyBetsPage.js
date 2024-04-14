@@ -87,7 +87,7 @@ const MyBetsPage = ({ updateUserBalance }) => {
       setErrorMessage("Error al iniciar la apuesta. Por favor, inténtalo de nuevo más tarde.");
     }
   };
-
+  //FUNCTION ENVIAR RESULTADOS
   const handleSendResults = async (betId) => {
     try {
       console.log("Resultados enviados para la apuesta:", betId);

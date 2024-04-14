@@ -11,7 +11,7 @@ const Coinflip = ({ updateUserBalance }) => {
   const [betHistory, setBetHistory] = useState([]);
   const [showCreateBetPopup, setShowCreateBetPopup] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const betsPerPage = 10;
   const [userBalance, setUserBalance] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
@@ -226,7 +226,10 @@ const Coinflip = ({ updateUserBalance }) => {
                 {coinflip.opponent
                   ? coinflip.opponent.nickname
                   : (
-                      <button onClick={() => handleJoinCoinflip(coinflip.coinflipId)}>
+                      <button
+                        onClick={() => handleJoinCoinflip(coinflip.coinflipId)}
+                        disabled={coinflip.creatorId.userId == window.sessionStorage.getItem("USER_ID")  ? true : false}
+                      >
                         Unirse a la partida
                       </button>
                     )
@@ -234,11 +237,11 @@ const Coinflip = ({ updateUserBalance }) => {
               </p>
               <p>Color elegido por el creador: {coinflip.colorCreator} </p>
               <p>Estado de la apuesta: {coinflip.status} </p>
-              <p>Resultado ganador: {" "}
-              {coinflip.creatorId
-                  ? coinflip.resultWinner
-                  : "Desconocido"} </p>
-
+              {coinflip.creatorId && coinflip.resultWinner &&
+              <p>Resultado ganador: El ganador ha sido el {coinflip.resultWinner <= 50 ? "Rojo" : "Blanco"} Enhorabuena, {""} 
+              {coinflip.colorCreator === (coinflip.resultWinner <= 50 ? "Rojo" : "Blanco") ? coinflip.creatorId.nickname : coinflip.opponent.nickname}!!!!
+             </p>
+              }
             </li>
           ))}
         </ul>

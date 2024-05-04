@@ -11,7 +11,7 @@ const DropdownMenu = () => {
   };
 
   const handleMenuItemClick = () => {
-    setShowMenu(false); // Cierra el menú cuando se hace clic en una opción
+    setShowMenu(false); 
   };
 
   return (
@@ -22,7 +22,7 @@ const DropdownMenu = () => {
       {showMenu && (
         <ul className="dropdown-menu">
           <li>
-            <Link to="/traditional-Bets/coinflip" onClick={handleMenuItemClick}>
+            <Link to="/traditional-Bets/Coinflip" onClick={handleMenuItemClick}>
             🎲 Coinflip
             </Link>
           </li>
@@ -32,8 +32,13 @@ const DropdownMenu = () => {
             </Link>
           </li>
           <li>
-            <Link to="/traditional-Bets/blackjack" onClick={handleMenuItemClick}>
+            <Link to="/traditional-Bets/Blackjack" onClick={handleMenuItemClick}>
             🎫 BlackJack
+            </Link>
+          </li>
+          <li>
+            <Link to="/traditional-Bets/Keno" onClick={handleMenuItemClick}>
+            💰 Keno
             </Link>
           </li>
         </ul>

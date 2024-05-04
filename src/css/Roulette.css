@@ -1,82 +1,47 @@
+/* Roulette.css */
+
 .roulette-container {
   text-align: center;
 }
 
 .roulette-wheel {
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  background-color: #f5f5f5;
   position: relative;
+  width: 400px;
+  height: 400px;
+  margin: 50px auto;
+  background-color: #1e6e1e; /* Color de fondo de la ruleta */
+  border: 2px solid #000;
+  border-radius: 50%;
   overflow: hidden;
 }
 
 .roulette-number {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: transparent;
-  color: inherit;
-  text-align: center;
   position: absolute;
-  font-size: 14px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 20px; /* Ajuste el ancho y alto según sea necesario para centrar los números */
+  height: 20px; /* Ajuste el ancho y alto según sea necesario para centrar los números */
+  line-height: 50px;
+  left: 185px;
+  top: 190px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: white; /* Color de los números */
 }
 
-/* Posicionamiento de los números */
-.roulette-number:nth-child(1) { transform: translate(50%, 0%) rotate(90deg); }
-.roulette-number:nth-child(2) { transform: translate(70%, 0%) rotate(63deg); }
-.roulette-number:nth-child(3) { transform: translate(86%, 5%) rotate(36deg); }
-.roulette-number:nth-child(4) { transform: translate(94%, 20%) rotate(9deg); }
-.roulette-number:nth-child(5) { transform: translate(94%, 38%) rotate(-18deg); }
-.roulette-number:nth-child(6) { transform: translate(86%, 55%) rotate(-45deg); }
-.roulette-number:nth-child(7) { transform: translate(70%, 70%) rotate(-72deg); }
-.roulette-number:nth-child(8) { transform: translate(50%, 80%) rotate(-90deg); }
-.roulette-number:nth-child(9) { transform: translate(30%, 70%) rotate(-108deg); }
-.roulette-number:nth-child(10) { transform: translate(14%, 55%) rotate(-135deg); }
-.roulette-number:nth-child(11) { transform: translate(6%, 38%) rotate(-162deg); }
-.roulette-number:nth-child(12) { transform: translate(6%, 20%) rotate(-189deg); }
-.roulette-number:nth-child(13) { transform: translate(14%, 5%) rotate(-216deg); }
-.roulette-number:nth-child(14) { transform: translate(30%, -10%) rotate(-243deg); }
-.roulette-number:nth-child(15) { transform: translate(50%, -20%) rotate(-270deg); }
-.roulette-number:nth-child(16) { transform: translate(70%, -10%) rotate(-297deg); }
-.roulette-number:nth-child(17) { transform: translate(86%, 5%) rotate(-324deg); }
-.roulette-number:nth-child(18) { transform: translate(94%, 20%) rotate(-351deg); }
-.roulette-number:nth-child(19) { transform: translate(86%, 55%) rotate(-378deg); }
-.roulette-number:nth-child(20) { transform: translate(70%, -70%) rotate(-405deg); }
-.roulette-number:nth-child(21) { transform: translate(50%, -80%) rotate(-432deg); }
-.roulette-number:nth-child(22) { transform: translate(30%, -70%) rotate(-459deg); }
-.roulette-number:nth-child(23) { transform: translate(14%, -55%) rotate(-486deg); }
-.roulette-number:nth-child(24) { transform: translate(6%, -38%) rotate(-513deg); }
-.roulette-number:nth-child(25) { transform: translate(14%, -20%) rotate(-540deg); }
-.roulette-number:nth-child(26) { transform: translate(30%, -5%) rotate(-567deg); }
-.roulette-number:nth-child(27) { transform: translate(50%, 20%) rotate(-594deg); }
-.roulette-number:nth-child(28) { transform: translate(70%, 38%) rotate(-621deg); }
-.roulette-number:nth-child(29) { transform: translate(86%, 55%) rotate(-648deg); }
-.roulette-number:nth-child(30) { transform: translate(94%, 70%) rotate(-675deg); }
-.roulette-number:nth-child(31) { transform: translate(86%, 80%) rotate(-702deg); }
-.roulette-number:nth-child(32) { transform: translate(70%, 70%) rotate(-729deg); }
-.roulette-number:nth-child(33) { transform: translate(50%, 55%) rotate(-756deg); }
-.roulette-number:nth-child(34) { transform: translate(30%, 38%) rotate(-783deg); }
-.roulette-number:nth-child(35) { transform: translate(14%, 20%) rotate(-810deg); }
-.roulette-number:nth-child(36) { transform: translate(6%, 5%) rotate(-837deg); }
-.roulette-number:nth-child(37) { transform: translate(30%, 38%) rotate(-864deg); } /* Duplicado para el 0 */
-
 .ball {
+  position: absolute;
   width: 20px;
   height: 20px;
+  background-color: red; /* Color de la bola */
   border-radius: 50%;
-  background-color: #333;
-  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
 button {
-  margin-top: 20px;
+  margin: 5px;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;

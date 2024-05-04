@@ -62,3 +62,14 @@
     margin-top: -36px;
     margin-left: 300px;
   }
+  .leaderboards {
+    position: absolute; 
+    margin-top: -36px;
+    margin-left: 1000px;
+  }
+  .questions {
+    position: absolute; 
+    margin-top: -36px;
+    margin-left: 1000px;
+  }
+

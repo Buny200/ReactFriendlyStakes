@@ -1,0 +1,50 @@
+/* DropdownMenu.css */
+.dropdown {
+    position: relative;
+    margin-left: 250px; 
+    margin-top: -60px;
+  }
+  
+  
+  .dropdown-toggle {
+    padding: 10px;
+    background-color: darkgreen; /* Cambia el color de fondo del botón a verde oscuro */
+    color: white; /* Cambia el color del texto del botón a blanco */
+    border: none; /* Quita el borde del botón */
+    border-radius: 5px; /* Agrega bordes redondeados al botón */
+  }
+  
+  .dropdown-toggle:hover {
+    background-color: forestgreen; /* Cambia el color de fondo del botón cuando se pasa el mouse sobre él */
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 5px); /* Posiciona el menú justo debajo del botón */
+    left: 0;
+    background-color: darkgreen; /* Cambia el color de fondo del menú a verde oscuro */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dropdown-menu li {
+    list-style-type: none;
+    margin-bottom: 5px;
+  }
+  
+  .dropdown-menu li:last-child {
+    margin-bottom: 0;
+  }
+  
+  .dropdown-menu li a {
+    color: white; /* Cambia el color del texto de las opciones a blanco */
+    text-decoration: none;
+    display: block;
+    padding: 5px 10px;
+  }
+  
+  .dropdown-menu li a:hover {
+    background-color: #32A87C /* Cambia el color de fondo de las opciones al pasar el mouse sobre ellas */
+  }

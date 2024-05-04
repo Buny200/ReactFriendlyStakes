@@ -11,7 +11,7 @@ const DropdownMenu = () => {
   };
 
   const handleMenuItemClick = () => {
-    setShowMenu(false); // Cierra el menú cuando se hace clic en una opción
+    setShowMenu(false); 
   };
 
   return (

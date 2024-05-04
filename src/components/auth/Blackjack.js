@@ -12,7 +12,14 @@ const BlackJack = () => {
   const [playerStand, setPlayerStand] = useState(false);
   const [betAmount, setBetAmount] = useState(0.5);
   const [isLoggedIn, setIsLoggedIn] = useState(false); 
-  const [userBalance, setUserBalance] = useState(null);
+  const [balance, setUserBalance] = useState(null);
+  useEffect(() => {
+    if (gameOver) {
+      finishGame();
+      fetchUserBalance();
+    }
+  }, [gameOver]);
+  
   useEffect(() => {
     const checkLoggedIn = async () => {
       const userId = window.sessionStorage.getItem("USER_ID");
@@ -29,20 +36,73 @@ const BlackJack = () => {
     checkLoggedIn();
     fetchUserBalance();
   }, []);
+
   const fetchUserBalance = async () => {
     try {
       const userId = window.sessionStorage.getItem("USER_ID");
-      const response = await fetch(`http://localhost:8080/api/users/${userId}/balance`, {
-        method: 'GET'
-      });
+      const response = await fetch(
+        `http://localhost:8080/api/users/${userId}/balance`,
+        {
+          method: "GET",
+        }
+      );
       const data = await response.json();
       setUserBalance(data);
     } catch (error) {
-      console.error('Error fetching user balance:', error);
+      console.error("Error fetching user balance:", error);
     }
   };
+  
+
+  const calculateWinnings = (playerHand, dealerHand, betAmount) => {
+    const playerValue = calculateHandValue(playerHand);
+    const dealerValue = calculateHandValue(dealerHand);
+  
+    if (playerHand.length === 2 && playerValue === 21) {
+      return betAmount * 1.5 + betAmount; 
+    } else if (playerValue > 21) {
+      return -betAmount;
+    } else if (dealerValue > 21) {
+      return betAmount * 2; 
+    } else if (playerValue > dealerValue) {
+      return betAmount * 2; 
+    } else if (playerValue === dealerValue) {
+      return 0;
+    } else {
+      return -betAmount;
+    }
+  };
+  
+  const finishGame = async () => {
+    try {
+      if (betAmount > 0 && betAmount <= balance) {
+        const userId = window.sessionStorage.getItem("USER_ID");
+        const winnings = calculateWinnings(playerHand, dealerHand, betAmount);
+        const response = await fetch(
+          `http://localhost:8080/api/blackjack/place-bet/${userId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ betAmount, winnings }),
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Error al enviar los resultados al backend");
+        }
+        await fetchUserBalance(); // Actualizamos el saldo después de la apuesta
+      } else {
+        setErrorMessage("Ingrese una cantidad de apuesta válida.");
+      }
+    } catch (error) {
+      console.error("Error al enviar los resultados al backend:", error);
+      setErrorMessage("Error al enviar los resultados al backend");
+    }
+  };
+
   const startGame = () => {
-    if (betAmount <= 0 || betAmount > userBalance) {
+    if (betAmount <= 0 || betAmount > balance) {
       setErrorMessage("La cantidad de la apuesta debe ser mayor que cero y no exceder tu balance actual.");
       return;
     }

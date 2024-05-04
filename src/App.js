@@ -103,7 +103,7 @@ function App() {
                 <TraditionalBets />
               </div>
             }
-         {/*    {
+            {/*    {
              <div className="leaderboards">
                 <Link to="/leaderboards" className="nav-item-button">
                   <Leaderboards />
@@ -197,7 +197,7 @@ function App() {
               <Route path="/PaymentError" element={<PaymentError />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               {/*  <Route path="/questionsAnswers" element={<QuestionsAnswers />} />*/}
-             {/*  <Route path="/leaderboards" element={<Leaderboards />} />*/}
+              {/*  <Route path="/leaderboards" element={<Leaderboards />} />*/}
               <Route
                 path="/traditional-Bets/Keno"
                 element={<Keno updateUserBalance={updateUserBalance} />}
@@ -212,12 +212,16 @@ function App() {
               />
               <Route
                 path="/traditional-Bets/Blackjack"
-                element={<Blackjack updateUserBalance={updateUserBalance} />}
+                element={
+                  <Blackjack
+                    updateUserBalance={updateUserBalance}
+                  />
+                }
               />
             </Routes>
           </div>
-          <ChatGlobal /> 
-          <AssistanceChat/>
+          <ChatGlobal />
+          <AssistanceChat />
         </div>
       </div>
     </Router>

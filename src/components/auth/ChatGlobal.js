@@ -11,7 +11,6 @@ function ChatGlobal() {
   const [isMinimized, setIsMinimized] = useState(false);
 
   const userId = window.sessionStorage.getItem("USER_ID");
-  const nickname = window.sessionStorage.getItem("NICKNAME");
   const messagesEndRef = useRef(null);
 
   useEffect(() => {

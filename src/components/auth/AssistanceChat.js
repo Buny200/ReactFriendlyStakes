@@ -9,7 +9,6 @@ function AssistanceChat() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isMinimized, setIsMinimized] = useState(false);
   const userId = window.sessionStorage.getItem("USER_ID");
-  const nickname = window.sessionStorage.getItem("NICKNAME");
   const messagesEndRef = useRef(null); 
 
   useEffect(() => {
@@ -116,7 +115,7 @@ function AssistanceChat() {
                   type="text"
                   value={newMessage}
                   maxLength={150} 
-                  placeholder="Escribe aquí para chatear..."
+                  placeholder="Type here to chat..."
                   onChange={(e) => setNewMessage(e.target.value)}
                 />
                 <button onClick={sendMessage} className="small-button">Enviar</button>

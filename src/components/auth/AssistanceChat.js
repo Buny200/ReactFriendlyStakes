@@ -1,18 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import "../../css/ChatGlobal.css";
+import "../../css/AssistanceChat.css";
 
-function ChatGlobal() {
+function AssistanceChat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isSending, setIsSending] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
-
   const userId = window.sessionStorage.getItem("USER_ID");
   const nickname = window.sessionStorage.getItem("NICKNAME");
-  const messagesEndRef = useRef(null);
+  const messagesEndRef = useRef(null); 
 
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -35,7 +33,6 @@ function ChatGlobal() {
     checkLoggedIn();
   }, [userId]);
 
-
   useEffect(() => {
     scrollToBottom();
   }, [isMinimized]);
@@ -50,9 +47,7 @@ function ChatGlobal() {
 
   const fetchChatHistory = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/messages/history"
-      );
+      const response = await axios.get(`http://localhost:8080/messages/assistance/history/${userId}`);
       setMessages(response.data);
     } catch (error) {
       console.error("Error fetching chat history:", error);
@@ -65,26 +60,17 @@ function ChatGlobal() {
       return;
     }
 
-    if (isSending) {
-      setErrorMessage(
-        "Por favor, espera unos segundos antes de enviar otro mensaje."
-      );
-      return;
-    }
-
     try {
-      setIsSending(true);
-      await axios.post("http://localhost:8080/messages/send", {
-        senderId: userId,
-        messageText: newMessage.substring(0, 75), // Limita el mensaje a 50 caracteres
+
+      await axios.post(`http://localhost:8080/messages/assistance/send/${userId}`, {
+        userId: userId,
+        messageText: newMessage.substring(0, 150), 
       });
       setNewMessage("");
       setErrorMessage("");
-      setTimeout(() => setIsSending(false), 3000); // Configura el cooldown de 3 segundos
       fetchChatHistory();
     } catch (error) {
       console.error("Error sending message:", error);
-      setIsSending(false);
     }
   };
 
@@ -105,39 +91,35 @@ function ChatGlobal() {
   };
 
   return (
-    <div className={`chat-global-container ${isMinimized ? "minimized" : ""}`}>
-      <div className="chat-global-header" onClick={toggleMinimize}>
-        Chat Global
-      </div>
-      <div className="error-container">
-        {" "}
-        {/* Contenedor para el mensaje de error */}
-        {!isLoggedIn && <p className="error-message-chat">{errorMessage}</p>}
+    <div className={`assistance-chat-container ${isMinimized ? 'minimized' : ''}`}>
+      <div className="assistance-chat-header" onClick={toggleMinimize}>Asistencia Chat</div>
+      <div className="error-container"> 
+        {!isLoggedIn && (
+          <p className="error-message-chat">{errorMessage}</p>
+        )}
       </div>
       {!isMinimized && (
         <div>
-          <div className="chat-global-body">
+          <div className="assistance-chat-body">
             {messages.map((message) => (
-              <div key={message.messageId}>
+              <div key={message.chatId}>
                 <strong>{message.nickname}:</strong> {message.messageText}
               </div>
             ))}
-            <div ref={messagesEndRef} />
+            <div ref={messagesEndRef} /> 
           </div>
-          <div className="chat-global-footer">
+          <div className="assistance-chat-footer">
             {isLoggedIn && (
               <div>
                 <input
                   onKeyPress={handleKeyPress}
                   type="text"
                   value={newMessage}
-                  maxLength={75}
-                  placeholder="Type here to chat..."
+                  maxLength={150} 
+                  placeholder="Escribe aquí para chatear..."
                   onChange={(e) => setNewMessage(e.target.value)}
                 />
-                <button onClick={sendMessage} className="small-button">
-                  Enviar
-                </button>
+                <button onClick={sendMessage} className="small-button">Enviar</button>
               </div>
             )}
           </div>
@@ -147,4 +129,4 @@ function ChatGlobal() {
   );
 }
 
-export default ChatGlobal;
+export default AssistanceChat;

@@ -31,6 +31,7 @@ import Roulette from "./components/auth/Roulette";
 import Coinflip from "./components/auth/Coinflip.js";
 import Blackjack from "./components/auth/Blackjack.js";
 import ChatGlobal from "./components/auth/ChatGlobal.js";
+import AssistanceChat from "./components/auth/AssistanceChat.js";
 import Keno from "./components/auth/Keno.js";
 import "./App.css";
 Modal.setAppElement("#root");
@@ -102,8 +103,8 @@ function App() {
                 <TraditionalBets />
               </div>
             }
-            {
-              <div className="leaderboards">
+         {/*    {
+             <div className="leaderboards">
                 <Link to="/leaderboards" className="nav-item-button">
                   <Leaderboards />
                 </Link>
@@ -115,7 +116,7 @@ function App() {
                   <QuestionsAnswers />
                 </Link>
               </div>
-            }
+            }*/}
           </div>
           <nav>
             <ul className="nav-list">
@@ -195,8 +196,8 @@ function App() {
               <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
               <Route path="/PaymentError" element={<PaymentError />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/questionsAnswers" element={<QuestionsAnswers />} />
-              <Route path="/leaderboards" element={<Leaderboards />} />
+              {/*  <Route path="/questionsAnswers" element={<QuestionsAnswers />} />*/}
+             {/*  <Route path="/leaderboards" element={<Leaderboards />} />*/}
               <Route
                 path="/traditional-Bets/Keno"
                 element={<Keno updateUserBalance={updateUserBalance} />}
@@ -215,7 +216,8 @@ function App() {
               />
             </Routes>
           </div>
-          <ChatGlobal /> {/* Agrega el componente de chat global */}
+          <ChatGlobal /> 
+          <AssistanceChat/>
         </div>
       </div>
     </Router>

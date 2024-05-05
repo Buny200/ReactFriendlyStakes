@@ -82,13 +82,20 @@ const CreateBetForm = ({ updateUserBalance }) => {
       });
       const data = await response.json();
       console.log("Apuesta creada:", data);
-      setSuccessMessage("¡La apuesta se ha creado correctamente!");
+      setSuccessMessage(
+        <>
+          <p>¡La apuesta se ha creado correctamente!</p>
+          <p>Copia este enlace e invita a tus amigos: <a href={data.inviteLink}>{data.inviteLink}</a></p>
+          <p>Id de la apuesta: {data.betId}</p>
+          <p>Contraseña de la apuesta: {formData.betPassword}</p>
+        </>
+      );
       setFormData({
         title: "",
         betAmount: "0.00",
         betPassword: ""
       });
-
+      // Actualizar el balance del usuario después de crear la apuesta
       updateUserBalance();
     } catch (error) {
       console.error("Error al crear la apuesta:", error);

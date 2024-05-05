@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import {useParams } from "react-router-dom";
 import "../../css/JoinBetPage.css";
 
 const JoinBetForm = ({ updateUserBalance }) => {
@@ -19,7 +19,7 @@ const JoinBetForm = ({ updateUserBalance }) => {
         fetchUserBalance();
       }
     };
-
+  
     checkAndFetch();
   }, []);
 
@@ -85,7 +85,7 @@ const JoinBetForm = ({ updateUserBalance }) => {
       setSuccess(true);
       // Redireccionar u ofrecer algún tipo de feedback al usuario
     } catch (error) {
-      setError("No has podido unirte a la apuesta."); // Establecer un mensaje de error genérico
+      setError(error.message);
     }
   };
 

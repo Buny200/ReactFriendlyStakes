@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../css/Keno.css";
 
-const Keno = () => {
+const Keno = ({ updateUserBalance }) => {
   const [selectedNumbers, setSelectedNumbers] = useState([]);
   const [drawnNumbers, setDrawnNumbers] = useState([]);
   const [hits, setHits] = useState(0);
@@ -9,20 +9,9 @@ const Keno = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [balance, setUserBalance] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const userId = window.sessionStorage.getItem("USER_ID");
+
   useEffect(() => {
-    const fetchData = async () => {
-      const loggedIn = await checkLoggedIn();
-      if (loggedIn) {
-        await fetchUserBalance();
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const checkLoggedIn = async () => {
-    try {
+    const checkLoggedIn = async () => {
       const userId = window.sessionStorage.getItem("USER_ID");
       if (userId) {
         setIsLoggedIn(true);
@@ -32,24 +21,24 @@ const Keno = () => {
         setErrorMessage("Debes iniciar sesión para crear una apuesta.");
         return false;
       }
-    } catch (error) {
-      console.error("Error checking if user is logged in:", error);
-      return false;
-    }
-  };
+    };
+  
+    checkLoggedIn();
+    fetchUserBalance();
+  }, []);
+  
+
 
   const fetchUserBalance = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/users/${userId}/balance`,
-        {
-          method: "GET",
-        }
-      );
+      const userId = window.sessionStorage.getItem("USER_ID");
+      const response = await fetch(`http://localhost:8080/api/users/${userId}/balance`, {
+        method: 'GET'
+      });
       const data = await response.json();
       setUserBalance(data);
     } catch (error) {
-      console.error("Error fetching user balance:", error);
+      console.error('Error fetching user balance:', error);
     }
   };
 
@@ -96,7 +85,7 @@ const Keno = () => {
         if (!response.ok) {
           throw new Error("Error al enviar los resultados al backend");
         }
-        fetchUserBalance();
+        updateUserBalance();
       } catch (error) {
         console.error("Error al enviar los resultados al backend:", error);
         setErrorMessage("Error al enviar los resultados al backend");
@@ -104,7 +93,7 @@ const Keno = () => {
     } else {
       setErrorMessage("Ingrese una cantidad de apuesta válida.");
     }
-    fetchUserBalance();
+    updateUserBalance();
   };
 
   const drawNumbers = () => {
@@ -187,7 +176,7 @@ const Keno = () => {
           </>
         )}
         <p>Aciertos: {hits}</p>
-        <p>Saldo actual: ${balance}</p>
+        <p>Saldo actual: ${balance.toFixed(2)}</p>
       </div>
     </div>
   );

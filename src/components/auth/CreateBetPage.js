@@ -88,7 +88,7 @@ const CreateBetForm = ({ updateUserBalance }) => {
         betAmount: "0.00",
         betPassword: ""
       });
-      // Actualizar el balance del usuario después de crear la apuesta
+
       updateUserBalance();
     } catch (error) {
       console.error("Error al crear la apuesta:", error);

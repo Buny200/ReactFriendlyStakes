@@ -77,7 +77,7 @@ function App() {
   };
 
   const updateUserBalance = async () => {
-    await fetchUserBalance();
+     fetchUserBalance();
   };
 
   return (

@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "../../css/Coinflip.css";
 
-const BlackJack = () => {
+const BlackJack = ({ updateUserBalance }) => {
   const [deck, setDeck] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
   const [gameOver, setGameOver] = useState(true);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [playerFinished, setPlayerFinished] = useState(false);
   const [playerStand, setPlayerStand] = useState(false);
   const [betAmount, setBetAmount] = useState(0.5);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [balance, setUserBalance] = useState(null);
   useEffect(() => {
     if (gameOver) {
@@ -19,7 +19,7 @@ const BlackJack = () => {
       fetchUserBalance();
     }
   }, [gameOver]);
-  
+
   useEffect(() => {
     const checkLoggedIn = async () => {
       const userId = window.sessionStorage.getItem("USER_ID");
@@ -52,80 +52,98 @@ const BlackJack = () => {
       console.error("Error fetching user balance:", error);
     }
   };
-  
 
   const calculateWinnings = (playerHand, dealerHand, betAmount) => {
     const playerValue = calculateHandValue(playerHand);
     const dealerValue = calculateHandValue(dealerHand);
-  
+
     if (playerHand.length === 2 && playerValue === 21) {
-      return betAmount * 1.5 + betAmount; 
+      return betAmount * 1.5 + betAmount;
     } else if (playerValue > 21) {
-      return -betAmount;
-    } else if (dealerValue > 21) {
-      return betAmount * 2; 
-    } else if (playerValue > dealerValue) {
-      return betAmount * 2; 
-    } else if (playerValue === dealerValue) {
       return 0;
+    } else if (dealerValue > 21) {
+      return betAmount * 2;
+    } else if (playerValue > dealerValue) {
+      return betAmount * 2;
+    } else if (playerValue === dealerValue) {
+      return betAmount;
     } else {
-      return -betAmount;
-    }
-  };
-  
-  const finishGame = async () => {
-    try {
-      if (betAmount > 0 && betAmount <= balance) {
-        const userId = window.sessionStorage.getItem("USER_ID");
-        const winnings = calculateWinnings(playerHand, dealerHand, betAmount);
-        const response = await fetch(
-          `http://localhost:8080/api/blackjack/place-bet/${userId}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ betAmount, winnings }),
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Error al enviar los resultados al backend");
-        }
-        await fetchUserBalance(); // Actualizamos el saldo después de la apuesta
-      } else {
-        setErrorMessage("Ingrese una cantidad de apuesta válida.");
-      }
-    } catch (error) {
-      console.error("Error al enviar los resultados al backend:", error);
-      setErrorMessage("Error al enviar los resultados al backend");
+      return 0;
     }
   };
 
-  const startGame = () => {
-    if (betAmount <= 0 || betAmount > balance) {
-      setErrorMessage("La cantidad de la apuesta debe ser mayor que cero y no exceder tu balance actual.");
-      return;
+const finishGame = async () => {
+  try {
+    if (betAmount > 0 && betAmount <= balance) {
+      const userId = window.sessionStorage.getItem("USER_ID");
+      const winnings = calculateWinnings(playerHand, dealerHand, betAmount);
+      const response = await fetch(
+        `http://localhost:8080/api/blackjack/place-bet/${userId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ betAmount, winnings }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Error al enviar los resultados al backend");
+      }
+      updateUserBalance(); // Actualizar el balance después de la partida
+    } else {
+      setErrorMessage("Ingrese una cantidad de apuesta válida.");
     }
-    if (gameOver) {
-      setMessage('');
-      setGameOver(false);
-      setPlayerHand([]);
-      setDealerHand([]);
-      setPlayerFinished(false);
-      setPlayerStand(false);
-      const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
-      const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-      const newDeck = [];
-      suits.forEach(suit => {
-        ranks.forEach(rank => {
-          newDeck.push({ rank: rank, suit: suit });
-        });
+  } catch (error) {
+    console.error("Error al enviar los resultados al backend:", error);
+    setErrorMessage("Error al enviar los resultados al backend");
+  }
+  updateUserBalance();
+  fetchUserBalance(); // Actualizar el balance después de la partida
+};
+
+const startGame = () => {
+  if (betAmount <= 0 || betAmount > balance) {
+    setErrorMessage(
+      "La cantidad de la apuesta debe ser mayor que cero y no exceder tu balance actual."
+    );
+    return;
+  }
+  fetchUserBalance(); // Actualizar el balance antes de iniciar el juego
+  if (gameOver) {
+    setMessage("");
+    setGameOver(false);
+    setPlayerHand([]);
+    setDealerHand([]);
+    setPlayerFinished(false);
+    setPlayerStand(false);
+    const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
+    const ranks = [
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "J",
+      "Q",
+      "K",
+      "A",
+    ];
+    const newDeck = [];
+    suits.forEach((suit) => {
+      ranks.forEach((rank) => {
+        newDeck.push({ rank: rank, suit: suit });
       });
-      setDeck(newDeck);
-      setPlayerHand(() => [dealCard(newDeck), dealCard(newDeck)]);
-      setDealerHand(() => [dealCard(newDeck), dealCard(newDeck)]);
-    }
-  };
+    });
+    setDeck(newDeck);
+    setPlayerHand(() => [dealCard(newDeck), dealCard(newDeck)]);
+    setDealerHand(() => [dealCard(newDeck), dealCard(newDeck)]);
+  }
+};
 
   const dealCard = (deck) => {
     const index = Math.floor(Math.random() * deck.length);
@@ -154,7 +172,10 @@ const BlackJack = () => {
       }
       const playerValue = calculateHandValue(playerHand);
       const dealerValue = calculateHandValue(newDealerHand);
-      if ((dealerValue > 21 && playerValue <= 21) || playerValue > dealerValue) {
+      if (
+        (dealerValue > 21 && playerValue <= 21) ||
+        playerValue > dealerValue
+      ) {
         setMessage("¡Ganaste!");
       } else if (playerValue === dealerValue) {
         setMessage("Empate");
@@ -234,7 +255,10 @@ const BlackJack = () => {
           >
             Pedir Carta
           </button>
-          <button onClick={stand} disabled={gameOver || playerStand || playerFinished}>
+          <button
+            onClick={stand}
+            disabled={gameOver || playerStand || playerFinished}
+          >
             Plantarse
           </button>
         </div>
@@ -248,16 +272,16 @@ const BlackJack = () => {
         </div>
       </div>
       {!isLoggedIn && (
-        <div className="error-message">
-          Debes iniciar sesión para jugar.
-        </div>
+        <div className="error-message">Debes iniciar sesión para jugar.</div>
       )}
-      <button onClick={startGame} disabled={!gameOver || !isLoggedIn}>
+      <button
+        onClick={startGame}
+        disabled={!gameOver || !isLoggedIn || balance < betAmount}
+      >
         Iniciar Juego
       </button>
     </div>
   );
-  
 };
 
 export default BlackJack;

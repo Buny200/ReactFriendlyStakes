@@ -64,12 +64,23 @@
   }
   .leaderboards {
     position: absolute; 
-    margin-top: -36px;
-    margin-left: 1000px;
+    margin-top: -95px;
+    margin-left: 825px;
   }
   .questions {
     position: absolute; 
-    margin-top: -36px;
-    margin-left: 1000px;
+    margin-top: -95px;
+    margin-left: 990px;
   }
+.nav-item-button {
+  padding: 8px 20px;
+  background-color: darkgreen; 
+  color: white; 
+  border: none;
+  border-radius: 6px; 
+  transition: background-color 0.3s; 
+}
 
+.nav-item-button:hover {
+  background-color: forestgreen;
+}

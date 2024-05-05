@@ -7,7 +7,167 @@
     flex-direction: column; /* Apilar los elementos verticalmente */
     align-items: center; /* Alinear los elementos al centro horizontalmente */
     max-width: 400px; /* Establecer un ancho máximo para el elemento */
+  }a/* Estilo para cada elemento de apuesta */
+  .bet-item {
+    border: 1px solid #e91616;
+    border-radius: 5px; /* Reducir el radio del borde para hacerlo más pequeño */
+    margin: 5px auto; /* Centrar horizontalmente y reducir el margen inferior */
+    padding: 5px; /* Reducir el relleno interno */
+    display: flex; /* Usar flexbox para alinear el contenido */
+    flex-direction: column; /* Apilar los elementos verticalmente */
+    align-items: center; /* Alinear los elementos al centro horizontalmente */
+    max-width: 400px; /* Establecer un ancho máximo para el elemento */
   }
+  
+  /* Información de la apuesta */
+  .bet-info {
+    flex-grow: 1; /* Permitir que la información de la apuesta ocupe todo el espacio disponible */
+    text-align: center; /* Alinear el texto al centro */
+  }
+  
+  /* Título de la apuesta */
+  .bet-title {
+    font-weight: bold;
+    font-size: 16px; /* Tamaño del título de la apuesta */
+    margin-bottom: 5px; /* Espaciado entre el título y los detalles */
+    text-align: center; 
+  }
+  
+  /* Prefijo del título */
+  .title-prefix {
+    font-weight: bold;
+    color: #007bff; /* Cambia el color según tu preferencia */
+  }
+  
+  /* Detalles de la apuesta */
+  .bet-details {
+    text-align: center; /* Alinear los detalles al centro */
+  }
+  
+  /* Paginación */
+  .pagination {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .pagination-button,
+  .pagination-arrow {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin: 0 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  .pagination-button:disabled,
+  .pagination-arrow:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Estilo del pop-up */
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup-inner {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra alrededor del pop-up */
+  }
+  
+  /* Mensaje de error */
+  .error-message {
+    color: #ff0000; /* Cambia el color del texto a rojo */
+    font-size: 24px; /* Tamaño de fuente aumentado */
+    text-align: center;
+    padding: 20px;
+    border: 2px solid #dc3545; /* Borde rojo */
+    border-radius: 10px;
+    max-width: 600px; /* Ancho máximo */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .error-message-link {
+    color: #ff0000; /* Cambia el color del enlace a rojo */
+    text-decoration: none; /* Quita el subrayado del enlace */
+    font-weight: bold; /* Hace que el texto del enlace sea más visible */
+  }
+  
+  /* Mensaje para el estado de espera */
+  .wait-message {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #800000;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center; /* Alinea el texto al centro */
+  }
+  
+  /* Estilo para el botón */
+  button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  .cancel-button {
+    background-color: #ff5555; /* Red */
+  }
+  
+  .cancel-button:hover {
+    background-color: #ff0000; /* Darker Red */
+  }
+  
+  /* Mensaje cuando no hay apuestas */
+  .no-bets-message {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f8d7da; /* Color de fondo */
+    color: #721c24; /* Color del texto */
+    border: 1px solid #f5c6cb; /* Borde */
+    border-radius: 5px; /* Borde redondeado */
+  }
+  
+  /* Estilo para el enlace dentro del mensaje */
+  .no-bets-message a {
+    color: #721c24; /* Color del enlace */
+    text-decoration: underline; /* Subrayado del enlace */
+  }
+  
+  /* Estilo para el jugador seleccionado */
+  .selected-player {
+    background-color: #ffd700; /* Color de fondo amarillo */
+    border: 2px solid #ffd700; /* Borde amarillo */
+    color: black; /* Color de texto negro */
+  }
+  
   
   .bet-info {
     flex-grow: 1; /* Permitir que la información de la apuesta ocupe todo el espacio disponible */

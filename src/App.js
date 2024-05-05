@@ -103,20 +103,20 @@ function App() {
                 <TraditionalBets />
               </div>
             }
-            {/*    {
+            {
              <div className="leaderboards">
-                <Link to="/leaderboards" className="nav-item-button">
-                  <Leaderboards />
-                </Link>
+               <Link to="/leaderboards">
+                <button className="nav-item-button">Leaderboards</button>
+              </Link>
               </div>
             }
             {
               <div className="questions">
-                <Link to="/questionsAnswers" className="nav-item-button">
-                  <QuestionsAnswers />
+                 <Link to="/questionsAnswers">
+                  <button className="nav-item-button">Questions Answers</button>
                 </Link>
               </div>
-            }*/}
+            }
           </div>
           <nav>
             <ul className="nav-list">
@@ -196,8 +196,8 @@ function App() {
               <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
               <Route path="/PaymentError" element={<PaymentError />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              {/*  <Route path="/questionsAnswers" element={<QuestionsAnswers />} />*/}
-              {/*  <Route path="/leaderboards" element={<Leaderboards />} />*/}
+              <Route path="/questionsAnswers" element={<QuestionsAnswers />} />
+              <Route path="/leaderboards" element={<Leaderboards />} />
               <Route
                 path="/traditional-Bets/Keno"
                 element={<Keno updateUserBalance={updateUserBalance} />}

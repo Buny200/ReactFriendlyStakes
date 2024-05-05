@@ -8,7 +8,7 @@ function ChatGlobal() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(true);
 
   const userId = window.sessionStorage.getItem("USER_ID");
   const messagesEndRef = useRef(null);

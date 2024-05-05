@@ -7,7 +7,7 @@ function AssistanceChat() {
   const [newMessage, setNewMessage] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(true);
   const userId = window.sessionStorage.getItem("USER_ID");
   const messagesEndRef = useRef(null); 
 

@@ -1,50 +1,44 @@
-/* DropdownMenu.css */
-.dropdown {
-    position: relative;
-    margin-left: 250px; 
-    margin-top: -60px;
-  }
-  
-  
-  .dropdown-toggle {
-    padding: 10px;
-    background-color: darkgreen; /* Cambia el color de fondo del botón a verde oscuro */
-    color: white; /* Cambia el color del texto del botón a blanco */
-    border: none; /* Quita el borde del botón */
-    border-radius: 5px; /* Agrega bordes redondeados al botón */
-  }
-  
-  .dropdown-toggle:hover {
-    background-color: forestgreen; /* Cambia el color de fondo del botón cuando se pasa el mouse sobre él */
-  }
-  
-  .dropdown-menu {
-    position: absolute;
-    top: calc(100% + 5px); /* Posiciona el menú justo debajo del botón */
-    left: 0;
-    background-color: darkgreen; /* Cambia el color de fondo del menú a verde oscuro */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .dropdown-menu li {
-    list-style-type: none;
-    margin-bottom: 5px;
-  }
-  
-  .dropdown-menu li:last-child {
-    margin-bottom: 0;
-  }
-  
-  .dropdown-menu li a {
-    color: white; /* Cambia el color del texto de las opciones a blanco */
-    text-decoration: none;
-    display: block;
-    padding: 5px 10px;
-  }
-  
-  .dropdown-menu li a:hover {
-    background-color: #32A87C /* Cambia el color de fondo de las opciones al pasar el mouse sobre ellas */
-  }
+/* Leaderboards.css */
+
+.leaderboards-container {
+  max-width: 800px; /* Ancho máximo del contenedor */
+  margin: 0 auto; /* Centra el contenedor horizontalmente */
+  background-color: #fafafa; /* Color de fondo */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 20px; /* Espaciado interno */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+.leaderboards-header {
+  font-size: 36px; /* Tamaño de fuente del encabezado */
+  margin-bottom: 20px; /* Espacio inferior */
+  color: #2c3e50; /* Color del texto */
+  text-align: center; /* Alineación centrada */
+}
+
+.leaderboards-table {
+  width: 100%; /* Ancho completo */
+  border-collapse: collapse; /* Colapso de bordes */
+}
+
+.leaderboards-table th,
+.leaderboards-table td {
+  border: 1px solid #ddd; /* Borde de celdas */
+  padding: 12px; /* Espaciado interno */
+  text-align: left; /* Alineación de texto a la izquierda */
+}
+
+.leaderboards-table th {
+  background-color: #3498db; /* Color de fondo del encabezado */
+  font-size: 18px; /* Tamaño de fuente */
+  color: #fff; /* Color del texto */
+  text-transform: uppercase; /* Transformación a mayúsculas */
+}
+
+.leaderboards-table tr:nth-child(even) {
+  background-color: #ecf0f1; /* Color de fondo de filas pares */
+}
+
+.leaderboards-table tr:hover {
+  background-color: #d5d8dc; /* Color de fondo al pasar el cursor */
+}

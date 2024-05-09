@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../../css/Coinflip.css";
+import "../../css/Blackjack.css";
 
 const BlackJack = ({ updateUserBalance }) => {
   const [deck, setDeck] = useState([]);

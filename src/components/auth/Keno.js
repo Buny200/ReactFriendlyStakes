@@ -176,7 +176,7 @@ const Keno = ({ updateUserBalance }) => {
           </>
         )}
         <p>Aciertos: {hits}</p>
-        <p>Saldo actual: ${balance.toFixed(2)}</p>
+        <p>Saldo actual: ${balance ? balance.toFixed(2) : '0.00'}</p>
       </div>
     </div>
   );

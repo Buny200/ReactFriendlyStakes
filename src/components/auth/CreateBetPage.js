@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../css/CreateBetPage.css";
 
-const CreateBetForm = ({ updateUserBalance }) => {
+const CreateBetForm = ({ updateUserBalance, language }) => {
   const [formData, setFormData] = useState({
     title: "",
     betAmount: "0.00",
@@ -20,7 +20,7 @@ const CreateBetForm = ({ updateUserBalance }) => {
         return true;
       } else {
         setIsLoggedIn(false);
-        setErrorMessage("Debes iniciar sesión para crear una apuesta.");
+        setErrorMessage(language === 'es' ? "Debes iniciar sesión para crear una apuesta." : "You must log in to create a bet.");
         return false;
       }
     };
@@ -53,7 +53,7 @@ const CreateBetForm = ({ updateUserBalance }) => {
         });
         setErrorMessage(""); // Limpiar el mensaje de error cuando el usuario comienza a escribir nuevamente
       } else {
-        setErrorMessage("Por favor, introduce un valor numérico válido.");
+        setErrorMessage(language === 'es' ? "Por favor, introduce un valor numérico válido." : "Please enter a valid numerical value.");
       }
     } else {
       setFormData({
@@ -68,7 +68,7 @@ const CreateBetForm = ({ updateUserBalance }) => {
     e.preventDefault();
     const betAmount = parseFloat(formData.betAmount);
     if (betAmount <= 0 || betAmount > userBalance) {
-      setErrorMessage("La cantidad de la apuesta debe ser mayor que cero y no exceder tu balance actual.");
+      setErrorMessage(language === 'es' ? "La cantidad de la apuesta debe ser mayor que cero y no exceder tu balance actual." : "The bet amount must be greater than zero and not exceed your current balance.");
       return;
     }
     try {
@@ -84,10 +84,10 @@ const CreateBetForm = ({ updateUserBalance }) => {
       console.log("Apuesta creada:", data);
       setSuccessMessage(
         <>
-          <p>¡La apuesta se ha creado correctamente!</p>
-          <p>Copia este enlace e invita a tus amigos: <a href={data.inviteLink}>{data.inviteLink}</a></p>
-          <p>Id de la apuesta: {data.betId}</p>
-          <p>Contraseña de la apuesta: {formData.betPassword}</p>
+          <p>{language === 'es' ? "¡La apuesta se ha creado correctamente!" : "The bet has been created successfully!"}</p>
+          <p>{language === 'es' ? "Copia este enlace e invita a tus amigos:" : "Copy this link and invite your friends:"} <a href={data.inviteLink}>{data.inviteLink}</a></p>
+          <p>{language === 'es' ? "Id de la apuesta:" : "Bet ID:"} {data.betId}</p>
+          <p>{language === 'es' ? "Contraseña de la apuesta:" : "Bet Password:"} {formData.betPassword}</p>
         </>
       );
       setFormData({
@@ -104,7 +104,7 @@ const CreateBetForm = ({ updateUserBalance }) => {
 
   return (
     <div className="container">
-      <h1 className="title">Crear Apuesta</h1>
+      <h1 className="title">{language === 'es' ? "Crear Apuesta" : "Create Bet"}</h1>
       { errorMessage && (
         <div className="error-message">
           {errorMessage}
@@ -112,21 +112,21 @@ const CreateBetForm = ({ updateUserBalance }) => {
       )}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="title">Título:</label>
+          <label htmlFor="title">{language === 'es' ? "Título:" : "Title:"}</label>
           <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required disabled={!isLoggedIn} />
         </div>
         
         <div className="form-group">
-          <label htmlFor="betAmount">Cantidad de Apuesta:</label>
+          <label htmlFor="betAmount">{language === 'es' ? "Cantidad de Apuesta:" : "Bet Amount:"}</label>
           <input type="text" id="betAmount" name="betAmount" value={formData.betAmount} onChange={handleChange} required disabled={!isLoggedIn} />
         </div>
         
         <div className="form-group">
-          <label htmlFor="betPassword">Contraseña de la Apuesta:</label>
+          <label htmlFor="betPassword">{language === 'es' ? "Contraseña de la Apuesta:" : "Bet Password:"}</label>
           <input type="password" id="betPassword" name="betPassword" value={formData.betPassword} onChange={handleChange} required disabled={!isLoggedIn} />
         </div>
         
-        <button type="submit" className="submit-button" disabled={!isLoggedIn}>Crea tu Apuesta</button>
+        <button type="submit" className="submit-button" disabled={!isLoggedIn}>{language === 'es' ? "Crea tu Apuesta" : "Create Your Bet"}</button>
       </form>
       {/* Mostrar el mensaje de éxito si existe */}
       {successMessage && (

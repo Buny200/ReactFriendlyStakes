@@ -1,10 +1,9 @@
-
 /* App.css */
 
 .App-logo-container {
   margin-left: 100px; /* Agrega un espacio a la izquierda del logo */
 }
-/* App.css */
+
 .App-header {
   display: flex;
   justify-content: space-between;
@@ -12,6 +11,26 @@
   background-color: #292929; /* Color de fondo para la barra de navegación */
   padding: 10px 20px; /* Espaciado interno */
   border-bottom: 2px solid #ffcc00; /* Borde inferior */
+}
+
+.language-selector {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  margin-top: -45px;
+  margin-left: 1750px;
+}
+.language-selector button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  margin-right: 10px;
+}
+.flag-icon {
+  width: 30px; /* ajusta el tamaño según tus necesidades */
+  height: auto; /* mantiene la proporción */
+  margin-right: 5px; /* opcional: agrega un margen entre las imágenes */
 }
 
 .nav-list {
@@ -29,56 +48,62 @@
   transition: border-color 0.1s; /* Transición suave del color del borde */
 }
 
-
 .nav-item a {
- text-decoration: none; /* Eliminar subrayado de enlaces */
+  text-decoration: none; /* Eliminar subrayado de enlaces */
   color: #ffffff; /* Color de texto */
   font-size: 16px; /* Tamaño de fuente */
   transition: color 0.3s; /* Transición suave de color */
 }
+
 .nav-item:hover {
   border-color: #ffcc00; /* Cambia el color del borde al pasar el cursor */
 }
+
 .nav-item a:hover {
   color: #ffcc00; /* Cambiar color al pasar el cursor */
 }
-  .balance-item {
-    color: #fff; /* Color del texto */
-    font-size: 17px; /* Tamaño de fuente aumentado */
-    margin-left: 20px; /* Espacio a la izquierda */
-  }
-  
-  
-  .balance-item::after {
-    content: "\20AC "; /* Símbolo del euro */
-    font-size: 18px; /* Tamaño del símbolo del euro */
-  }
-  .dropdown-container {
-    position: absolute; /* Establece la posición absoluta para el contenedor */
-    margin-top: -36px;
-  }
-  .dropdown-container-traditional {
-    position: absolute; 
-    margin-top: -36px;
-    margin-left: 300px;
-  }
-  .leaderboards {
-    position: absolute; 
-    margin-top: -95px;
-    margin-left: 825px;
-  }
-  .questions {
-    position: absolute; 
-    margin-top: -95px;
-    margin-left: 990px;
-  }
+
+.balance-item {
+  color: #fff; /* Color del texto */
+  font-size: 17px; /* Tamaño de fuente aumentado */
+  margin-left: 20px; /* Espacio a la izquierda */
+}
+
+.balance-item::after {
+  content: "\20AC "; /* Símbolo del euro */
+  font-size: 18px; /* Tamaño del símbolo del euro */
+}
+
+.dropdown-container {
+  position: absolute; /* Establece la posición absoluta para el contenedor */
+  margin-top: -36px;
+}
+
+.dropdown-container-traditional {
+  position: absolute;
+  margin-top: -36px;
+  margin-left: 300px;
+}
+
+.leaderboards {
+  position: absolute;
+  margin-top: -95px;
+  margin-left: 825px;
+}
+
+.questions {
+  position: absolute;
+  margin-top: -95px;
+  margin-left: 990px;
+}
+
 .nav-item-button {
   padding: 8px 20px;
-  background-color: darkgreen; 
-  color: white; 
+  background-color: darkgreen;
+  color: white;
   border: none;
-  border-radius: 6px; 
-  transition: background-color 0.3s; 
+  border-radius: 6px;
+  transition: background-color 0.3s;
 }
 
 .nav-item-button:hover {

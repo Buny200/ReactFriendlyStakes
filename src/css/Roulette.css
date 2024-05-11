@@ -1,7 +1,10 @@
-/* Roulette.css */
-
 .roulette-container {
   text-align: center;
+}
+
+.winner-number {
+  font-weight: bold;
+  color: green; /* Color del número ganador */
 }
 
 .roulette-wheel {
@@ -26,6 +29,15 @@
   font-size: 16px;
   font-weight: bold;
   color: white; /* Color de los números */
+}
+
+.roulette-number.highlighted {
+  background-color: yellow; /* Color de fondo cuando el número está iluminado */
+
+}
+
+.roulette-number.selected {
+  background-color: cyan; /* Color de fondo del número seleccionado */
 }
 
 .ball {

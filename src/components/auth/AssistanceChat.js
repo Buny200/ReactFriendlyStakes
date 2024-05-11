@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../../css/AssistanceChat.css";
 
-function AssistanceChat() {
+function AssistanceChat({ language }) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,17 +20,17 @@ function AssistanceChat() {
           fetchChatHistory();
         } else {
           setIsLoggedIn(false);
-          setErrorMessage("Inicia sesión para enviar mensajes en el chat de asistencia.");
+          setErrorMessage(language === 'es' ? "Inicia sesión para enviar mensajes en el chat de asistencia." : "Log in to send messages in the assistance chat.");
         }
       } catch (error) {
         console.error("Error checking if user is logged in:", error);
         setIsLoggedIn(false);
-        setErrorMessage("Error al verificar el estado de inicio de sesión.");
+        setErrorMessage(language === 'es' ? "Error al verificar el estado de inicio de sesión." : "Error checking login status.");
       }
     };
   
     checkLoggedIn();
-  }, [userId]);
+  }, [userId, language]);
 
   useEffect(() => {
     scrollToBottom();
@@ -55,7 +55,7 @@ function AssistanceChat() {
 
   const sendMessage = async () => {
     if (!newMessage.trim()) {
-      setErrorMessage("No se permiten mensajes vacíos.");
+      setErrorMessage(language === 'es' ? "No se permiten mensajes vacíos." : "Empty messages are not allowed.");
       return;
     }
 
@@ -91,7 +91,7 @@ function AssistanceChat() {
 
   return (
     <div className={`assistance-chat-container ${isMinimized ? 'minimized' : ''}`}>
-      <div className="assistance-chat-header" onClick={toggleMinimize}>Asistencia Chat</div>
+      <div className="assistance-chat-header" onClick={toggleMinimize}>{language === 'es' ? "Asistencia Chat" : "Assistance Chat"}</div>
       <div className="error-container"> 
         {!isLoggedIn && (
           <p className="error-message-chat">{errorMessage}</p>
@@ -115,10 +115,10 @@ function AssistanceChat() {
                   type="text"
                   value={newMessage}
                   maxLength={150} 
-                  placeholder="Type here to chat..."
+                  placeholder={language === 'es' ? "Escribe aquí para chatear..." : "Type here to chat..."}
                   onChange={(e) => setNewMessage(e.target.value)}
                 />
-                <button onClick={sendMessage} className="small-button">Enviar</button>
+                <button onClick={sendMessage} className="small-button">{language === 'es' ? "Enviar" : "Send"}</button>
               </div>
             )}
           </div>

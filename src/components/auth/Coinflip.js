@@ -4,7 +4,7 @@ import whiteCoin from "../../photos/WhiteCoin.jpg";
 import redCoin from "../../photos/RedCoin.jpg";
 import "../../css/Coinflip.css";
 
-const Coinflip = ({ updateUserBalance }) => {
+const Coinflip = ({ updateUserBalance, language }) => {
   const [betAmount, setBetAmount] = useState("");
   const [selectedSide, setSelectedSide] = useState(null);
   const [nickname, setNickname] = useState("");
@@ -34,7 +34,7 @@ const Coinflip = ({ updateUserBalance }) => {
         return true;
       } else {
         setIsLoggedIn(false);
-        setErrorMessage("Debes iniciar sesión para crear una apuesta.");
+        setErrorMessage(language === 'es' ? "Debes iniciar sesión para crear una apuesta." : "You must log in to create a bet.");
         return false;
       }
     };
@@ -64,10 +64,10 @@ const Coinflip = ({ updateUserBalance }) => {
         throw new Error(errorData.message);
       }
       await updateUserBalance();
-      setSuccessMessage("¡La apuesta se ha creado correctamente!");
+      setSuccessMessage(language === 'es' ? "¡La apuesta se ha creado correctamente!" : "The bet has been created successfully!");
       fetchCoinflips();
     } catch (error) {
-      console.error("Error al unirse a la apuesta:", error);
+      console.error(language === 'es' ? "Error al unirse a la apuesta:" : "Error joining the bet:", error);
     }
   };
 
@@ -80,7 +80,7 @@ const Coinflip = ({ updateUserBalance }) => {
       const data = await response.json();
       setUserBalance(data);
     } catch (error) {
-      console.error("Error fetching user balance:", error);
+      console.error(language === 'es' ? "Error al obtener el saldo del usuario:" : "Error fetching user balance:", error);
     }
   };
 
@@ -102,7 +102,7 @@ const Coinflip = ({ updateUserBalance }) => {
       const totalPages = Math.ceil(totalBets / betsPerPage);
       setTotalPages(totalPages);
     } catch (error) {
-      console.error("Error al obtener el historial de apuestas:", error);
+      console.error(language === 'es' ? "Error al obtener el historial de apuestas:" : "Error fetching bet history:", error);
     }
   };
 
@@ -115,19 +115,17 @@ const Coinflip = ({ updateUserBalance }) => {
     e.preventDefault();
     resetMessages();
     if (!selectedSide) {
-      setErrorMessage("Debes seleccionar un lado.");
+      setErrorMessage(language === 'es' ? "Debes seleccionar un lado." : "You must select a side.");
       return;
     }
     if (!betAmount || isNaN(parseFloat(betAmount)) || parseFloat(betAmount) <= 0) {
-      setErrorMessage("Ingresa una cantidad de apuesta válida.");
+      setErrorMessage(language === 'es' ? "Ingresa una cantidad de apuesta válida." : "Enter a valid bet amount.");
       return;
     }
     try {
       const betAmountParsed = parseFloat(betAmount);
       if (betAmountParsed <= 0 || betAmountParsed > userBalance) {
-        setErrorMessage(
-          "La cantidad de la apuesta debe ser mayor que cero y no exceder tu balance actual."
-        );
+        setErrorMessage(language === 'es' ? "La cantidad de la apuesta debe ser mayor que cero y no exceder tu balance actual." : "The bet amount must be greater than zero and not exceed your current balance.");
         return;
       }
       const color = selectedSide === "blanco" ? "WHITE" : "RED";
@@ -148,10 +146,10 @@ const Coinflip = ({ updateUserBalance }) => {
         throw new Error(errorData.message);
       }
       await updateUserBalance();
-      setSuccessMessage("¡La apuesta se ha creado correctamente!");
+      setSuccessMessage(language === 'es' ? "¡La apuesta se ha creado correctamente!" : "The bet has been created successfully!");
       fetchCoinflips();
     } catch (error) {
-      setErrorMessage("Ooops, algo salió mal. Por favor, inténtalo de nuevo.");
+      setErrorMessage(language === 'es' ? "Ooops, algo salió mal. Por favor, inténtalo de nuevo." : "Oops, something went wrong. Please try again.");
     }
   };
 
@@ -176,33 +174,33 @@ const Coinflip = ({ updateUserBalance }) => {
   return (
     <div className="coinflip-container">
       <h2>
-        Bienvenido, {isLoggedIn ? nickname : "Desconocido"}
+        {language === 'es' ? `Bienvenido, ${isLoggedIn ? nickname : "Desconocido"}` : `Welcome, ${isLoggedIn ? nickname : "Unknown"}`}
         <button
           className="create-bet-button"
           onClick={handleShowCreateBetPopup}
           disabled={!isLoggedIn}
         >
-          Crear Apuesta
+          {language === 'es' ? "Crear Apuesta" : "Create Bet"}
         </button>
       </h2>
       <div className="bet-history">
-        <h3>Historial de Apuestas</h3>
+        <h3>{language === 'es' ? "Historial de Apuestas" : "Bet History"}</h3>
         <div>
-          <label>Filtrar por estado:</label>
+          <label>{language === 'es' ? "Filtrar por estado:" : "Filter by status:"}</label>
           <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-            <option value="">Todos</option>
-            <option value="STARTED">Empezados</option>
-            <option value="FINISHED">Finalizados</option>
+            <option value="">{language === 'es' ? "Todos" : "All"}</option>
+            <option value="STARTED">{language === 'es' ? "Empezados" : "Started"}</option>
+            <option value="FINISHED">{language === 'es' ? "Finalizados" : "Finished"}</option>
           </select>
           <input
             type="text"
-            placeholder="Filtrar por creador"
+            placeholder={language === 'es' ? "Filtrar por creador" : "Filter by creator"}
             value={creatorFilter}
             onChange={(e) => setCreatorFilter(e.target.value)}
           />
           <input
             type="text"
-            placeholder="Filtrar por oponente"
+            placeholder={language === 'es' ? "Filtrar por oponente" : "Filter by opponent"}
             value={opponentFilter}
             onChange={(e) => setOpponentFilter(e.target.value)}
           />
@@ -210,37 +208,21 @@ const Coinflip = ({ updateUserBalance }) => {
         <ul>
           {betHistory.map((coinflip) => (
             <li key={coinflip.coinflipId}>
-              <p>Cantidad de Apuesta: {coinflip.coinflipAmount} €</p>
-              <p>
-                Fecha de Creación:{" "}
-                {new Date(coinflip.creationDate).toLocaleDateString()}
-              </p>
-              <p>
-                Creador:{" "}
-                {coinflip.creatorId
-                  ? coinflip.creatorId.nickname
-                  : "Desconocido"}
-              </p>
-              <p>
-                Oponente:{" "}
-                {coinflip.opponent
-                  ? coinflip.opponent.nickname
-                  : (
-                      <button
-                        onClick={() => handleJoinCoinflip(coinflip.coinflipId)}
-                        disabled={coinflip.creatorId.userId == window.sessionStorage.getItem("USER_ID")  ? true : false}
-                      >
-                        Unirse a la partida
-                      </button>
-                    )
-                }
-              </p>
-              <p>Color elegido por el creador: {coinflip.colorCreator} </p>
-              <p>Estado de la apuesta: {coinflip.status} </p>
+              <p>{language === 'es' ? `Cantidad de Apuesta: ${coinflip.coinflipAmount} €` : `Bet Amount: ${coinflip.coinflipAmount} €`}</p>
+              <p>{language === 'es' ? "Fecha de Creación:" : "Creation Date:"} {new Date(coinflip.creationDate).toLocaleDateString()}</p>
+              <p>{language === 'es' ? "Creador:" : "Creator:"} {coinflip.creatorId ? coinflip.creatorId.nickname : language === 'es' ? "Desconocido" : "Unknown"}</p>
+              <p>{language === 'es' ? "Oponente:" : "Opponent:"} {coinflip.opponent ? coinflip.opponent.nickname : (
+                <button
+                  onClick={() => handleJoinCoinflip(coinflip.coinflipId)}
+                  disabled={coinflip.creatorId.userId == window.sessionStorage.getItem("USER_ID") ? true : false}
+                >
+                  {language === 'es' ? "Unirse a la partida" : "Join the game"}
+                </button>
+              )}</p>
+              <p>{language === 'es' ? "Color elegido por el creador:" : "Color chosen by the creator:"} {coinflip.colorCreator}</p>
+              <p>{language === 'es' ? "Estado de la apuesta:" : "Bet Status:"} {coinflip.status}</p>
               {coinflip.creatorId && coinflip.resultWinner &&
-              <p>Resultado ganador: El ganador ha sido el {coinflip.resultWinner <= 50 ? "Rojo" : "Blanco"} Enhorabuena, {""} 
-              {coinflip.colorCreator === (coinflip.resultWinner <= 50 ? "Rojo" : "Blanco") ? coinflip.creatorId.nickname : coinflip.opponent.nickname}!!!!
-             </p>
+              <p>{language === 'es' ? "Resultado ganador:" : "Winning result:"} {language === 'es' ? `El ganador ha sido el ${coinflip.resultWinner <= 50 ? "Rojo" : "Blanco"}. Enhorabuena, ${coinflip.colorCreator === (coinflip.resultWinner <= 50 ? "Rojo" : "Blanco") ? coinflip.creatorId.nickname : coinflip.opponent.nickname}!!!!` : `The winner has been the ${coinflip.resultWinner <= 50 ? "Red" : "White"} side. Congratulations, ${coinflip.colorCreator === (coinflip.resultWinner <= 50 ? "Red" : "White") ? coinflip.creatorId.nickname : coinflip.opponent.nickname}!!!!`}</p>
               }
             </li>
           ))}
@@ -261,7 +243,7 @@ const Coinflip = ({ updateUserBalance }) => {
             {"<"}
           </button>
           <span className="pagination-info">
-            Página {currentPage} de {totalPages}
+            {language === 'es' ? `Página ${currentPage} de ${totalPages}` : `Page ${currentPage} of ${totalPages}`}
           </span>
           <button
             className="pagination-arrow"
@@ -282,7 +264,7 @@ const Coinflip = ({ updateUserBalance }) => {
       {showCreateBetPopup && (
         <div className="popup">
           <div className="popup-content">
-            <h3>Crear Nueva Apuesta</h3>
+            <h3>{language === 'es' ? "Crear Nueva Apuesta" : "Create New Bet"}</h3>
             <div className="coin-buttons">
               <button
                 onClick={() => handleSideClick("rojo")}
@@ -299,7 +281,7 @@ const Coinflip = ({ updateUserBalance }) => {
             </div>
             {selectedSide && (
               <form onSubmit={handleCreateCoinflip}>
-                <label htmlFor="betAmount">Cantidad de apuesta:</label>
+                <label htmlFor="betAmount">{language === 'es' ? "Cantidad de apuesta:" : "Bet Amount:"}</label>
                 <input
                   type="number"
                   id="betAmount"
@@ -307,7 +289,7 @@ const Coinflip = ({ updateUserBalance }) => {
                   onChange={handleBetAmountChange}
                   required
                 />
-                <button type="submit">Crear Apuesta</button>
+                <button type="submit">{language === 'es' ? "Crear Apuesta" : "Create Bet"}</button>
               </form>
             )}
             {successMessage && (
@@ -317,16 +299,16 @@ const Coinflip = ({ updateUserBalance }) => {
               <div className="error-message">{errorMessage}</div>
             )}
             <div className="possibility-message">
-              <p>Las posibilidades se calculan de la siguiente manera:</p>
-              <p>Para el lado rojo, las posibilidades van del 1 al 50.</p>
-              <p>Para el lado blanco, las posibilidades van del 51 al 100.</p>
-              <p>Siendo las posibilidades equivalentes pero con valores distintos.</p>
+              <p>{language === 'es' ? "Las posibilidades se calculan de la siguiente manera:" : "The chances are calculated as follows:"}</p>
+              <p>{language === 'es' ? "Para el lado rojo, las posibilidades van del 1 al 50." : "For the red side, the odds range from 1 to 50."}</p>
+              <p>{language === 'es' ? "Para el lado blanco, las posibilidades van del 51 al 100." : "For the white side, the odds range from 51 to 100."}</p>
+              <p>{language === 'es' ? "Siendo las posibilidades equivalentes pero con valores distintos." : "Being the odds equivalent but with different values."}</p>
             </div>
             <button
               className="popup-close-btn"
               onClick={() => setShowCreateBetPopup(false)}
             >
-              Cerrar
+              {language === 'es' ? "Cerrar" : "Close"}
             </button>
           </div>
         </div>

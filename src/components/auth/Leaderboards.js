@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../../css/Leaderboards.css"; 
+import "../../css/Leaderboards.css";
 
-const Leaderboards = () => {
+const Leaderboards = ({ language }) => {
   const [leaderboardData, setLeaderboardData] = useState([]);
 
   useEffect(() => {
-     fetchLeaderboardData();
+    fetchLeaderboardData();
   }, []);
 
   const fetchLeaderboardData = async () => {
@@ -21,13 +21,13 @@ const Leaderboards = () => {
 
   return (
     <div className="leaderboards-container">
-      <h1 className="leaderboards-header">Leaderboards</h1>
+      <h1 className="leaderboards-header">{language === 'es' ? 'Tablas de Clasificación' : 'Leaderboards'}</h1>
       <table className="leaderboards-table">
         <thead>
           <tr>
-            <th>Posición</th>
-            <th>Nickname</th>
-            <th>Ganancias</th>
+            <th>{language === 'es' ? 'Posición' : 'Position'}</th>
+            <th>{language === 'es' ? 'Nombre de Usuario' : 'Username'}</th>
+            <th>{language === 'es' ? 'Ganancias' : 'Earnings'}</th>
           </tr>
         </thead>
         <tbody>

@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link, Navigate } from "react-router-dom";
 import "../../css/Login.css";
 
-const Login = ({ setLoggedIn, loggedIn, updateUserBalance }) => {
+const Login = ({ setLoggedIn, loggedIn, updateUserBalance, language }) => {
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -21,17 +21,17 @@ const Login = ({ setLoggedIn, loggedIn, updateUserBalance }) => {
         "http://localhost:8080/auth/authenticate",
         credentials
       );
-      const { token, userId, nickname, email, surname, name } = response.data; // Assuming the necessary data is returned in response.data
-      window.sessionStorage.setItem("TOKEN", token); // Store the token in sessionStorage
-      window.sessionStorage.setItem("USER_ID", userId); // Store the userId in sessionStorage
-      window.sessionStorage.setItem("NICKNAME", nickname); // Store the nickname in sessionStorage
-      window.sessionStorage.setItem("EMAIL", email); // Store the email in sessionStorage
-      window.sessionStorage.setItem("SURNAME", surname); // Store the email in sessionStorage
-      window.sessionStorage.setItem("NAME", name); // Store the email in sessionStorage
-      setLoggedIn(true); // Update the loggedIn state
+      const { token, userId, nickname, email, surname, name } = response.data;
+      window.sessionStorage.setItem("TOKEN", token);
+      window.sessionStorage.setItem("USER_ID", userId);
+      window.sessionStorage.setItem("NICKNAME", nickname);
+      window.sessionStorage.setItem("EMAIL", email);
+      window.sessionStorage.setItem("SURNAME", surname);
+      window.sessionStorage.setItem("NAME", name);
+      setLoggedIn(true);
       updateUserBalance();
     } catch (error) {
-      setError("Usuario o contraseña incorrectos");
+      setError(language === 'es' ? "Usuario o contraseña incorrectos" : "Incorrect username or password");
     }
   };
 
@@ -42,7 +42,6 @@ const Login = ({ setLoggedIn, loggedIn, updateUserBalance }) => {
     }
   }, [setLoggedIn]);
 
-  // If user is logged in, redirect to a specific route
   if (loggedIn) {
     return <Navigate to="/" />;
   }
@@ -50,21 +49,20 @@ const Login = ({ setLoggedIn, loggedIn, updateUserBalance }) => {
   return (
     <div className="login-container">
       <h2 className="login-title">
-        Inicio de sesión{" "}
+        {language === 'es' ? 'Inicio de sesión' : 'Login'}{" "}
         <span role="img" aria-label="Greeting">
           👋
         </span>
       </h2>
       <p className="login-description">
-        Introduce tu cuenta habitual en FriendlyStakes o regístrate si es tu
-        primera vez.
+        {language === 'es' ? 'Introduce tu cuenta habitual en FriendlyStakes o regístrate si es tu primera vez.' : 'Enter your usual FriendlyStakes account or register if it\'s your first time.'}
       </p>
       <form>
         <div className="form-group">
           <input
             type="email"
             name="email"
-            placeholder="Correo electrónico"
+            placeholder={language === 'es' ? 'Correo electrónico' : 'Email'}
             value={credentials.email}
             onChange={handleInputChange}
           />
@@ -73,22 +71,22 @@ const Login = ({ setLoggedIn, loggedIn, updateUserBalance }) => {
           <input
             type="password"
             name="password"
-            placeholder="Contraseña"
+            placeholder={language === 'es' ? 'Contraseña' : 'Password'}
             value={credentials.password}
             onChange={handleInputChange}
           />
           <div className="forgot-password">
-          <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
+          <Link to="/forgot-password">{language === 'es' ? '¿Olvidaste tu contraseña?' : 'Forgot your password?'}</Link>
           </div>
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <button type="button" onClick={handleLogin}>
-          Iniciar sesión
+          {language === 'es' ? 'Iniciar sesión' : 'Login'}
         </button>
       </form>
       <div className="register-link">
-        <p>¿No tienes una cuenta?</p>
-        <Link to="/register">Crear cuenta</Link>
+        <p>{language === 'es' ? '¿No tienes una cuenta?' : 'Don\'t have an account?'}</p>
+        <Link to="/register">{language === 'es' ? 'Crear cuenta' : 'Create an account'}</Link>
       </div>
     </div>
   );

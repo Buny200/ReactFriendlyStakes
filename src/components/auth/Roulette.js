@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "../../css/Roulette.css";
 
 const europeanNumbers = [
@@ -9,62 +9,96 @@ const europeanNumbers = [
 const Roulette = () => {
   const [position, setPosition] = useState(0);
   const [betAmount, setBetAmount] = useState(0);
-  const [winningNumber, setWinningNumber] = useState(null);
   const [totalMoney, setTotalMoney] = useState(1000); // Starting money
   const [selectedBet, setSelectedBet] = useState(null);
+  const [isSpinning, setIsSpinning] = useState(false);
+  const [highlightedNumber, setHighlightedNumber] = useState(null);
+  const [winningNumber, setWinningNumber] = useState(null);
+  const [showResult, setShowResult] = useState(false); // State to control showing the result
 
-  const handleBet = (amount) => {
-    setBetAmount(amount);
-  };
-
-  const handleBetOption = (option) => {
-    setSelectedBet(option);
-  };
+  useEffect(() => {
+    if (isSpinning && winningNumber !== null) {
+      setShowResult(false);
+      let passCounter = 0; 
+      let counterWinner = 0; 
+      const interval = setInterval(() => {
+        setHighlightedNumber(europeanNumbers[passCounter]);
+        if(passCounter===37){
+          passCounter=0;
+        }
+        if (europeanNumbers[passCounter] === winningNumber) {
+          counterWinner++;
+          passCounter++;
+          if (counterWinner === 2) { 
+            clearInterval(interval); // Stop the roulette if the winning number has passed twice
+            setIsSpinning(false);
+            const payout = calculatePayout(winningNumber);
+            const newTotalMoney = totalMoney + payout - betAmount;
+            setTotalMoney(newTotalMoney);
+            setShowResult(true);
+          }
+        } else {
+          passCounter++;
+        }
+      }, 100);
+      return () => clearInterval(interval);
+    }
+  }, [isSpinning, winningNumber, totalMoney, betAmount]);
 
   const spin = () => {
-    const randomIndex = Math.floor(Math.random() * europeanNumbers.length);
-    const result = europeanNumbers[randomIndex];
-    setWinningNumber(result);
-    setPosition(result);
-
-    // Calcular ganancias o pérdidas
-    const payout = calculatePayout(result);
-    const newTotalMoney = totalMoney + payout - betAmount;
-    setTotalMoney(newTotalMoney);
-
-    alert(`El número ganador es ${result}. Ganaste ${payout} fichas.`);
+    setIsSpinning(true);
+    let passCounter = 0; 
+    const randomWinningNumber = getRandomNumber();
+    setWinningNumber(randomWinningNumber); 
+    const interval = setInterval(() => {
+      setHighlightedNumber(europeanNumbers[passCounter]);
+      if (randomWinningNumber !== null && europeanNumbers[passCounter] === randomWinningNumber) {
+        passCounter++;
+        if (passCounter === 2) {
+          clearInterval(interval); 
+          setIsSpinning(false);
+          const payout = calculatePayout(randomWinningNumber);
+          const newTotalMoney = totalMoney + payout - betAmount;
+          setTotalMoney(newTotalMoney);
+          setShowResult(true);
+        }
+      } else {
+        passCounter++;
+      }
+    }, 100);
   };
 
-  // Función para calcular el pago según el resultado y la opción de apuesta
   const calculatePayout = (result) => {
     let payout = 0;
     if (selectedBet === 'number' && result === position) {
-      payout += betAmount * 35; // Si la apuesta es al número exacto
+      payout += betAmount * 35; 
     } else if (selectedBet === 'even' && result !== 0 && result % 2 === 0) {
-      payout += betAmount * 2; // Si la apuesta es par y el número es par
+      payout += betAmount * 2; 
     } else if (selectedBet === 'odd' && result % 2 !== 0) {
-      payout += betAmount * 2; // Si la apuesta es impar y el número es impar
+      payout += betAmount * 2; 
     } else if (selectedBet === 'red' && isRedNumber(result)) {
-      payout += betAmount * 2; // Si la apuesta es rojo y el número es rojo
+      payout += betAmount * 2; 
     } else if (selectedBet === 'black' && isBlackNumber(result)) {
-      payout += betAmount * 2; // Si la apuesta es negro y el número es negro
+      payout += betAmount * 2; 
     }
     return payout;
   };
 
-  // Función para determinar si un número es rojo
   const isRedNumber = (number) => {
     return (number !== 0 && number <= 10) || (number >= 19 && number <= 28);
   };
 
-  // Función para determinar si un número es negro
   const isBlackNumber = (number) => {
     return number !== 0 && !isRedNumber(number);
   };
 
+  const getRandomNumber = () => {
+    return europeanNumbers[Math.floor(Math.random() * europeanNumbers.length)];
+  };
+
   return (
     <div className="roulette-container">
-      <div className="roulette-wheel">
+      <div className={`roulette-wheel ${isSpinning ? 'spinning' : ''}`}>
         <div className="ball" style={{ transform: `rotate(${position * (360 / 37)}deg)` }}></div>
         {Array.from({ length: 37 }, (_, index) => {
           let color = '';
@@ -78,10 +112,10 @@ const Roulette = () => {
           return (
             <div
               key={index}
-              className="roulette-number"
+              className={`roulette-number ${highlightedNumber === europeanNumbers[index] ? 'highlighted' : ''} ${showResult && winningNumber === europeanNumbers[index] ? 'selected' : ''}`}
               style={{
                 color,
-                transform: `rotate(${index * (360 / 37)}deg) translate(180px) rotate(${90 - (360 / 37) / 2}deg)`
+                transform: `rotate(${index * (360 / 37)}deg) translate(180px) rotate(${90 - (360 / 37) / 2}deg)`,
               }}
             >
               {europeanNumbers[index]}
@@ -90,16 +124,11 @@ const Roulette = () => {
         })}
       </div>
       <div>Total Money: {totalMoney}</div>
-      <div>
-        <button onClick={() => handleBetOption('number')}>Bet on Number</button>
-        <button onClick={() => handleBetOption('even')}>Bet on Even</button>
-        <button onClick={() => handleBetOption('odd')}>Bet on Odd</button>
-        <button onClick={() => handleBetOption('red')}>Bet on Red</button>
-        <button onClick={() => handleBetOption('black')}>Bet on Black</button>
-      </div>
-      <div>Bet Amount: {betAmount}</div>
 
-      <button onClick={spin}>Spin</button>
+      <button onClick={spin} disabled={isSpinning}>Spin</button>
+      
+      {/* Show the result only when showResult is true */}
+      {showResult && <div>El número ganador es {winningNumber}. Ganaste {calculatePayout(winningNumber)} fichas.</div>}
     </div>
   );
 };

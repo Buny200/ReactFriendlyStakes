@@ -1,11 +1,11 @@
 import React from 'react';
 import "../../css/PaymentError.css";
 
-const PaymentErrorPage = () => {
+const PaymentErrorPage = ({ language }) => {
   return (
     <div className="payment-error-container">
-      <h2>Error de pago</h2>
-      <p>Ha ocurrido un error durante el proceso de pago. Por favor, inténtalo de nuevo más tarde.</p>
+      <h2>{language === 'es' ? 'Error de pago' : 'Payment error'}</h2>
+      <p>{language === 'es' ? 'Ha ocurrido un error durante el proceso de pago. Por favor, inténtalo de nuevo más tarde.' : 'An error occurred during the payment process. Please try again later.'}</p>
     </div>
   );
 };

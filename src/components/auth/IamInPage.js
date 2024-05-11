@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "../../css/MyBetsPage.css";
 
-const IamInBetsPage = ({ updateUserBalance }) => {
+const IamInBetsPage = ({ updateUserBalance, language }) => {
   const [bets, setBets] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -34,7 +34,9 @@ const IamInBetsPage = ({ updateUserBalance }) => {
     } catch (error) {
       console.error("Error fetching bets:", error);
       setErrorMessage(
-        "Error al cargar las apuestas. Por favor, inténtalo de nuevo más tarde."
+        language === "es"
+          ? "Error al cargar las apuestas. Por favor, inténtalo de nuevo más tarde."
+          : "Error loading bets. Please try again later."
       );
     }
   };
@@ -68,8 +70,9 @@ const IamInBetsPage = ({ updateUserBalance }) => {
   };
 
   const handleWinnerSelection = (participantId) => {
-    const previousSelectedPlayerElement =
-      document.querySelector(".selected-player");
+    const previousSelectedPlayerElement = document.querySelector(
+      ".selected-player"
+    );
     if (previousSelectedPlayerElement) {
       previousSelectedPlayerElement.classList.remove("selected-player");
     }
@@ -104,7 +107,9 @@ const IamInBetsPage = ({ updateUserBalance }) => {
     } catch (error) {
       console.error("Error starting bet:", error);
       setErrorMessage(
-        "Error al iniciar la apuesta. Por favor, inténtalo de nuevo más tarde."
+        language === "es"
+          ? "Error al iniciar la apuesta. Por favor, inténtalo de nuevo más tarde."
+          : "Error starting the bet. Please try again later."
       );
     }
   };
@@ -119,7 +124,9 @@ const IamInBetsPage = ({ updateUserBalance }) => {
     } catch (error) {
       console.error("Error fetching bet details:", error);
       setErrorMessage(
-        "Error al cargar los detalles de la apuesta. Por favor, inténtalo de nuevo más tarde."
+        language === "es"
+          ? "Error al cargar los detalles de la apuesta. Por favor, inténtalo de nuevo más tarde."
+          : "Error loading bet details. Please try again later."
       );
     }
   };
@@ -133,17 +140,23 @@ const IamInBetsPage = ({ updateUserBalance }) => {
       await axios.post(
         `http://localhost:8080/api/bets/${userId}/leave/${betId}`
       );
-      fetchBets(); // Obtener las apuestas actualizadas después de salir de una apuesta
+      fetchBets();
       updateUserBalance();
       setSuccessMessages((prevState) => ({
         ...prevState,
         [betId]: true,
       }));
-      setLeaveBetMessage("Te has salido de la apuesta exitosamente.");
+      setLeaveBetMessage(
+        language === "es"
+          ? "Te has salido de la apuesta exitosamente."
+          : "You have successfully left the bet."
+      );
     } catch (error) {
       console.error("Error leaving bet:", error);
       setErrorMessage(
-        "Error al salir de la apuesta. Por favor, inténtalo de nuevo más tarde."
+        language === "es"
+          ? "Error al salir de la apuesta. Por favor, inténtalo de nuevo más tarde."
+          : "Error leaving the bet. Please try again later."
       );
     }
   };
@@ -152,33 +165,35 @@ const IamInBetsPage = ({ updateUserBalance }) => {
     try {
       if (!selectedWinner) {
         throw new Error(
-          "Por favor, selecciona un ganador antes de enviar los resultados."
+          language === "es"
+            ? "Por favor, selecciona un ganador antes de enviar los resultados."
+            : "Please select a winner before sending the results."
         );
       }
       const formData = new FormData();
       formData.append("winnerId", selectedWinner);
-      
+
       if (file1) {
         formData.append("file1", file1);
       }
       if (file2) {
         formData.append("file2", file2);
       }
-  
+
       const response = await axios.post(
         `http://localhost:8080/api/bets/${userId}/results/${betId}?winnerId=${selectedWinner}`,
         formData,
         {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-    );
+      );
       console.log(response);
       console.log("Resultados enviados para la apuesta:", betId);
       setResultsSent(true);
-      setShowPopup(false); // Cerrar el popup después de enviar los resultados
-      setSelectedWinner(null); // Reiniciar el estado del ganador seleccionado
+      setShowPopup(false);
+      setSelectedWinner(null);
 
       fetchBets();
       setSuccessMessages((prevState) => ({
@@ -188,23 +203,26 @@ const IamInBetsPage = ({ updateUserBalance }) => {
     } catch (error) {
       console.error("Error sending results:", error);
       setErrorMessage(
-        "Error al enviar los resultados. Por favor, inténtalo de nuevo más tarde."
+        language === "es"
+          ? "Error al enviar los resultados. Por favor, inténtalo de nuevo más tarde."
+          : "Error sending the results. Please try again later."
       );
     }
   };
 
   const handleSendResults = async (betId) => {
     try {
-      // Obtener los detalles de la apuesta, incluidos los participantes
       const response = await axios.get(
         `http://localhost:8080/api/bets/${betId}`
       );
       setSelectedBet(response.data);
-      setShowPopup(true); // Abrir el popup para seleccionar al ganador
+      setShowPopup(true);
     } catch (error) {
       console.error("Error sending results:", error);
       setErrorMessage(
-        "Error al enviar los resultados. Por favor, inténtalo de nuevo más tarde."
+        language === "es"
+          ? "Error al enviar los resultados. Por favor, inténtalo de nuevo más tarde."
+          : "Error sending the results. Please try again later."
       );
     }
   };
@@ -218,27 +236,34 @@ const IamInBetsPage = ({ updateUserBalance }) => {
       );
       if (response.data) {
         console.log("Apuesta cancelada:", betId);
-        fetchBets(); 
+        fetchBets();
         updateUserBalance();
         setSuccessMessages((prevState) => ({
           ...prevState,
-          [betId]: { cancelBet: true }, 
+          [betId]: { cancelBet: true },
         }));
-        setLeaveBetMessage("Has cancelado la apuesta correctamente."); 
+        setLeaveBetMessage(
+          language === "es"
+            ? "Has cancelado la apuesta correctamente."
+            : "You have successfully canceled the bet."
+        );
       } else {
         setErrorMessage(
-          "Hubo un problema al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde."
+          language === "es"
+            ? "Hubo un problema al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde."
+            : "There was a problem canceling the bet. Please try again later."
         );
       }
     } catch (error) {
       console.error("Error cancelling bet:", error);
       setErrorMessage(
-        "Error al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde."
+        language === "es"
+          ? "Error al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde."
+          : "Error canceling the bet. Please try again later."
       );
     }
   };
-  
-  
+
   const filterBets = (bet) => {
     if (filter === "ALL") {
       return true;
@@ -251,28 +276,48 @@ const IamInBetsPage = ({ updateUserBalance }) => {
     <div>
       {isLoggedIn ? (
         <>
-          <h2 className="title">Todas tus apuestas </h2>
+          <h2 className="title">
+            {language === "es" ? "Todas tus apuestas" : "All your bets"}
+          </h2>
           {errorMessage && <div className="error-message">{errorMessage}</div>}
           {bets.length === 0 ? (
             <div className="no-bets-message">
-              Todavía no participas en ninguna apuesta. ¡Anímate a hacer un
-              depósito y comienza a disfrutar!
+              {language === "es"
+                ? "Todavía no participas en ninguna apuesta. ¡Anímate a hacer un depósito y comienza a disfrutar!"
+                : "You are not participating in any bets yet. Make a deposit and start enjoying!"
+              }
             </div>
           ) : (
             <>
               <div className="filters-container">
                 <div className="filters">
-                  <span>Filtrar por estado:</span>
+                  <span>
+                    {language === "es"
+                      ? "Filtrar por estado:"
+                      : "Filter by status:"}
+                  </span>
                   <select
                     value={filter}
                     onChange={(e) => setFilter(e.target.value)}
                   >
-                    <option value="ALL">Todos</option>
-                    <option value="JOINING">Unirse</option>
-                    <option value="PENDING">Pendiente</option>
-                    <option value="PENDING_RESULTS">Pendiente</option>
-                    <option value="VERIFICATION">Verificación</option>
-                    <option value="FINISH">Finalizado</option>
+                    <option value="ALL">
+                      {language === "es" ? "Todos" : "All"}
+                    </option>
+                    <option value="JOINING">
+                      {language === "es" ? "Unirse" : "Joining"}
+                    </option>
+                    <option value="PENDING">
+                      {language === "es" ? "Pendiente" : "Pending"}
+                    </option>
+                    <option value="PENDING_RESULTS">
+                      {language === "es" ? "Pendiente" : "Pending"}
+                    </option>
+                    <option value="VERIFICATION">
+                      {language === "es" ? "Verificación" : "Verification"}
+                    </option>
+                    <option value="FINISH">
+                      {language === "es" ? "Finalizado" : "Finished"}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -286,19 +331,41 @@ const IamInBetsPage = ({ updateUserBalance }) => {
                     <div className="bet-info">
                       <div className="bet-title">
                         <span className="title-prefix">
-                          Título de la apuesta:{" "}
+                          {language === "es"
+                            ? "Título de la apuesta: "
+                            : "Bet title: "}
                         </span>
                         {bet.title}
                       </div>
                       <div className="bet-details">
-                        <p>Creador de la apuesta: {bet.creator.userNickname}</p>
                         <p>
-                          Fecha de inicio:{" "}
+                          {language === "es"
+                            ? "Creador de la apuesta: "
+                            : "Bet creator: "}
+                          {bet.creator.userNickname}
+                        </p>
+                        <p>
+                          {language === "es"
+                            ? "Fecha de inicio: "
+                            : "Start date: "}
                           {new Date(bet.startDate).toLocaleDateString()}
                         </p>
-                        <p>Cantidad de la apuesta: {bet.betAmount}</p>
-                        <p>Número de participantes: {bet.participantsNumber}</p>
-                        <p>Estado: {bet.status}</p>
+                        <p>
+                          {language === "es"
+                            ? "Cantidad de la apuesta: "
+                            : "Bet amount: "}
+                          {bet.betAmount}
+                        </p>
+                        <p>
+                          {language === "es"
+                            ? "Número de participantes: "
+                            : "Number of participants: "}
+                          {bet.participantsNumber}
+                        </p>
+                        <p>
+                          {language === "es" ? "Estado: " : "Status: "}
+                          {bet.status}
+                        </p>
                         {bet.status === "JOINING" && (
                           <>
                             {bet.creator.userId ===
@@ -315,7 +382,9 @@ const IamInBetsPage = ({ updateUserBalance }) => {
                                     );
                                   }}
                                 >
-                                  Comenzar Apuesta
+                                  {language === "es"
+                                    ? "Comenzar Apuesta"
+                                    : "Start Bet"}
                                 </button>
                                 <button
                                   className="cancel-button"
@@ -324,7 +393,9 @@ const IamInBetsPage = ({ updateUserBalance }) => {
                                     handleCancelBet(bet.betId);
                                   }}
                                 >
-                                  Cancelar Apuesta
+                                  {language === "es"
+                                    ? "Cancelar Apuesta"
+                                    : "Cancel Bet"}
                                 </button>
                               </>
                             ) : (
@@ -335,10 +406,14 @@ const IamInBetsPage = ({ updateUserBalance }) => {
                                     handleLeaveBet(bet.betId);
                                   }}
                                 >
-                                  Salir de la Apuesta
+                                  {language === "es"
+                                    ? "Salir de la Apuesta"
+                                    : "Leave Bet"}
                                 </button>
                                 <p className="wait-message">
-                                  Espera a que el creador inicie la apuesta
+                                  {language === "es"
+                                    ? "Espera a que el creador inicie la apuesta"
+                                    : "Wait for the creator to start the bet"}
                                 </p>
                               </>
                             )}
@@ -352,7 +427,9 @@ const IamInBetsPage = ({ updateUserBalance }) => {
                                 handleSendResults(bet.betId);
                               }}
                             >
-                              Enviar Resultados
+                              {language === "es"
+                                ? "Enviar Resultados"
+                                : "Send Results"}
                             </button>
                             {bet.creator.userId ===
                               parseInt(
@@ -365,7 +442,9 @@ const IamInBetsPage = ({ updateUserBalance }) => {
                                   handleCancelBet(bet.betId);
                                 }}
                               >
-                                Cancelar Apuesta
+                                {language === "es"
+                                  ? "Cancelar Apuesta"
+                                  : "Cancel Bet"}
                               </button>
                             )}
                           </>
@@ -373,19 +452,33 @@ const IamInBetsPage = ({ updateUserBalance }) => {
                         {successMessages[bet.betId] &&
                           successMessages[bet.betId].startBet && (
                             <div className="success-message">
-                              ¡La apuesta seleccionada se ha iniciado correctamente!
+                              {language === "es"
+                                ? "¡La apuesta seleccionada se ha iniciado correctamente!"
+                                : "The selected bet has been successfully started!"
+                              }
                             </div>
                           )}
                         {successMessages[bet.betId] &&
                           successMessages[bet.betId].sendResults && (
                             <div className="success-message">
-                              ¡Los resultados se han enviado correctamente!
+                              {language === "es"
+                                ? "¡Los resultados se han enviado correctamente!"
+                                : "Results have been sent successfully!"
+                              }
                             </div>
                           )}
-                          {leaveBetMessage && <div className="success-message">{leaveBetMessage}</div>}
-                          {successMessages[bet.betId] && successMessages[bet.betId].cancelBet && (
+                        {leaveBetMessage && (
+                          <div className="success-message">
+                            {leaveBetMessage}
+                          </div>
+                        )}
+                        {successMessages[bet.betId] &&
+                          successMessages[bet.betId].cancelBet && (
                             <div className="success-message">
-                              ¡Has cancelado la apuesta correctamente!
+                              {language === "es"
+                                ? "¡Has cancelado la apuesta correctamente!"
+                                : "You have successfully canceled the bet!"
+                              }
                             </div>
                           )}
                       </div>
@@ -409,7 +502,10 @@ const IamInBetsPage = ({ updateUserBalance }) => {
                   {"<"}
                 </button>
                 <span className="pagination-info">
-                  Página {currentPage} de {totalPages}
+                  {language === "es"
+                    ? `Página ${currentPage} de ${totalPages}`
+                    : `Page ${currentPage} of ${totalPages}`
+                  }
                 </span>
                 <button
                   className="pagination-arrow"
@@ -432,62 +528,15 @@ const IamInBetsPage = ({ updateUserBalance }) => {
       ) : (
         <div className="error-message">
           <Link to="/login" className="error-message-link">
-            No puedes acceder a esta sección sin iniciar sesión. Para disfrutar
-            de tus apuestas, inicia sesión y comienza a disfrutar de todo lo que
-            FRIENDLYSTAKES tiene para ofrecerte.
+            {language === "es"
+              ? "No puedes acceder a esta sección sin iniciar sesión. Para disfrutar de tus apuestas, inicia sesión ahora."
+              : "You can't access this section without logging in. Log in now to enjoy your bets."
+            }
           </Link>
-        </div>
-      )}
-      {showPopup && selectedBet && (
-        <div className="popup" onClick={handlePopupClose}>
-          <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
-            <h2>Detalles de la Apuesta</h2>
-            <p>Título: {selectedBet.title}</p>
-            <p>Creador: {selectedBet.creator.nickname}</p>
-            <p>
-              Fecha de inicio:{" "}
-              {new Date(selectedBet.startDate).toLocaleString()}
-            </p>
-            <p>Cantidad de la apuesta: {selectedBet.betAmount}</p>
-            <p>Número de participantes: {selectedBet.participantsNumber}</p>
-            <p>Estado: {selectedBet.status}</p>
-            <h3>Seleccionar Ganador</h3>
-            <ul>
-              {selectedBet.participantsList.map((participant) => (
-                <li
-                  key={participant.userId}
-                  id={`player-${participant.userId}`}
-                  onClick={() => handleWinnerSelection(participant.userId)}
-                >
-                  <button>{participant.nickname}</button>
-                </li>
-              ))}
-            </ul>
-            <h3>
-              Subir Archivos ,ten en cuenta que esto se va a subir a twitter,
-              son opcionales puedes no mandarlos
-            </h3>
-            {selectedBet.creator.userId ===
-              parseInt(window.sessionStorage.getItem("USER_ID")) && (
-              <>
-                <div>
-                  <input type="file" onChange={handleFile1Change} />
-                </div>
-                <div>
-                  <input type="file" onChange={handleFile2Change} />
-                </div>
-              </>
-            )}
-            <button
-              onClick={() => handleConfirmWinner(selectedBet.betId)}
-              disabled={!selectedWinner || resultsSent}
-            >
-              Enviar Resultados
-            </button>
-          </div>
         </div>
       )}
     </div>
   );
 };
+
 export default IamInBetsPage;

@@ -4,14 +4,15 @@ import BetHistoryPopup from "../auth/BetHistoryPopup";
 import TransactionHistoryPopup from "../auth/TransactionHistoryPopup";
 import { Link } from "react-router-dom";
 
-const Profile = () => {
+const Profile = ({ language }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [showVerificationPopup, setShowVerificationPopup] = useState(false);
   const [nickname, setNickname] = useState("");
   const [betHistory, setBetHistory] = useState(null);
   const [selectedSection, setSelectedSection] = useState("");
-  const [handleInfoForVerificationCalled, setHandleInfoForVerificationCalled] = useState(false);
+  const [handleInfoForVerificationCalled, setHandleInfoForVerificationCalled] =
+    useState(false);
 
   const [showBetHistoryPopup, setShowBetHistoryPopup] = useState(false);
   const [showSettingsPopup, setShowSettingsPopup] = useState(false);
@@ -268,27 +269,31 @@ const Profile = () => {
     if (selectedSection === "personal") {
       return (
         <div className="personal-info">
-          <h3 className="section-title">Información Personal</h3>
+          <h3 className="section-title">
+            {language === "es"
+              ? "Información Personal"
+              : "Personal Information"}
+          </h3>
           <table>
             <tbody>
               <tr>
-                <td>Email:</td>
+              <td>{language === "es" ? "Email:" : "Email:"}</td>
                 <td>{userInfo.email}</td>
               </tr>
               <tr>
-                <td>Nombre:</td>
+              <td>{language === "es" ? "Nombre:" : "Name:"}</td>
                 <td>{userInfo.name}</td>
               </tr>
               <tr>
-                <td>Apellido:</td>
+              <td>{language === "es" ? "Apellido:" : "Surname:"}</td>
                 <td>{userInfo.surname}</td>
               </tr>
               <tr>
-                <td>DNI:</td>
+              <td>{language === "es" ? "Dni:" : "ID number:"}</td>
                 <td>{userInfo.dni}</td>
               </tr>
               <tr>
-                <td>Contraseña:</td>
+                <td>{language === "es" ? "Contraseña:" : "Password:"}</td>
                 <td>******</td>
               </tr>
             </tbody>
@@ -298,43 +303,65 @@ const Profile = () => {
     } else if (selectedSection === "account") {
       return (
         <div className="account-info">
-          <h3 className="section-title">Información de Cuenta</h3>
+          <h3 className="section-title">
+            {language === "es"
+              ? "Información de Cuenta"
+              : "Account Information"}
+          </h3>
           <table>
             <tbody>
               {userInfo && (
                 <>
                   <tr>
-                    <td>Verificado:</td>
+                    <td>{language === "es" ? "Verificado:" : "Verified:"}</td>
                     <td>{userInfo.verified ? "Sí" : "No"}</td>
                   </tr>
                   <tr>
-                    <td>Total Apostado:</td>
+                    <td>
+                      {language === "es" ? "Total Apostado:" : "Total Wagered:"}
+                    </td>
                     <td>{userInfo.wagered}</td>
                   </tr>
                   <tr>
-                    <td>Ganancias o Pérdidas:</td>
+                    <td>
+                      {language === "es"
+                        ? "Ganancias o Pérdidas:"
+                        : "Earnings or Losses:"}
+                    </td>
                     <td>{userInfo.earningsLosses}</td>
                   </tr>
                   <tr>
-                    <td>Fecha de Creación:</td>
+                    <td>
+                      {language === "es"
+                        ? "Fecha de Creación:"
+                        : "Creation Date:"}
+                    </td>
                     <td>{userInfo.createdAt}</td>
                   </tr>
                   <tr>
-                    <td>Excluído:</td>
+                    <td>{language === "es" ? "Excluído:" : "Excluded:"}</td>
                     <td>{userInfo.excluded ? "Sí" : "No"}</td>
                   </tr>
                   {userInfo.excluded && (
                     <tr>
-                      <td>Fecha de Exclusión:</td>
+                      <td>
+                        {language === "es"
+                          ? "Fecha de Exclusión:"
+                          : "Exclusion Date:"}
+                      </td>
                       <td>{userInfo.exclusionDate}</td>
                     </tr>
                   )}
                   <tr>
-                    <td>Cuenta Habilitada:</td>
+                    <td>
+                      {language === "es"
+                        ? "Cuenta Habilitada:"
+                        : "Account Enabled:"}
+                    </td>
                     <td>{userInfo.enabled ? "Sí" : "No"}</td>
                   </tr>
                   <tr>
-                    <td>Saldo:</td>
+                    <td>{language === "es" ? "Saldo:" : "Balance:"}</td>
                     <td>{userInfo.balance}</td>
                   </tr>
                 </>
@@ -347,7 +374,9 @@ const Profile = () => {
       return (
         <div className="password-change-form">
           <form onSubmit={handleChangePasswordClick}>
-            <label htmlFor="email">Correo:</label>
+            <label htmlFor="email">
+              {language === "es" ? "Correo:" : "Email:"}
+            </label>
             <input
               type="email"
               id="email"
@@ -356,7 +385,9 @@ const Profile = () => {
               onChange={handleChange}
               required
             />
-            <label htmlFor="currentPassword">Contraseña Actual:</label>
+            <label htmlFor="currentPassword">
+              {language === "es" ? "Contraseña Actual:" : "Current Password:"}
+            </label>
             <input
               type="password"
               id="currentPassword"
@@ -365,7 +396,9 @@ const Profile = () => {
               onChange={handleChange}
               required
             />
-            <label htmlFor="newPassword">Nueva Contraseña:</label>
+            <label htmlFor="newPassword">
+              {language === "es" ? "Nueva Contraseña:" : "New Password:"}
+            </label>
             <input
               type="password"
               id="newPassword"
@@ -374,7 +407,9 @@ const Profile = () => {
               onChange={handleChange}
               required
             />
-            <button type="submit">Cambiar Contraseña</button>
+            <button type="submit">
+              {language === "es" ? "Cambiar Contraseña" : "Change Password"}
+            </button>
           </form>
         </div>
       );
@@ -383,11 +418,17 @@ const Profile = () => {
 
   return (
     <div className="profile-container">
-      <h2>Perfil de {nickname}</h2>
+      <h2>
+        {language === "es" ? `Perfil de ${nickname}` : `Profile of ${nickname}`}
+      </h2>
       <div className="profile-grid">
         <div className="profile-section" onClick={handleUserInfoClick}>
           <div className="section-wrapper">
-            <h3 className="section-title">Información Personal</h3>
+            <h3 className="section-title">
+              {language === "es"
+                ? "Información Personal"
+                : "Personal Information"}
+            </h3>
           </div>
         </div>
         <div className="profile-section">
@@ -395,7 +436,9 @@ const Profile = () => {
             className="section-wrapper"
             onClick={() => setShowBetHistoryPopup(true)}
           >
-            <h3 className="section-title">Historial de Apuestas</h3>
+            <h3 className="section-title">
+              {language === "es" ? "Historial de Apuestas" : "Bet History"}
+            </h3>
           </div>
         </div>
         <div className="profile-section">
@@ -407,7 +450,9 @@ const Profile = () => {
               setShowVerificationPopup(true);
             }}
           >
-            <h3 className="section-title">Verificar Cuenta</h3>
+            <h3 className="section-title">
+              {language === "es" ? "Verificar Cuenta" : "Verify Account"}
+            </h3>
           </div>
         </div>
         <div className="profile-section">
@@ -415,13 +460,19 @@ const Profile = () => {
             className="section-wrapper"
             onClick={() => setShowSettingsPopup(true)}
           >
-            <h3 className="section-title">Modificar Ajustes de Cuenta</h3>
+            <h3 className="section-title">
+              {language === "es"
+                ? "Modificar Ajustes de Cuenta"
+                : "Modify Account Settings"}
+            </h3>
           </div>
         </div>
         <div className="profile-section">
           <div className="section-wrapper">
             <Link to="/deposito">
-              <h3 className="section-title">Depositar</h3>
+              <h3 className="section-title">
+                {language === "es" ? "Depositar" : "Deposit"}
+              </h3>
             </Link>
           </div>
         </div>
@@ -430,7 +481,11 @@ const Profile = () => {
             className="section-wrapper"
             onClick={handleTransactionHistoryClick}
           >
-            <h3 className="section-title">Historial de Transacciones</h3>
+            <h3 className="section-title">
+              {language === "es"
+                ? "Historial de Transacciones"
+                : "Transaction History"}
+            </h3>
           </div>
           {showTransactionHistoryPopup && (
             <TransactionHistoryPopup
@@ -446,13 +501,17 @@ const Profile = () => {
             {betHistory !== null ? (
               <BetHistoryPopup betHistory={betHistory} />
             ) : (
-              <p>Cargando historial de apuestas...</p>
+              <p>
+                {language === "es"
+                  ? "Cargando historial de apuestas..."
+                  : "Loading bet history..."}
+              </p>
             )}
             <button
               className="popup-close-btn"
               onClick={() => setShowBetHistoryPopup(false)}
             >
-              Cerrar
+              {language === "es" ? "Cerrar" : "Close"}
             </button>
           </div>
         </div>
@@ -465,8 +524,9 @@ const Profile = () => {
                 <thead>
                   <tr>
                     <th colSpan="2">
-                      Bienvenido {userInfo.surname}, {userInfo.name} a tu perfil
-                      de FriendlyStakes
+                      {language === "es"
+                        ? `Bienvenido ${userInfo.surname}, ${userInfo.name} a tu perfil de FriendlyStakes`
+                        : `Welcome ${userInfo.surname}, ${userInfo.name} to your FriendlyStakes profile`}
                     </th>
                   </tr>
                 </thead>
@@ -479,7 +539,9 @@ const Profile = () => {
                           onClick={() => setSelectedSection("personal")}
                         >
                           <h3 className="section-title">
-                            Información Personal
+                            {language === "es"
+                              ? "Información Personal"
+                              : "Personal Information"}
                           </h3>
                         </div>
                         <div
@@ -487,14 +549,20 @@ const Profile = () => {
                           onClick={() => setSelectedSection("account")}
                         >
                           <h3 className="section-title">
-                            Información de Cuenta
+                            {language === "es"
+                              ? "Información de Cuenta"
+                              : "Account Information"}
                           </h3>
                         </div>
                         <div
                           className="section-wrapper"
                           onClick={() => setSelectedSection("password")}
                         >
-                          <h3 className="section-title">Cambiar Contraseña</h3>
+                          <h3 className="section-title">
+                            {language === "es"
+                              ? "Cambiar Contraseña"
+                              : "Change Password"}
+                          </h3>
                         </div>
                       </div>
                     </td>
@@ -507,34 +575,45 @@ const Profile = () => {
               className="popup-close-btn"
               onClick={() => setShowPopup(false)}
             >
-              Cerrar
+              {language === "es" ? "Cerrar" : "Close"}
             </button>
           </div>
         </div>
       )}
       {/* reenderizar la info del user */}
-      {showVerificationPopup &&  (
+      {showVerificationPopup && (
         <div className="popup">
           <div className="popup-content">
             {userInfo && userInfo.verified ? (
               <>
-                <h3>Proceso de Verificación Completo</h3>
+                <h3>
+                  {language === "es"
+                    ? "Proceso de Verificación Completo"
+                    : "Verification Process Complete"}
+                </h3>
                 <p>
-                  Disfruta de la experiencia de nuestra página web al 100% 🎉
+                  {language === "es"
+                    ? "Disfruta de la experiencia de nuestra página web al 100% 🎉"
+                    : "Enjoy the full experience of our website 🎉"}
                 </p>
               </>
             ) : (
               <>
-                <h3>Verificar Cuenta</h3>
+                <h3>
+                  {language === "es" ? "Verificar Cuenta" : "Verify Account"}
+                </h3>
                 <p>
-                  Por favor, adjunta los documentos necesarios para verificar tu
-                  cuenta. Esto puede tardar hasta 24 horas en procesarse.
+                  {language === "es"
+                    ? "Por favor, adjunta los documentos necesarios para verificar tu cuenta. Esto puede tardar hasta 24 horas en procesarse."
+                    : "Please attach the necessary documents to verify your account. This may take up to 24 hours to process."}
                 </p>
                 <form onSubmit={handleVerifyAccount}>
                   <div className="verification-docs">
                     <div className="doc-input">
                       <label htmlFor="documentFront">
-                        Documento de Identidad (DNI) - Cara:
+                        {language === "es"
+                          ? "Documento de Identidad (DNI) - Cara:"
+                          : "Identity Document (DNI) - Front:"}
                       </label>
                       <input
                         type="file"
@@ -546,7 +625,9 @@ const Profile = () => {
                     </div>
                     <div className="doc-input">
                       <label htmlFor="documentBack">
-                        Documento de Identidad (DNI) - Dorso:
+                        {language === "es"
+                          ? "Documento de Identidad (DNI) - Dorso:"
+                          : "Identity Document (DNI) - Back:"}
                       </label>
                       <input
                         type="file"
@@ -557,11 +638,16 @@ const Profile = () => {
                       />
                     </div>
                   </div>
-                  <button type="submit">Enviar Documentos</button>
+                  <button type="submit">
+                    {language === "es"
+                      ? "Enviar Documentos"
+                      : "Submit Documents"}
+                  </button>
                 </form>
                 <p>
-                  Nota: El proceso de verificación puede tardar hasta 24 horas
-                  en completarse.
+                  {language === "es"
+                    ? "Nota: El proceso de verificación puede tardar hasta 24 horas en completarse."
+                    : "Note: The verification process may take up to 24 hours to complete."}
                 </p>
               </>
             )}
@@ -569,7 +655,7 @@ const Profile = () => {
               className="popup-close-btn"
               onClick={() => setShowVerificationPopup(false)}
             >
-              Cerrar
+              {language === "es" ? "Cerrar" : "Close"}
             </button>
           </div>
         </div>
@@ -578,132 +664,96 @@ const Profile = () => {
         <div className="popup">
           <div className="popup-content">
             <h3>
-              Bienvenido {window.sessionStorage.getItem("SURNAME")},{" "}
-              {window.sessionStorage.getItem("NAME")}
+              {language === "es"
+                ? `Bienvenido ${window.sessionStorage.getItem(
+                    "SURNAME"
+                  )}, ${window.sessionStorage.getItem("NAME")}`
+                : `Welcome ${window.sessionStorage.getItem(
+                    "SURNAME"
+                  )}, ${window.sessionStorage.getItem("NAME")}`}
             </h3>
-            <div className="user-table">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                      {/* Secciones para Excluir Usuario y Deshabilitar Cuenta */}
-                      <div className="profile-section">
-                        <div
-                          className="section-wrapper"
-                          onClick={() => setSelectedSection("exclude")}
-                        >
-                          <h3
-                            className={`section-title ${
-                              selectedSection === "exclude" ? "selected" : ""
-                            }`}
-                          >
-                            Excluir Usuario
-                          </h3>
-                        </div>
-                      </div>
-                      <div className="profile-section">
-                        <div
-                          className="section-wrapper"
-                          onClick={() => setSelectedSection("disable")}
-                        >
-                          <h3
-                            className={`section-title ${
-                              selectedSection === "disable" ? "selected" : ""
-                            }`}
-                          >
-                            Deshabilitar Cuenta
-                          </h3>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      {/* Contenido de las secciones */}
-                      <div className="tab-content">
-                        {selectedSection === "exclude" && (
-                          <div className="form-section">
-                            <h4>Excluir Usuario</h4>
-                            <form
-                              onSubmit={handleExcludeUser}
-                              className="centered-form"
-                            >
-                              <p>
-                                NOTA: Cuando te excluyas de usar nuestros
-                                servicios no podrás usar nuestra página hasta
-                                que se cumpla el tiempo que hayas decidido
-                                abandonarnos.
-                              </p>
-                              <label htmlFor="exclusionDate">
-                                Fecha de Exclusión:
-                              </label>
-                              <input
-                                type="date"
-                                id="exclusionDate"
-                                name="exclusionDate"
-                                value={exclusionData.exclusionDate}
-                                onChange={handleExclusionDateChange}
-                                required
-                              />
-                              <button type="submit">Excluir</button>
-                            </form>
-                          </div>
-                        )}
-                        {selectedSection === "disable" && (
-                          <div className="form-section">
-                            <h4>Deshabilitar Cuenta</h4>
-                            <form
-                              onSubmit={handleDisableAccount}
-                              className="centered-form"
-                            >
-                              <p>
-                                ¿Estás seguro de que deseas deshabilitar tu
-                                cuenta? Esta acción no se puede deshacer.
-                              </p>
-                              <p>
-                                NOTA: Mantendremos sus datos en nuestra base de
-                                datos durante un intervalo de 30 Días, por
-                                razones de seguridad y cuando se cumpla,
-                                eliminaremos todos sus datos de forma
-                                irreversible.
-                              </p>
-                              <label htmlFor="confirmDisable">
-                                <input
-                                  type="checkbox"
-                                  id="confirmDisable"
-                                  checked={confirmDisable}
-                                  onChange={handleConfirmDisableChange}
-                                />
-                                Confirmar deshabilitación de cuenta
-                              </label>
-                              <button
-                                type="submit"
-                                disabled={!confirmDisable}
-                                className="disable-account-btn"
-                                style={{
-                                  backgroundColor: confirmDisable
-                                    ? "#007bff"
-                                    : "#ccc",
-                                  cursor: confirmDisable
-                                    ? "pointer"
-                                    : "not-allowed",
-                                  color: confirmDisable ? "#fff" : "#666",
-                                }}
-                              >
-                                Deshabilitar Cuenta
-                              </button>
-                            </form>
-                          </div>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div className="settings-form">
+              <div className="section-selector">
+                <button
+                  onClick={() => setSelectedSection("exclude")}
+                  className={selectedSection === "exclude" ? "active" : ""}
+                >
+                  {language === "es" ? "Excluirme" : "Exclude Myself"}
+                </button>
+                <button
+                  onClick={() => setSelectedSection("disable")}
+                  className={selectedSection === "disable" ? "active" : ""}
+                >
+                  {language === "es"
+                    ? "Deshabilitar Cuenta"
+                    : "Disable Account"}
+                </button>
+              </div>
+              {selectedSection === "exclude" && (
+                <form onSubmit={handleExcludeUser}>
+                  <label htmlFor="exclusionDate">
+                    {language === "es"
+                      ? "Fecha de Exclusión:"
+                      : "Exclusion Date:"}
+                  </label>
+                  <input
+                    type="date"
+                    id="exclusionDate"
+                    name="exclusionDate"
+                    value={exclusionData.exclusionDate}
+                    onChange={handleExclusionDateChange}
+                    required
+                  />
+                  <div className="confirm-checkbox">
+                    <input
+                      type="checkbox"
+                      id="confirmDisable"
+                      name="confirmDisable"
+                      checked={confirmDisable}
+                      onChange={handleConfirmDisableChange}
+                      required
+                    />
+                    <label htmlFor="confirmDisable">
+                      {language === "es"
+                        ? "Confirmo que deseo excluir mi cuenta."
+                        : "I confirm that I want to exclude my account."}
+                    </label>
+                  </div>
+                  <button type="submit" disabled={!confirmDisable}>
+                    {language === "es" ? "Excluir Cuenta" : "Exclude Account"}
+                  </button>
+                </form>
+              )}
+              {selectedSection === "disable" && (
+                <form onSubmit={handleDisableAccount}>
+                  <div className="confirm-checkbox">
+                    <input
+                      type="checkbox"
+                      id="confirmDisable"
+                      name="confirmDisable"
+                      checked={confirmDisable}
+                      onChange={handleConfirmDisableChange}
+                      required
+                    />
+                    <label htmlFor="confirmDisable">
+                      {language === "es"
+                        ? "Confirmo que deseo deshabilitar mi cuenta."
+                        : "I confirm that I want to disable my account."}
+                    </label>
+                  </div>
+                  <button type="submit" disabled={!confirmDisable}>
+                    {language === "es"
+                      ? "Deshabilitar Cuenta"
+                      : "Disable Account"}
+                  </button>
+                </form>
+              )}
             </div>
             <button
               className="popup-close-btn"
               onClick={() => setShowSettingsPopup(false)}
             >
-              Cerrar
+              {language === "es" ? "Cerrar" : "Close"}
             </button>
           </div>
         </div>
@@ -711,4 +761,5 @@ const Profile = () => {
     </div>
   );
 };
+
 export default Profile;

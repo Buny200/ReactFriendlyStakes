@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../../css/Keno.css";
 
-const Keno = ({ updateUserBalance }) => {
+const Keno = ({ updateUserBalance, language }) => {
   const [selectedNumbers, setSelectedNumbers] = useState([]);
   const [drawnNumbers, setDrawnNumbers] = useState([]);
   const [hits, setHits] = useState(0);
@@ -18,16 +19,15 @@ const Keno = ({ updateUserBalance }) => {
         return true;
       } else {
         setIsLoggedIn(false);
-        setErrorMessage("Debes iniciar sesión para crear una apuesta.");
+        setErrorMessage(language === 'es' ? "Debes iniciar sesión para crear una apuesta." : "You must log in to place a bet.");
         return false;
       }
     };
   
     checkLoggedIn();
     fetchUserBalance();
-  }, []);
+  }, [language]);
   
-
 
   const fetchUserBalance = async () => {
     try {
@@ -83,15 +83,15 @@ const Keno = ({ updateUserBalance }) => {
           }
         );
         if (!response.ok) {
-          throw new Error("Error al enviar los resultados al backend");
+          throw new Error(language === 'es' ? "Error al enviar los resultados al backend" : "Error sending results to backend");
         }
         updateUserBalance();
       } catch (error) {
         console.error("Error al enviar los resultados al backend:", error);
-        setErrorMessage("Error al enviar los resultados al backend");
+        setErrorMessage(language === 'es' ? "Error al enviar los resultados al backend" : "Error sending results to backend");
       }
     } else {
-      setErrorMessage("Ingrese una cantidad de apuesta válida.");
+      setErrorMessage(language === 'es' ? "Ingrese una cantidad de apuesta válida." : "Please enter a valid bet amount.");
     }
     updateUserBalance();
   };
@@ -133,9 +133,9 @@ const Keno = ({ updateUserBalance }) => {
 
   return (
     <div className="keno-game">
-      <h1>Keno</h1>
+      <h1>{language === 'es' ? 'Keno' : 'Keno'}</h1>
       <div className="number-selection">
-        <h2>Selecciona tus números (1-80):</h2>
+        <h2>{language === 'es' ? 'Selecciona tus números (1-80):' : 'Select your numbers (1-80):'}</h2>
         <div className="numbers">
           {[...Array(80).keys()].map((number) => (
             <button
@@ -153,17 +153,17 @@ const Keno = ({ updateUserBalance }) => {
           type="number"
           value={betAmount}
           onChange={handleBetAmountChange}
-          placeholder="Cantidad de apuesta"
+          placeholder={language === 'es' ? "Cantidad de apuesta" : "Bet amount"}
         />
         <button
           onClick={placeBet}
           disabled={!isLoggedIn || selectedNumbers.length !== 20}
         >
-          Apostar
+          {language === 'es' ? 'Apostar' : 'Bet'}
         </button>
         {selectedNumbers.length !== 20 && (
           <p className="error-message">
-            Debes seleccionar exactamente 20 números.
+            {language === 'es' ? 'Debes seleccionar exactamente 20 números.' : 'You must select exactly 20 numbers.'}
           </p>
         )}
         {errorMessage && <p className="error-message">{errorMessage}</p>}
@@ -171,12 +171,12 @@ const Keno = ({ updateUserBalance }) => {
       <div className="drawn-numbers">
         {drawnNumbers.length > 0 && (
           <>
-            <h2>Números sorteados:</h2>
+            <h2>{language === 'es' ? 'Números sorteados:' : 'Drawn numbers:'}</h2>
             <p>{drawnNumbers.join(", ")}</p>
           </>
         )}
-        <p>Aciertos: {hits}</p>
-        <p>Saldo actual: ${balance ? balance.toFixed(2) : '0.00'}</p>
+        <p>{language === 'es' ? 'Aciertos:' : 'Hits:'} {hits}</p>
+        <p>{language === 'es' ? 'Saldo actual:' : 'Current balance:'} ${balance ? balance.toFixed(2) : '0.00'}</p>
       </div>
     </div>
   );

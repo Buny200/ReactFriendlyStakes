@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../../css/ChatGlobal.css";
 
-function ChatGlobal() {
+function ChatGlobal({ language }) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,17 +22,17 @@ function ChatGlobal() {
           fetchChatHistory();
         } else {
           setIsLoggedIn(false);
-          setErrorMessage("Inicia sesión para enviar mensajes en el chat de asistencia.");
+          setErrorMessage(language === 'es' ? "Inicia sesión para enviar mensajes en el chat de asistencia." : "Log in to send messages in the support chat.");
         }
       } catch (error) {
         console.error("Error checking if user is logged in:", error);
         setIsLoggedIn(false);
-        setErrorMessage("Error al verificar el estado de inicio de sesión.");
+        setErrorMessage(language === 'es' ? "Error al verificar el estado de inicio de sesión." : "Error checking login status.");
       }
     };
   
     checkLoggedIn();
-  }, [userId]);
+  }, [userId, language]);
 
 
   useEffect(() => {
@@ -60,13 +60,13 @@ function ChatGlobal() {
 
   const sendMessage = async () => {
     if (!newMessage.trim()) {
-      setErrorMessage("No se permiten mensajes vacíos.");
+      setErrorMessage(language === 'es' ? "No se permiten mensajes vacíos." : "Empty messages are not allowed.");
       return;
     }
 
     if (isSending) {
       setErrorMessage(
-        "Por favor, espera unos segundos antes de enviar otro mensaje."
+        language === 'es' ? "Por favor, espera unos segundos antes de enviar otro mensaje." : "Please wait a few seconds before sending another message."
       );
       return;
     }
@@ -75,11 +75,11 @@ function ChatGlobal() {
       setIsSending(true);
       await axios.post("http://localhost:8080/messages/send", {
         senderId: userId,
-        messageText: newMessage.substring(0, 75), // Limita el mensaje a 50 caracteres
+        messageText: newMessage.substring(0, 75), // Limit message to 50 characters
       });
       setNewMessage("");
       setErrorMessage("");
-      setTimeout(() => setIsSending(false), 3000); // Configura el cooldown de 3 segundos
+      setTimeout(() => setIsSending(false), 3000); // Set 3-second cooldown
       fetchChatHistory();
     } catch (error) {
       console.error("Error sending message:", error);
@@ -106,11 +106,11 @@ function ChatGlobal() {
   return (
     <div className={`chat-global-container ${isMinimized ? "minimized" : ""}`}>
       <div className="chat-global-header" onClick={toggleMinimize}>
-        Chat Global
+        {language === 'es' ? "Chat Global" : "Global Chat"}
       </div>
       <div className="error-container">
         {" "}
-        {/* Contenedor para el mensaje de error */}
+        {/* Error message container */}
         {!isLoggedIn && <p className="error-message-chat">{errorMessage}</p>}
       </div>
       {!isMinimized && (
@@ -131,11 +131,11 @@ function ChatGlobal() {
                   type="text"
                   value={newMessage}
                   maxLength={75}
-                  placeholder="Type here to chat..."
+                  placeholder={language === 'es' ? "Escribe aquí para chatear..." : "Type here to chat..."}
                   onChange={(e) => setNewMessage(e.target.value)}
                 />
                 <button onClick={sendMessage} className="small-button">
-                  Enviar
+                  {language === 'es' ? "Enviar" : "Send"}
                 </button>
               </div>
             )}

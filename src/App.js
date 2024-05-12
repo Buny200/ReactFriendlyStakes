@@ -209,7 +209,6 @@ function App() {
                     )
                   }
                 />
-                {/* Agrega la ruta para la creación de apuestas */}
                 <Route
                   path="/custom-bets/create"
                   element={

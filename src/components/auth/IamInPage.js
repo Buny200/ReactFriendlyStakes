@@ -535,8 +535,56 @@ const IamInBetsPage = ({ updateUserBalance, language }) => {
           </Link>
         </div>
       )}
+      {showPopup && selectedBet && (
+        <div className="popup" onClick={handlePopupClose}>
+          <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
+            <h2>Detalles de la Apuesta</h2>
+            <p>Título: {selectedBet.title}</p>
+            <p>Creador: {selectedBet.creator.nickname}</p>
+            <p>
+              Fecha de inicio:{" "}
+              {new Date(selectedBet.startDate).toLocaleString()}
+            </p>
+            <p>Cantidad de la apuesta: {selectedBet.betAmount}</p>
+            <p>Número de participantes: {selectedBet.participantsNumber}</p>
+            <p>Estado: {selectedBet.status}</p>
+            <h3>Seleccionar Ganador</h3>
+            <ul>
+              {selectedBet.participantsList.map((participant) => (
+                <li
+                  key={participant.userId}
+                  id={`player-${participant.userId}`}
+                  onClick={() => handleWinnerSelection(participant.userId)}
+                >
+                  <button>{participant.nickname}</button>
+                </li>
+              ))}
+            </ul>
+            <h3>
+              Subir Archivos ,ten en cuenta que esto se va a subir a twitter,
+              son opcionales puedes no mandarlos
+            </h3>
+            {selectedBet.creator.userId ===
+              parseInt(window.sessionStorage.getItem("USER_ID")) && (
+              <>
+                <div>
+                  <input type="file" onChange={handleFile1Change} />
+                </div>
+                <div>
+                  <input type="file" onChange={handleFile2Change} />
+                </div>
+              </>
+            )}
+            <button
+              onClick={() => handleConfirmWinner(selectedBet.betId)}
+              disabled={!selectedWinner || resultsSent}
+            >
+              Enviar Resultados
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
-
 export default IamInBetsPage;

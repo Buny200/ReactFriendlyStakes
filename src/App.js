@@ -151,8 +151,9 @@ function App() {
               <ul className="nav-list">
                 {
                   <li className="nav-item">
-                    <Link to="/profile">
+                    <Link to="/profile" language={language}>
                       <img
+                        language={language}
                         src={userImage}
                         className="PersonSVG"
                         alt="Persona"
@@ -202,7 +203,7 @@ function App() {
                   path="/profile"
                   element={
                     loggedIn ? (
-                      <Profile />
+                      <Profile language={language}/>
                     ) : (
                       <Navigate to="/login" language={language} />
                     )

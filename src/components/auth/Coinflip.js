@@ -222,7 +222,8 @@ const Coinflip = ({ updateUserBalance, language }) => {
               <p>{language === 'es' ? "Color elegido por el creador:" : "Color chosen by the creator:"} {coinflip.colorCreator}</p>
               <p>{language === 'es' ? "Estado de la apuesta:" : "Bet Status:"} {coinflip.status}</p>
               {coinflip.creatorId && coinflip.resultWinner &&
-              <p>{language === 'es' ? "Resultado ganador:" : "Winning result:"} {language === 'es' ? `El ganador ha sido el ${coinflip.resultWinner <= 50 ? "Rojo" : "Blanco"}. Enhorabuena, ${coinflip.colorCreator === (coinflip.resultWinner <= 50 ? "Rojo" : "Blanco") ? coinflip.creatorId.nickname : coinflip.opponent.nickname}!!!!` : `The winner has been the ${coinflip.resultWinner <= 50 ? "Red" : "White"} side. Congratulations, ${coinflip.colorCreator === (coinflip.resultWinner <= 50 ? "Red" : "White") ? coinflip.creatorId.nickname : coinflip.opponent.nickname}!!!!`}</p>
+              <p>{language === 'es' ? "Resultado ganador:" : "Winning result:"} {language === 'es' ? `El ganador ha sido el ${coinflip.resultWinner <= 50 ? "Rojo" : "Blanco"}. Enhorabuena, ${coinflip.colorCreator.toLowerCase() === (coinflip.resultWinner <= 50 ? "red" : "white") ? coinflip.creatorId.nickname : coinflip.opponent.nickname}!!!!`
+               : `The winner has been the ${coinflip.resultWinner <= 50 ? "Red" : "White"} side. Congratulations, ${coinflip.colorCreator.toLowerCase() === (coinflip.resultWinner <= 50 ? "red" : "white") ? coinflip.creatorId.nickname : coinflip.opponent.nickname}!!!!`}</p>
               }
             </li>
           ))}

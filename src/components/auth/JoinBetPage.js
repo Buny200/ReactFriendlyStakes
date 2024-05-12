@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import "../../css/JoinBetPage.css";
 
-const JoinBetForm = ({ updateUserBalance }) => {
+const JoinBetForm = ({ updateUserBalance, language }) => {
   const { betId: defaultBetId } = useParams();
   const [betId, setBetId] = useState(defaultBetId ? parseInt(defaultBetId) : "");
   const [betPassword, setBetPassword] = useState("");
@@ -30,12 +30,12 @@ const JoinBetForm = ({ updateUserBalance }) => {
         method: 'GET'
       });
       if (!response.ok) {
-        throw new Error('Error al obtener el saldo del usuario');
+        throw new Error(language === 'es' ? 'Error al obtener el saldo del usuario' : 'Error getting user balance');
       }
       const data = await response.json();
       setUserBalance(data);
     } catch (error) {
-      console.error('Error al obtener el saldo del usuario:', error);
+      console.error('Error fetching user balance:', error);
       setError(error.message); // Manejar el error estableciendo el mensaje de error
     }
   };
@@ -47,7 +47,7 @@ const JoinBetForm = ({ updateUserBalance }) => {
       return true;
     } else {
       setIsLoggedIn(false);
-      setError("Por ahora no puedes acceder a estas funciones de nuestra web. Prueba a registrarte.");
+      setError(language === 'es' ? "Por ahora no puedes acceder a estas funciones de nuestra web. Prueba a registrarte." : "You cannot access these features of our website at the moment. Try registering.");
       return false;
     }
   };
@@ -60,7 +60,7 @@ const JoinBetForm = ({ updateUserBalance }) => {
 
     // Validar que el monto de la apuesta sea mayor que cero y no exceda el saldo del usuario
     if (betAmount <= 0 || betAmount > userBalance) {
-      setError("La cantidad de la apuesta debe ser mayor que cero y no exceder tu balance actual.");
+      setError(language === 'es' ? "La cantidad de la apuesta debe ser mayor que cero y no exceder tu balance actual." : "The bet amount must be greater than zero and not exceed your current balance.");
       return;
     }
 
@@ -91,11 +91,11 @@ const JoinBetForm = ({ updateUserBalance }) => {
 
   return (
     <div className="join-bet-form-container">
-      <h2>Unirse a una Apuesta</h2>
+      <h2>{language === 'es' ? 'Unirse a una Apuesta' : 'Join a Bet'}</h2>
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit} className="join-bet-form">
-        {success && <p className="success-message">¡Te has unido a la apuesta exitosamente!</p>}
-        <label htmlFor="betId">ID de la Apuesta:</label>
+        {success && <p className="success-message">{language === 'es' ? '¡Te has unido a la apuesta exitosamente!' : 'You have successfully joined the bet!'}</p>}
+        <label htmlFor="betId">{language === 'es' ? 'ID de la Apuesta:' : 'Bet ID:'}</label>
         <input
           type="number"
           id="betId"
@@ -104,7 +104,7 @@ const JoinBetForm = ({ updateUserBalance }) => {
           required
           disabled={!isLoggedIn} // Deshabilitar la entrada de datos si el usuario no está loggeado
         />
-        <label htmlFor="betPassword">Contraseña de la Apuesta:</label>
+        <label htmlFor="betPassword">{language === 'es' ? 'Contraseña de la Apuesta:' : 'Bet Password:'}</label>
         <input
           type="password"
           id="betPassword"
@@ -113,7 +113,7 @@ const JoinBetForm = ({ updateUserBalance }) => {
           required
           disabled={!isLoggedIn} // Deshabilitar la entrada de datos si el usuario no está loggeado
         />
-        <button type="submit" disabled={!isLoggedIn}>Unirse</button> {/* Deshabilitar el botón si el usuario no está loggeado */}
+        <button type="submit" disabled={!isLoggedIn}>{language === 'es' ? 'Unirse' : 'Join'}</button> {/* Deshabilitar el botón si el usuario no está loggeado */}
       </form>
     </div>
   );

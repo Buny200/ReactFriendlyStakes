@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../css/Blackjack.css";
 
-const BlackJack = ({ updateUserBalance }) => {
+const BlackJack = ({ updateUserBalance, language }) => {
   const [deck, setDeck] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
@@ -28,7 +28,7 @@ const BlackJack = ({ updateUserBalance }) => {
         return true;
       } else {
         setIsLoggedIn(false);
-        setErrorMessage("Debes iniciar sesión para crear una apuesta.");
+        setErrorMessage(language === "en" ? "You must log in to play." : "Debes iniciar sesión para jugar.");
         return false;
       }
     };
@@ -88,15 +88,15 @@ const finishGame = async () => {
         }
       );
       if (!response.ok) {
-        throw new Error("Error al enviar los resultados al backend");
+        throw new Error(language === "en" ? "Error sending results to backend" : "Error al enviar los resultados al backend");
       }
       updateUserBalance(); // Actualizar el balance después de la partida
     } else {
-      setErrorMessage("Ingrese una cantidad de apuesta válida.");
+      setErrorMessage(language === "en" ? "Enter a valid bet amount." : "Ingrese una cantidad de apuesta válida.");
     }
   } catch (error) {
-    console.error("Error al enviar los resultados al backend:", error);
-    setErrorMessage("Error al enviar los resultados al backend");
+    console.error("Error sending results to backend:", error);
+    setErrorMessage(language === "en" ? "Error sending results to backend" : "Error al enviar los resultados al backend");
   }
   updateUserBalance();
   fetchUserBalance(); // Actualizar el balance después de la partida
@@ -105,7 +105,7 @@ const finishGame = async () => {
 const startGame = () => {
   if (betAmount <= 0 || betAmount > balance) {
     setErrorMessage(
-      "La cantidad de la apuesta debe ser mayor que cero y no exceder tu balance actual."
+      language === "en" ? "Bet amount must be greater than zero and not exceed your current balance." : "La cantidad de la apuesta debe ser mayor que cero y no exceder tu balance actual."
     );
     return;
   }
@@ -159,7 +159,7 @@ const startGame = () => {
       setPlayerHand(newHand);
       if (calculateHandValue(newHand) > 21) {
         setGameOver(true);
-        setMessage("¡Te pasaste de 21! ¡Perdiste!");
+        setMessage(language === "en" ? "You busted! You lost!" : "¡Te pasaste de 21! ¡Perdiste!");
       }
     }
   };
@@ -176,11 +176,11 @@ const startGame = () => {
         (dealerValue > 21 && playerValue <= 21) ||
         playerValue > dealerValue
       ) {
-        setMessage("¡Ganaste!");
+        setMessage(language === "en" ? "You won!" : "¡Ganaste!");
       } else if (playerValue === dealerValue) {
-        setMessage("Empate");
+        setMessage(language === "en" ? "Draw" : "Empate");
       } else {
-        setMessage("¡Perdiste!");
+        setMessage(language === "en" ? "You lost!" : "¡Perdiste!");
       }
       setPlayerFinished(true);
       setPlayerStand(true);
@@ -227,9 +227,9 @@ const startGame = () => {
 
   return (
     <div className="blackjack-container">
-      <h1>Blackjack</h1>
+      <h1>{language === "en" ? "Blackjack" : "Blackjack"}</h1>
       <div>
-        <label htmlFor="betAmount">Cantidad de apuesta (Mínimo 0.5):</label>
+        <label htmlFor="betAmount">{language === "en" ? "Bet Amount (Minimum 0.5):" : "Cantidad de apuesta (Mínimo 0.5):"}</label>
         <input
           type="number"
           id="betAmount"
@@ -242,7 +242,7 @@ const startGame = () => {
       </div>
       <div className="hands">
         <div className="hand">
-          <h2>Jugador</h2>
+          <h2>{language === "en" ? "Player" : "Jugador"}</h2>
           {playerHand.map((card, index) => (
             <div key={index} className="card">
               {card.rank} {card.suit}
@@ -253,17 +253,17 @@ const startGame = () => {
             onClick={hit}
             disabled={gameOver || playerStand || playerFinished}
           >
-            Pedir Carta
+            {language === "en" ? "Hit" : "Pedir Carta"}
           </button>
           <button
             onClick={stand}
             disabled={gameOver || playerStand || playerFinished}
           >
-            Plantarse
+            {language === "en" ? "Stand" : "Plantarse"}
           </button>
         </div>
         <div className="hand">
-          <h2>Crupier</h2>
+          <h2>{language === "en" ? "Dealer" : "Crupier"}</h2>
           {dealerHand.map((card, index) => (
             <div key={index} className="card">
               {card.rank} {card.suit}
@@ -272,13 +272,13 @@ const startGame = () => {
         </div>
       </div>
       {!isLoggedIn && (
-        <div className="error-message">Debes iniciar sesión para jugar.</div>
+        <div className="error-message">{errorMessage}</div>
       )}
       <button
         onClick={startGame}
         disabled={!gameOver || !isLoggedIn || balance < betAmount}
       >
-        Iniciar Juego
+        {language === "en" ? "Start Game" : "Iniciar Juego"}
       </button>
     </div>
   );

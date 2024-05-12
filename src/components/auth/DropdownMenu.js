@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FiChevronDown } from "react-icons/fi";
 import "../../css/DropdownMenu.css";
 
-const DropdownMenu = () => {
+const DropdownMenu = ({ language }) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
@@ -17,33 +17,33 @@ const DropdownMenu = () => {
   return (
     <div className="dropdown">
       <button className="dropdown-toggle" onClick={toggleMenu}>
-        🎰 Apuestas Personalizadas <FiChevronDown />
+        {language === 'es' ? "🎰 Apuestas Personalizadas" : "🎰 Custom Bets"} <FiChevronDown />
       </button>
       {showMenu && (
         <ul className="dropdown-menu">
           <li>
             <Link to="/custom-bets/create" onClick={handleMenuItemClick}>
-              🎲 Crear apuesta
+              {language === 'es' ? "🎲 Crear apuesta" : "🎲 Create Bet"}
             </Link>
           </li>
           <li>
             <Link to="/custom-bets/join" onClick={handleMenuItemClick}>
-              🤝 Unirse a una apuesta
+              {language === 'es' ? "🤝 Unirse a una apuesta" : "🤝 Join a Bet"}
             </Link>
           </li>
           <li>
             <Link to="/custom-bets/all" onClick={handleMenuItemClick}>
-              🔍 Ver todas las apuestas
+              {language === 'es' ? "🔍 Ver todas las apuestas" : "🔍 View All Bets"}
             </Link>
           </li>
           <li>
             <Link to="/custom-bets/in" onClick={handleMenuItemClick}>
-              📝 Ver todas las apuestas en las que participo
+              {language === 'es' ? "📝 Ver todas las apuestas en las que participo" : "📝 View Bets I'm In"}
             </Link>
           </li>
           <li>
             <Link to="/custom-bets/created-by-me" onClick={handleMenuItemClick}>
-              📝 Ver creadas por mí
+              {language === 'es' ? "📝 Ver creadas por mí" : "📝 View Bets Created by Me"}
             </Link>
           </li>
         </ul>

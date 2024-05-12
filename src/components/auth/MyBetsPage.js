@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "../../css/MyBetsPage.css";
 
-const MyBetsPage = ({ updateUserBalance }) => {
+const MyBetsPage = ({ updateUserBalance, language }) => {
   const [bets, setBets] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -26,7 +26,7 @@ const MyBetsPage = ({ updateUserBalance }) => {
       setTotalPages(totalPages);
     } catch (error) {
       console.error("Error fetching bets:", error);
-      setErrorMessage("Error al cargar las apuestas. Por favor, inténtalo de nuevo más tarde.");
+      setErrorMessage(language === 'es' ? "Error al cargar las apuestas. Por favor, inténtalo de nuevo más tarde." : "Error fetching bets. Please try again later.");
     }
   };
 
@@ -57,7 +57,7 @@ const MyBetsPage = ({ updateUserBalance }) => {
       setShowPopup(true);
     } catch (error) {
       console.error("Error fetching bet details:", error);
-      setErrorMessage("Error al cargar los detalles de la apuesta. Por favor, inténtalo de nuevo más tarde.");
+      setErrorMessage(language === 'es' ? "Error al cargar los detalles de la apuesta. Por favor, inténtalo de nuevo más tarde." : "Error fetching bet details. Please try again later.");
     }
   };
 
@@ -84,16 +84,16 @@ const MyBetsPage = ({ updateUserBalance }) => {
       }));
     } catch (error) {
       console.error("Error starting bet:", error);
-      setErrorMessage("Error al iniciar la apuesta. Por favor, inténtalo de nuevo más tarde.");
+      setErrorMessage(language === 'es' ? "Error al iniciar la apuesta. Por favor, inténtalo de nuevo más tarde." : "Error starting bet. Please try again later.");
     }
   };
-  //FUNCTION ENVIAR RESULTADOS
+
   const handleSendResults = async (betId) => {
     try {
-      console.log("Resultados enviados para la apuesta:", betId);
+      console.log(language === 'es' ? "Resultados enviados para la apuesta:" : "Results sent for bet:", betId);
     } catch (error) {
       console.error("Error sending results:", error);
-      setErrorMessage("Error al enviar los resultados. Por favor, inténtalo de nuevo más tarde.");
+      setErrorMessage(language === 'es' ? "Error al enviar los resultados. Por favor, inténtalo de nuevo más tarde." : "Error sending results. Please try again later.");
     }
   };
 
@@ -101,15 +101,15 @@ const MyBetsPage = ({ updateUserBalance }) => {
     try {
       const response = await axios.delete(`http://localhost:8080/api/bets/${window.sessionStorage.getItem('USER_ID')}/delete/${betId}`);
       if (response.data) {
-        console.log("Apuesta cancelada:", betId);
-        fetchBets(); // Obtener las apuestas actualizadas después de cancelar una apuesta
+        console.log(language === 'es' ? "Apuesta cancelada:" : "Bet canceled:", betId);
+        fetchBets();
         updateUserBalance();
       } else {
-        setErrorMessage("Hubo un problema al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde.");
+        setErrorMessage(language === 'es' ? "Hubo un problema al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde." : "There was a problem canceling the bet. Please try again later.");
       }
     } catch (error) {
       console.error("Error cancelling bet:", error);
-      setErrorMessage("Error al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde.");
+      setErrorMessage(language === 'es' ? "Error al cancelar la apuesta. Por favor, inténtalo de nuevo más tarde." : "Error cancelling bet. Please try again later.");
     }
   };
 
@@ -125,21 +125,21 @@ const MyBetsPage = ({ updateUserBalance }) => {
     <div>
       {isLoggedIn ? (
         <>
-          <h2 className="title">Todas tus apuestas </h2>
+          <h2 className="title">{language === 'es' ? 'Todas tus apuestas' : 'All your bets'}</h2>
           {errorMessage && <div className="error-message">{errorMessage}</div>}
           {bets.length === 0 ? (
-            <div className="no-bets-message">Todavía no has creado ninguna apuesta. ¡Anímate a hacer un depósito y comienza a disfrutar!</div>
+            <div className="no-bets-message">{language === 'es' ? 'Todavía no has creado ninguna apuesta. ¡Anímate a hacer un depósito y comienza a disfrutar!' : 'You have not created any bets yet. Get started by making a deposit and start enjoying!'}</div>
           ) : (
             <>
               <div className="filters-container">
                 <div className="filters">
-                  <span>Filtrar por estado:</span>
+                  <span>{language === 'es' ? 'Filtrar por estado:' : 'Filter by status:'}</span>
                   <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-                    <option value="ALL">Todos</option>
-                    <option value="JOINING">Unirse</option>
-                    <option value="PENDING">Pendiente</option>
-                    <option value="VERIFICATION">Verificación</option>
-                    <option value="FINISH">Finalizado</option>
+                    <option value="ALL">{language === 'es' ? 'Todos' : 'All'}</option>
+                    <option value="JOINING">{language === 'es' ? 'Unirse' : 'Joining'}</option>
+                    <option value="PENDING">{language === 'es' ? 'Pendiente' : 'Pending'}</option>
+                    <option value="VERIFICATION">{language === 'es' ? 'Verificación' : 'Verification'}</option>
+                    <option value="FINISH">{language === 'es' ? 'Finalizado' : 'Finish'}</option>
                   </select>
                 </div>
               </div>
@@ -148,30 +148,30 @@ const MyBetsPage = ({ updateUserBalance }) => {
                   <li key={bet.betId} className="bet-item" onClick={() => handleBetClick(bet.betId)}>
                     <div className="bet-info">
                       <div className="bet-title">
-                        <span className="title-prefix">Título de la apuesta: </span>
+                        <span className="title-prefix">{language === 'es' ? 'Título de la apuesta:' : 'Bet title:'}</span>
                         {bet.title}
                       </div>
                       <div className="bet-details">
-                        <p>Creador: {bet.creator.userNickname}</p>
-                        <p>Fecha de inicio: {new Date(bet.startDate).toLocaleDateString()}</p>
-                        <p>Cantidad de la apuesta: {bet.betAmount}</p>
-                        <p>Número de participantes: {bet.participantsNumber}</p>
-                        <p>Estado: {bet.status}</p>
+                        <p>{language === 'es' ? 'Creador:' : 'Creator:'} {bet.creator.userNickname}</p>
+                        <p>{language === 'es' ? 'Fecha de inicio:' : 'Start date:'} {new Date(bet.startDate).toLocaleDateString()}</p>
+                        <p>{language === 'es' ? 'Cantidad de la apuesta:' : 'Bet amount:'} {bet.betAmount}</p>
+                        <p>{language === 'es' ? 'Número de participantes:' : 'Number of participants:'} {bet.participantsNumber}</p>
+                        <p>{language === 'es' ? 'Estado:' : 'Status:'} {bet.status}</p>
                         {bet.status === "JOINING" && (
                           <>
-                            <button onClick={(e) => { e.stopPropagation(); handleStartBet(window.sessionStorage.getItem('USER_ID'), bet.betId); }}>Comenzar Apuesta</button>
-                            <button className="cancel-button" onClick={(e) => { e.stopPropagation(); handleCancelBet(bet.betId); }}>Cancelar Apuesta</button>
+                            <button onClick={(e) => { e.stopPropagation(); handleStartBet(window.sessionStorage.getItem('USER_ID'), bet.betId); }}>{language === 'es' ? 'Comenzar Apuesta' : 'Start Bet'}</button>
+                            <button className="cancel-button" onClick={(e) => { e.stopPropagation(); handleCancelBet(bet.betId); }}>{language === 'es' ? 'Cancelar Apuesta' : 'Cancel Bet'}</button>
                           </>
                         )}
                         {bet.status === "PENDING" && (
                           <>
-                            <button onClick={(e) => { e.stopPropagation(); handleSendResults(bet.betId); }}>Enviar Resultados</button>
-                            <button className="cancel-button" onClick={(e) => { e.stopPropagation(); handleCancelBet(bet.betId); }}>Cancelar Apuesta</button>
+                            <button onClick={(e) => { e.stopPropagation(); handleSendResults(bet.betId); }}>{language === 'es' ? 'Enviar Resultados' : 'Send Results'}</button>
+                            <button className="cancel-button" onClick={(e) => { e.stopPropagation(); handleCancelBet(bet.betId); }}>{language === 'es' ? 'Cancelar Apuesta' : 'Cancel Bet'}</button>
                           </>
                         )}
                         {successMessages[bet.betId] && (
                           <div className="success-message">
-                            ¡La apuesta seleccionada se ha iniciado correctamente!
+                            {language === 'es' ? '¡La apuesta seleccionada se ha iniciado correctamente!' : 'The selected bet has been successfully started!'}
                           </div>
                         )}
                       </div>
@@ -195,7 +195,7 @@ const MyBetsPage = ({ updateUserBalance }) => {
                   {"<"}
                 </button>
                 <span className="pagination-info">
-                  Página {currentPage} de {totalPages}
+                  {language === 'es' ? `Página ${currentPage} de ${totalPages}` : `Page ${currentPage} of ${totalPages}`}
                 </span>
                 <button
                   className="pagination-arrow"
@@ -218,20 +218,20 @@ const MyBetsPage = ({ updateUserBalance }) => {
       ) : (
         <div className="error-message">
           <Link to="/login" className="error-message-link">
-            No puedes acceder a esta sección sin iniciar sesión. Para disfrutar de tus apuestas, inicia sesión y comienza a disfrutar de todo lo que FRIENDLYSTAKES tiene para ofrecerte.
+            {language === 'es' ? 'No puedes acceder a esta sección sin iniciar sesión. Para disfrutar de tus apuestas, inicia sesión y comienza a disfrutar de todo lo que FRIENDLYSTAKES tiene para ofrecerte.' : 'You cannot access this section without logging in. To enjoy your bets, log in and start enjoying everything that FRIENDLYSTAKES has to offer.'}
           </Link>
         </div>
       )}
       {showPopup && selectedBet && (
         <div className="popup" onClick={handlePopupClose}>
           <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
-            <h2>Detalles de la Apuesta</h2>
-            <p>Título: {selectedBet.title}</p>
-            <p>Creador: {selectedBet.creator.nickname}</p>
-            <p>Fecha de inicio: {new Date(selectedBet.startDate).toLocaleString()}</p>
-            <p>Cantidad de la apuesta: {selectedBet.betAmount}</p>
-            <p>Número de participantes: {selectedBet.participantsNumber}</p>
-            <p>Estado: {selectedBet.status}</p>
+            <h2>{language === 'es' ? 'Detalles de la Apuesta' : 'Bet Details'}</h2>
+            <p>{language === 'es' ? 'Título:' : 'Title:'} {selectedBet.title}</p>
+            <p>{language === 'es' ? 'Creador:' : 'Creator:'} {selectedBet.creator.nickname}</p>
+            <p>{language === 'es' ? 'Fecha de inicio:' : 'Start date:'} {new Date(selectedBet.startDate).toLocaleString()}</p>
+            <p>{language === 'es' ? 'Cantidad de la apuesta:' : 'Bet amount:'} {selectedBet.betAmount}</p>
+            <p>{language === 'es' ? 'Número de participantes:' : 'Number of participants:'} {selectedBet.participantsNumber}</p>
+            <p>{language === 'es' ? 'Estado:' : 'Status:'} {selectedBet.status}</p>
           </div>
         </div>
       )}

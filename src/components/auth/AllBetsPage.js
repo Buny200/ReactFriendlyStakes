@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../css/AllBetsPage.css";
 
-const AllBetsPage = () => {
+const AllBetsPage = ({ language }) => {
   const [bets, setBets] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [selectedBet, setSelectedBet] = useState(null); // Estado para almacenar la información de la apuesta seleccionada
-  const [showPopup, setShowPopup] = useState(false); // Estado para controlar la visibilidad del pop-up
+  const [selectedBet, setSelectedBet] = useState(null); 
+  const [showPopup, setShowPopup] = useState(false); 
   const betsPerPage = 10;
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const AllBetsPage = () => {
     try {
       const response = await axios.get(`http://localhost:8080/api/bets/${betId}`);
       setSelectedBet(response.data);
-      setShowPopup(true); // Muestra el pop-up después de obtener la información de la apuesta
+      setShowPopup(true); 
     } catch (error) {
       console.error("Error fetching bet details:", error);
     }
@@ -56,21 +56,21 @@ const AllBetsPage = () => {
 
   return (
     <div>
-      <h2 className="title">Todas las Apuestas Activas</h2>
+      <h2 className="title">{language === 'es' ? "Todas las Apuestas Activas" : "All Active Bets"}</h2>
       <ul className="bet-list">
         {currentBets.map((bet) => (
           <li key={bet.betId} className="bet-item" onClick={() => handleBetClick(bet.betId)}>
             <div className="bet-info">
               <div className="bet-title">
-                <span className="title-prefix">Título de la apuesta: </span>
+                <span className="title-prefix">{language === 'es' ? "Título de la apuesta: " : "Bet Title: "}</span>
                 {bet.title}
               </div>
               <div className="bet-details">
-                <p>Creador: {bet.creatorId.nickname}</p>
-                <p>Fecha de inicio: {new Date(bet.startDate).toLocaleDateString()}</p>
-                <p>Cantidad de la apuesta: {bet.betAmount}</p>
-                <p>Número de participantes: {bet.participantsNumber}</p>
-                <p>Estado: {bet.status}</p>
+                <p>{language === 'es' ? "Creador" : "Creator"}: {bet.creatorId.nickname}</p>
+                <p>{language === 'es' ? "Fecha de inicio" : "Start Date"}: {new Date(bet.startDate).toLocaleDateString()}</p>
+                <p>{language === 'es' ? "Cantidad de la apuesta" : "Bet Amount"}: {bet.betAmount}</p>
+                <p>{language === 'es' ? "Número de participantes" : "Participants Number"}: {bet.participantsNumber}</p>
+                <p>{language === 'es' ? "Estado" : "Status"}: {bet.status}</p>
               </div>
             </div>
           </li>
@@ -92,7 +92,7 @@ const AllBetsPage = () => {
           {"<"}
         </button>
         <span className="pagination-info">
-          Página {currentPage} de {totalPages}
+          {language === 'es' ? "Página" : "Page"} {currentPage} {language === 'es' ? "de" : "of"} {totalPages}
         </span>
         <button
           className="pagination-arrow"
@@ -112,13 +112,13 @@ const AllBetsPage = () => {
       {showPopup && selectedBet && (
         <div className="popup" onClick={handlePopupClose}>
           <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
-            <h2>Detalles de la Apuesta</h2>
-            <p>Título: {selectedBet.title}</p>
-            <p>Creador: {selectedBet.creator.nickname}</p>
-            <p>Fecha de inicio: {new Date(selectedBet.startDate).toLocaleString()}</p>
-            <p>Cantidad de la apuesta: {selectedBet.betAmount}</p>
-            <p>Número de participantes: {selectedBet.participantsNumber}</p>
-            <p>Estado: {selectedBet.status}</p>
+            <h2>{language === 'es' ? "Detalles de la Apuesta" : "Bet Details"}</h2>
+            <p>{language === 'es' ? "Título" : "Title"}: {selectedBet.title}</p>
+            <p>{language === 'es' ? "Creador" : "Creator"}: {selectedBet.creator.nickname}</p>
+            <p>{language === 'es' ? "Fecha de inicio" : "Start Date"}: {new Date(selectedBet.startDate).toLocaleString()}</p>
+            <p>{language === 'es' ? "Cantidad de la apuesta" : "Bet Amount"}: {selectedBet.betAmount}</p>
+            <p>{language === 'es' ? "Número de participantes" : "Participants Number"}: {selectedBet.participantsNumber}</p>
+            <p>{language === 'es' ? "Estado" : "Status"}: {selectedBet.status}</p>
           </div>
         </div>
       )}

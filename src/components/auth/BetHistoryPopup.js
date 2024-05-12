@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../css/BetHistoryPopup.css";
 
-const BetHistoryPopup = ({ betHistory }) => {
+const BetHistoryPopup = ({ betHistory, language }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const betsPerPage = 6;
 
@@ -23,16 +23,16 @@ const BetHistoryPopup = ({ betHistory }) => {
   return (
     <div className="bet-history-popup">
       <h3 className="popup-title">
-        Historial de Apuestas de {betHistory.nickname}
+        {language === 'es' ? `Historial de Apuestas de ${betHistory.nickname}` : `Bet History of ${betHistory.nickname}`}
       </h3>
       <table className="bet-table">
         <thead>
           <tr>
-            <th>Título</th>
-            <th>Fecha de Inicio</th>
-            <th>Cantidad de Apuesta</th>
-            <th>Número de Participantes</th>
-            <th>Estado</th>
+            <th>{language === 'es' ? 'Título' : 'Title'}</th>
+            <th>{language === 'es' ? 'Fecha de Inicio' : 'Start Date'}</th>
+            <th>{language === 'es' ? 'Cantidad de Apuesta' : 'Bet Amount'}</th>
+            <th>{language === 'es' ? 'Número de Participantes' : 'Number of Participants'}</th>
+            <th>{language === 'es' ? 'Estado' : 'Status'}</th>
           </tr>
         </thead>
         <tbody>
@@ -63,7 +63,7 @@ const BetHistoryPopup = ({ betHistory }) => {
           >
             {"<"}
           </button>
-          Página {currentPage} de {totalPages}
+          {language === 'es' ? `Página ${currentPage} de ${totalPages}` : `Page ${currentPage} of ${totalPages}`}
           <button
             className="pagination-arrow"
             onClick={() => handlePageChange(currentPage + 1)}

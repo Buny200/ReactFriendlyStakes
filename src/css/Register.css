@@ -1,10 +1,12 @@
 /* Register.css */
 body {
     background-color: #fff; /* Color de fondo del cuerpo de la página */
+    overflow-x: hidden; /* Oculta el desplazamiento horizontal */
 }
 
 .register-container {
-    width: 500px; /* Ancho del contenedor */
+    width: calc(100% - 80px); /* Ancho del contenedor, ajustado para el margen */
+    max-width: 500px; /* Ancho máximo del contenedor */
     margin: 50px auto; /* Margen superior e inferior automático, centrado horizontalmente */
     padding: 40px; /* Espaciado interno */
     border: 2px solid #292929; /* Color de borde */

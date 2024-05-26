@@ -19,26 +19,32 @@ const Keno = ({ updateUserBalance, language }) => {
         return true;
       } else {
         setIsLoggedIn(false);
-        setErrorMessage(language === 'es' ? "Debes iniciar sesión para crear una apuesta." : "You must log in to place a bet.");
+        setErrorMessage(
+          language === "es"
+            ? "Debes iniciar sesión para crear una apuesta."
+            : "You must log in to place a bet."
+        );
         return false;
       }
     };
-  
+
     checkLoggedIn();
     fetchUserBalance();
   }, [language]);
-  
 
   const fetchUserBalance = async () => {
     try {
       const userId = window.sessionStorage.getItem("USER_ID");
-      const response = await fetch(`http://localhost:8080/api/users/${userId}/balance`, {
-        method: 'GET'
-      });
+      const response = await fetch(
+        `http://localhost:8080/api/users/${userId}/balance`,
+        {
+          method: "GET",
+        }
+      );
       const data = await response.json();
       setUserBalance(data);
     } catch (error) {
-      console.error('Error fetching user balance:', error);
+      console.error("Error fetching user balance:", error);
     }
   };
 
@@ -83,15 +89,27 @@ const Keno = ({ updateUserBalance, language }) => {
           }
         );
         if (!response.ok) {
-          throw new Error(language === 'es' ? "Error al enviar los resultados al backend" : "Error sending results to backend");
+          throw new Error(
+            language === "es"
+              ? "Error al enviar los resultados al backend"
+              : "Error sending results to backend"
+          );
         }
         updateUserBalance();
       } catch (error) {
         console.error("Error al enviar los resultados al backend:", error);
-        setErrorMessage(language === 'es' ? "Error al enviar los resultados al backend" : "Error sending results to backend");
+        setErrorMessage(
+          language === "es"
+            ? "Error al enviar los resultados al backend"
+            : "Error sending results to backend"
+        );
       }
     } else {
-      setErrorMessage(language === 'es' ? "Ingrese una cantidad de apuesta válida." : "Please enter a valid bet amount.");
+      setErrorMessage(
+        language === "es"
+          ? "Ingrese una cantidad de apuesta válida."
+          : "Please enter a valid bet amount."
+      );
     }
     updateUserBalance();
   };
@@ -133,9 +151,13 @@ const Keno = ({ updateUserBalance, language }) => {
 
   return (
     <div className="keno-game">
-      <h1>{language === 'es' ? 'Keno' : 'Keno'}</h1>
+      <h1>{language === "es" ? "Keno" : "Keno"}</h1>
       <div className="number-selection">
-        <h2>{language === 'es' ? 'Selecciona tus números (1-80):' : 'Select your numbers (1-80):'}</h2>
+        <h2>
+          {language === "es"
+            ? "Selecciona tus números (1-80):"
+            : "Select your numbers (1-80):"}
+        </h2>
         <div className="numbers">
           {[...Array(80).keys()].map((number) => (
             <button
@@ -153,30 +175,40 @@ const Keno = ({ updateUserBalance, language }) => {
           type="number"
           value={betAmount}
           onChange={handleBetAmountChange}
-          placeholder={language === 'es' ? "Cantidad de apuesta" : "Bet amount"}
+          placeholder={language === "es" ? "Cantidad de apuesta" : "Bet amount"}
         />
         <button
           onClick={placeBet}
           disabled={!isLoggedIn || selectedNumbers.length !== 20}
         >
-          {language === 'es' ? 'Apostar' : 'Bet'}
+          {language === "es" ? "Apostar" : "Bet"}
         </button>
-        {selectedNumbers.length !== 20 && (
+        {isLoggedIn && selectedNumbers.length !== 20 && (
           <p className="error-message">
-            {language === 'es' ? 'Debes seleccionar exactamente 20 números.' : 'You must select exactly 20 numbers.'}
+            {language === "es"
+              ? "Debes seleccionar exactamente 20 números."
+              : "You must select exactly 20 numbers."}
           </p>
         )}
+
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>
       <div className="drawn-numbers">
         {drawnNumbers.length > 0 && (
           <>
-            <h2>{language === 'es' ? 'Números sorteados:' : 'Drawn numbers:'}</h2>
+            <h2>
+              {language === "es" ? "Números sorteados:" : "Drawn numbers:"}
+            </h2>
             <p>{drawnNumbers.join(", ")}</p>
           </>
         )}
-        <p>{language === 'es' ? 'Aciertos:' : 'Hits:'} {hits}</p>
-        <p>{language === 'es' ? 'Saldo actual:' : 'Current balance:'} ${balance ? balance.toFixed(2) : '0.00'}</p>
+        <p>
+          {language === "es" ? "Aciertos:" : "Hits:"} {hits}
+        </p>
+        <p>
+          {language === "es" ? "Saldo actual:" : "Current balance:"} $
+          {balance ? balance.toFixed(2) : "0.00"}
+        </p>
       </div>
     </div>
   );

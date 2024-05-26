@@ -1,12 +1,16 @@
+/* Estilos para el contenedor principal de la ruleta */
 .roulette-container {
   text-align: center;
+  font-family: Arial, sans-serif;
 }
 
+/* Estilos para el número ganador */
 .winner-number {
   font-weight: bold;
   color: green; /* Color del número ganador */
 }
 
+/* Estilos para la rueda de la ruleta */
 .roulette-wheel {
   position: relative;
   width: 400px;
@@ -18,28 +22,32 @@
   overflow: hidden;
 }
 
+/* Estilos para los números en la ruleta */
 .roulette-number {
   position: absolute;
-  width: 20px; /* Ajuste el ancho y alto según sea necesario para centrar los números */
-  height: 20px; /* Ajuste el ancho y alto según sea necesario para centrar los números */
-  line-height: 50px;
-  left: 185px;
-  top: 190px;
+  width: 30px; /* Ajuste el ancho y alto según sea necesario para centrar los números */
+  height: 30px; /* Ajuste el ancho y alto según sea necesario para centrar los números */
+  line-height: 30px; /* Igual al height para centrar el texto verticalmente */
+  left: 187px;
+  top: 187px;
   text-align: center;
   font-size: 16px;
   font-weight: bold;
   color: white; /* Color de los números */
+  border-radius: 50%; /* Forma circular */
 }
 
+/* Estilos para resaltar el número seleccionado */
 .roulette-number.highlighted {
   background-color: yellow; /* Color de fondo cuando el número está iluminado */
-
 }
 
+/* Estilos para resaltar el número ganador */
 .roulette-number.selected {
   background-color: cyan; /* Color de fondo del número seleccionado */
 }
 
+/* Estilos para la bola de la ruleta */
 .ball {
   position: absolute;
   width: 20px;
@@ -57,4 +65,82 @@ button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+}
+
+/* Nuevos estilos para la tabla de apuestas y botones */
+.betting-table {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+/* Estilos mejorados para los botones de apuesta */
+.betting-options button,
+.bet-button,
+.spin-button,
+.cancel-button {
+  width: 80px;
+  height: 40px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+/* Estilos para los botones de opciones de apuesta */
+.betting-options button {
+  margin: 0 10px;
+}
+
+/* Estilos para los botones de apuesta de números */
+.bet-button {
+  background-color: #5f9ea0; /* Turquesa */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilos para los botones de apuesta de colores */
+.bet-button.red {
+  background-color: #ff6347; /* Rojo coral */
+}
+
+.bet-button.black {
+  background-color: #000; /* Negro */
+}
+
+.bet-button.green {
+  background-color: #2e8b57; /* Verde mar oscuro */
+}
+
+/* Estilos para desactivar los botones mientras la ruleta está girando */
+.betting-options button[disabled],
+.bet-button[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Estilos para el campo de entrada de apuesta */
+.bet-input {
+  margin-top: 10px;
+}
+
+/* Estilos para el input de la apuesta */
+.bet-input input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Estilos para los botones de cancelar apuesta */
+.cancel-button {
+  background-color: #ff6347; /* Rojo coral */
+}
+.error-message {
+  color: #ff6347; /* Rojo coral */
+  margin-top: 5px;
 }

@@ -1,9 +1,15 @@
-
 .success-message {
   color: #28a745;
   font-size: 16px;
   margin-top: 10px;
 }
+
+.error-message {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
 .coinflip-container {
   max-width: 800px;
   margin: 0 auto;
@@ -64,6 +70,7 @@
   margin: 0 10px;
   font-size: 16px;
 }
+
 .coin-buttons button {
   border: none;
   background-color: blue; /* Color de fondo inicial */
@@ -80,13 +87,66 @@
 .coin-buttons button.selected {
   background-color: green; /* Color de fondo al pasar el mouse o cuando está seleccionado */
 }
-.error-message {
-  color: #dc3545;
-  font-size: 14px;
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.popup-close-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
   margin-top: 10px;
+}
+
+.popup-close-btn:hover {
+  background-color: #bd2130;
 }
 
 .possibility-message {
   margin-top: 20px;
   font-size: 14px;
+}
+/* Ajustar el ancho de los inputs de filtro */
+input[type="text"] {
+  width: calc(80% - 10px); /* Restar el ancho del botón de filtrar y un espacio de margen */
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Ajustar el ancho del botón de filtrar */
+.filter-button {
+  width: 20%;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.filter-button:hover {
+  background-color: #45a049;
 }

@@ -186,25 +186,27 @@ const Coinflip = ({ updateUserBalance, language }) => {
       <div className="bet-history">
         <h3>{language === 'es' ? "Historial de Apuestas" : "Bet History"}</h3>
         <div>
-          <label>{language === 'es' ? "Filtrar por estado:" : "Filter by status:"}</label>
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-            <option value="">{language === 'es' ? "Todos" : "All"}</option>
-            <option value="STARTED">{language === 'es' ? "Empezados" : "Started"}</option>
-            <option value="FINISHED">{language === 'es' ? "Finalizados" : "Finished"}</option>
-          </select>
-          <input
-            type="text"
-            placeholder={language === 'es' ? "Filtrar por creador" : "Filter by creator"}
-            value={creatorFilter}
-            onChange={(e) => setCreatorFilter(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder={language === 'es' ? "Filtrar por oponente" : "Filter by opponent"}
-            value={opponentFilter}
-            onChange={(e) => setOpponentFilter(e.target.value)}
-          />
-        </div>
+  <label>{language === 'es' ? "Filtrar por estado:" : "Filter by status:"}</label>
+  <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+    <option value="">{language === 'es' ? "Todos" : "All"}</option>
+    <option value="STARTED">{language === 'es' ? "Empezados" : "Started"}</option>
+    <option value="FINISHED">{language === 'es' ? "Finalizados" : "Finished"}</option>
+  </select>
+  <input
+    type="text"
+    placeholder={language === 'es' ? "Filtrar por creador" : "Filter by creator"}
+    value={creatorFilter}
+    onChange={(e) => setCreatorFilter(e.target.value)}
+  />
+  <input
+    type="text"
+    placeholder={language === 'es' ? "Filtrar por oponente" : "Filter by opponent"}
+    value={opponentFilter}
+    onChange={(e) => setOpponentFilter(e.target.value)}
+  />
+  <button className="filter-button">{language === 'es' ? "Filtrar" : "Filter"}</button>
+</div>
+
         <ul>
           {betHistory.map((coinflip) => (
             <li key={coinflip.coinflipId}>

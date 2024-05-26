@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "../../css/Keno.css";
 
 const Keno = ({ updateUserBalance, language }) => {
@@ -207,7 +206,8 @@ const Keno = ({ updateUserBalance, language }) => {
         </p>
         <p>
           {language === "es" ? "Saldo actual:" : "Current balance:"} $
-          {balance ? balance.toFixed(2) : "0.00"}
+          {typeof balance === 'number' ? balance.toFixed(2) : "0.00"}
+
         </p>
       </div>
     </div>

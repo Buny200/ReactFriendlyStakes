@@ -125,7 +125,12 @@ button {
 
 /* Estilos para el campo de entrada de apuesta */
 .bet-input {
+  width: 80px;
+  height: 40px;
+  font-size: 16px;
   margin-top: 10px;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Estilos para el input de la apuesta */
@@ -134,6 +139,8 @@ button {
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Estilos para los botones de cancelar apuesta */

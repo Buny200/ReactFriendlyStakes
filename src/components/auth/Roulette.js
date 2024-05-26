@@ -9,7 +9,6 @@ const europeanNumbers = [
 const Roulette = ({ updateUserBalance, language }) => {
   const [position, setPosition] = useState(0);
   const [betAmount, setBetAmount] = useState("");
-  const [selectedBet, setSelectedBet] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [highlightedNumber, setHighlightedNumber] = useState(null);
@@ -40,22 +39,39 @@ const Roulette = ({ updateUserBalance, language }) => {
     checkLoggedIn();
     fetchUserBalance();
   }, []);
-
   const fetchUserBalance = async () => {
     try {
       const userId = window.sessionStorage.getItem("USER_ID");
+      if (!userId) {
+        throw new Error("User ID not found in session storage");
+      }
+  
       const response = await fetch(
         `http://localhost:8080/api/users/${userId}/balance`,
         {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch user balance");
+      }
+  
       const data = await response.json();
-      setBalance(data);
+      console.log("Fetched user balance data:", data);
+      if (data && typeof data.balance === 'number') {
+        setBalance(data.balance);
+      } else {
+        throw new Error("Invalid data format");
+      }
     } catch (error) {
       console.error("Error fetching user balance:", error);
     }
   };
+  
 
   useEffect(() => {
     if (isSpinning && winningNumber !== null) {
@@ -248,7 +264,7 @@ const Roulette = ({ updateUserBalance, language }) => {
         {language === "en" ? "Total Money" : "Dinero Total"}: {balance}
       </div>
 
-      <button onClick={spin} disabled={isSpinning} className="spin-button">
+      <button onClick={spin} disabled={isSpinning || !isLoggedIn} className="spin-button">
         {language === "en" ? "Spin" : "Girar"}
       </button>
 

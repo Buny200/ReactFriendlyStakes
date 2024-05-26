@@ -28,7 +28,11 @@ const BlackJack = ({ updateUserBalance, language }) => {
         return true;
       } else {
         setIsLoggedIn(false);
-        setErrorMessage(language === "en" ? "You must log in to play." : "Debes iniciar sesión para jugar.");
+        setErrorMessage(
+          language === "en"
+            ? "You must log in to play."
+            : "Debes iniciar sesión para jugar."
+        );
         return false;
       }
     };
@@ -72,78 +76,92 @@ const BlackJack = ({ updateUserBalance, language }) => {
     }
   };
 
-const finishGame = async () => {
-  try {
-    if (betAmount > 0 && betAmount <= balance) {
-      const userId = window.sessionStorage.getItem("USER_ID");
-      const winnings = calculateWinnings(playerHand, dealerHand, betAmount);
-      const response = await fetch(
-        `http://localhost:8080/api/blackjack/place-bet/${userId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ betAmount, winnings }),
+  const finishGame = async () => {
+    try {
+      if (betAmount > 0 && betAmount <= balance) {
+        const userId = window.sessionStorage.getItem("USER_ID");
+        const winnings = calculateWinnings(playerHand, dealerHand, betAmount);
+        const response = await fetch(
+          `http://localhost:8080/api/blackjack/place-bet/${userId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ betAmount, winnings }),
+          }
+        );
+        if (!response.ok) {
+          throw new Error(
+            language === "en"
+              ? "Error sending results to backend"
+              : "Error al enviar los resultados al backend"
+          );
         }
-      );
-      if (!response.ok) {
-        throw new Error(language === "en" ? "Error sending results to backend" : "Error al enviar los resultados al backend");
+        updateUserBalance(); // Actualizar el balance después de la partida
+      } else {
+        setErrorMessage(
+          language === "en"
+            ? "Enter a valid bet amount."
+            : "Ingrese una cantidad de apuesta válida."
+        );
       }
-      updateUserBalance(); // Actualizar el balance después de la partida
-    } else {
-      setErrorMessage(language === "en" ? "Enter a valid bet amount." : "Ingrese una cantidad de apuesta válida.");
+    } catch (error) {
+      console.error("Error sending results to backend:", error);
+      setErrorMessage(
+        language === "en"
+          ? "Error sending results to backend"
+          : "Error al enviar los resultados al backend"
+      );
     }
-  } catch (error) {
-    console.error("Error sending results to backend:", error);
-    setErrorMessage(language === "en" ? "Error sending results to backend" : "Error al enviar los resultados al backend");
-  }
-  updateUserBalance();
-  fetchUserBalance(); // Actualizar el balance después de la partida
-};
+    updateUserBalance();
+    fetchUserBalance(); // Actualizar el balance después de la partida
+  };
 
-const startGame = () => {
-  if (betAmount <= 0 || betAmount > balance) {
-    setErrorMessage(
-      language === "en" ? "Bet amount must be greater than zero and not exceed your current balance." : "La cantidad de la apuesta debe ser mayor que cero y no exceder tu balance actual."
-    );
-    return;
-  }
-  fetchUserBalance(); // Actualizar el balance antes de iniciar el juego
-  if (gameOver) {
-    setMessage("");
-    setGameOver(false);
-    setPlayerHand([]);
-    setDealerHand([]);
-    setPlayerFinished(false);
-    setPlayerStand(false);
-    const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
-    const ranks = [
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "10",
-      "J",
-      "Q",
-      "K",
-      "A",
-    ];
-    const newDeck = [];
-    suits.forEach((suit) => {
-      ranks.forEach((rank) => {
-        newDeck.push({ rank: rank, suit: suit });
+  const startGame = () => {
+    if (betAmount <= 0 || betAmount > balance) {
+      setErrorMessage(
+        language === "en"
+          ? "Bet amount must be greater than zero and not exceed your current balance."
+          : "La cantidad de la apuesta debe ser mayor que cero y no exceder tu balance actual."
+      );
+      return;
+    }
+    fetchUserBalance(); // Actualizar el balance antes de iniciar el juego
+    if (gameOver) {
+      setMessage("");
+      setGameOver(false);
+      setPlayerHand([]);
+      setDealerHand([]);
+      setPlayerFinished(false);
+      setPlayerStand(false);
+      const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
+      const ranks = [
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "J",
+        "Q",
+        "K",
+        "A",
+      ];
+      const newDeck = [];
+      suits.forEach((suit) => {
+        ranks.forEach((rank) => {
+          newDeck.push({ rank: rank, suit: suit });
+        });
       });
-    });
-    setDeck(newDeck);
-    setPlayerHand(() => [dealCard(newDeck), dealCard(newDeck)]);
-    setDealerHand(() => [dealCard(newDeck), dealCard(newDeck)]);
-  }
-};
+      setDeck(newDeck);
+      setPlayerHand(() => [dealCard(newDeck), dealCard(newDeck)]);
+      setDealerHand(() => [dealCard(newDeck), dealCard(newDeck)]);
+    }
+  };
 
   const dealCard = (deck) => {
     const index = Math.floor(Math.random() * deck.length);
@@ -159,7 +177,11 @@ const startGame = () => {
       setPlayerHand(newHand);
       if (calculateHandValue(newHand) > 21) {
         setGameOver(true);
-        setMessage(language === "en" ? "You busted! You lost!" : "¡Te pasaste de 21! ¡Perdiste!");
+        setMessage(
+          language === "en"
+            ? "You busted! You lost!"
+            : "¡Te pasaste de 21! ¡Perdiste!"
+        );
       }
     }
   };
@@ -228,8 +250,12 @@ const startGame = () => {
   return (
     <div className="blackjack-container">
       <h1>{language === "en" ? "Blackjack" : "Blackjack"}</h1>
-      <div>
-        <label htmlFor="betAmount">{language === "en" ? "Bet Amount (Minimum 0.5):" : "Cantidad de apuesta (Mínimo 0.5):"}</label>
+      <div className="compact-input-container">
+        <label htmlFor="betAmount">
+          {language === "en"
+            ? "Bet Amount (Minimum 0.5):"
+            : "Cantidad de apuesta (Mínimo 0.5):"}
+        </label>
         <input
           type="number"
           id="betAmount"
@@ -240,6 +266,7 @@ const startGame = () => {
           onChange={handleBetChange}
         />
       </div>
+
       <div className="hands">
         <div className="hand">
           <h2>{language === "en" ? "Player" : "Jugador"}</h2>
@@ -271,9 +298,7 @@ const startGame = () => {
           ))}
         </div>
       </div>
-      {!isLoggedIn && (
-        <div className="error-message">{errorMessage}</div>
-      )}
+      {!isLoggedIn && <div className="error-message">{errorMessage}</div>}
       <button
         onClick={startGame}
         disabled={!gameOver || !isLoggedIn || balance < betAmount}

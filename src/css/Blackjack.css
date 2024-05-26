@@ -1,50 +1,108 @@
 .blackjack-container {
   text-align: center;
-  margin-top: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.blackjack-container h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.blackjack-container label {
+  font-size: 1.2rem;
+  color: #333;
 }
 
 .hands {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   margin-bottom: 20px;
 }
 
 .hand {
   margin: 0 10px;
+  text-align: center;
 }
 
 .card {
   display: inline-block;
-  border: 1px solid #000;
-  padding: 5px;
+  border: 1px solid #333;
+  padding: 10px;
   margin: 5px;
-  font-size: 16px;
+  font-size: 1.5rem;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 button {
-  margin: 5px;
+  margin: 10px;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 1.2rem;
   cursor: pointer;
   background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 5px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s;
 }
 
 button:hover {
   background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .message {
-  font-size: 20px;
+  font-size: 1.5rem;
   font-weight: bold;
-  color: red;
+  color: #d9534f;
   margin-top: 20px;
 }
 
 .error-message {
-  color: red;
+  color: #d9534f;
   margin-top: 10px;
+  font-size: 1.2rem;
+}
+
+input[type="number"] {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 80px;
+  text-align: center;
+  margin-left: 10px;
+}
+.compact-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.compact-input-container label {
+  font-size: 1rem;
+  margin-right: 10px;
+}
+
+.compact-input-container input {
+  padding: 5px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 60px;
+  text-align: center;
 }

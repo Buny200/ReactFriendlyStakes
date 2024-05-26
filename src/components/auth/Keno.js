@@ -183,14 +183,12 @@ const Keno = ({ updateUserBalance, language }) => {
           {language === "es" ? "Apostar" : "Bet"}
         </button>
         {isLoggedIn && selectedNumbers.length !== 20 && (
-          <p className="error-message">
+          <div className="error-message">
             {language === "es"
               ? "Debes seleccionar exactamente 20 números."
               : "You must select exactly 20 numbers."}
-          </p>
+          </div>
         )}
-
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>
       <div className="drawn-numbers">
         {drawnNumbers.length > 0 && (

@@ -1,6 +1,6 @@
 
 .container {
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ccc;
@@ -50,6 +50,11 @@ input[type="password"]:disabled {
   border-radius: 5px;
   cursor: pointer;
 }
+#betPassword {
+align-self: start;
+width: 450px;
+}
+
 
 .submit-button:disabled {
   background-color: #ccc; /* Cambia el color de fondo cuando está desactivado */

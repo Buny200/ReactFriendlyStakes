@@ -1,5 +1,5 @@
 .join-bet-form-container {
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ccc;
@@ -17,11 +17,13 @@
   color: #ff0000;
   font-weight: bold;
   transform: translateX(-50%) translateY(-150%);
-  width: 50%; /* Ancho del contenedor */
+  width: 10%; /* Ancho del contenedor */
   padding: 20px; /* Ajustar el tamaño del contenedor */
   background-color: #ffeeee; /* Cambiar el color de fondo */
   border: 2px solid #ff0000; /* Añadir borde */
   border-radius: 5px; /* Añadir bordes redondeados */
+  padding: 10px; /* Reducir el espacio interno */
+
 }
 
 

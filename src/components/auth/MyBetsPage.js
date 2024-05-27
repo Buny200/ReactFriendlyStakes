@@ -217,10 +217,10 @@ const MyBetsPage = ({ updateUserBalance, language }) => {
         </>
       ) : (
         <div className="error-message">
-          <Link to="/login" className="error-message-link">
+          <Link to="/login" className="error-message-link">      
           {language === "es"
-              ? "No puedes acceder a esta sección sin iniciar sesión. Para disfrutar de tus apuestas, inicia sesión ahora."
-              : "You can't access this section without logging in. Log in now to enjoy your bets."}          </Link>
+              ? "Debes iniciar sesión para jugar." : "You must log in to play."} 
+          </Link>
         </div>
       )}
       {showPopup && selectedBet && (

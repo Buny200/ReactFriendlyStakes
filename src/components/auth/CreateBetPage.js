@@ -105,11 +105,13 @@ const CreateBetForm = ({ updateUserBalance, language }) => {
   return (
     <div className="container">
       <h1 className="title">{language === 'es' ? "Crear Apuesta" : "Create Bet"}</h1>
-      { errorMessage && (
-        <div className="error-message">
-          {errorMessage}
-        </div>
-      )}
+    
+        { errorMessage && (
+          <div className="error-message">
+            {errorMessage}
+          </div>
+        )}
+      
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="title">{language === 'es' ? "Título:" : "Title:"}</label>

@@ -47,7 +47,7 @@ const JoinBetForm = ({ updateUserBalance, language }) => {
       return true;
     } else {
       setIsLoggedIn(false);
-      setError(language === 'es' ? "Por ahora no puedes acceder a estas funciones de nuestra web. Prueba a registrarte." : "You cannot access these features of our website at the moment. Try registering.");
+      setError(language === 'es' ? "Debes iniciar sesión para jugar." : "You must log in to play.");
       return false;
     }
   };

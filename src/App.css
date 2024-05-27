@@ -109,3 +109,25 @@
 .nav-item-button:hover {
   background-color: forestgreen;
 }
+/* App.css */
+
+/* Estilos para el footer */
+.footer {
+  position: fixed; /* Posición fija */
+  bottom: 0; /* Colocar en la parte inferior */
+  width: 100%; /* Ancho completo */
+  background-color: #292929; /* Color de fondo para el footer */
+  color: #fff; /* Color de texto para el footer */
+  padding: 20px; /* Espaciado interno */
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-item {
+  margin-right: 50px; /* Espacio entre elementos del footer */
+  align-items: center;
+}

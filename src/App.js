@@ -28,6 +28,7 @@ import userImage from "../src/photos/usuario.png";
 import logoutImage from "../src/photos/logout.png";
 import spainFlag from "../src/photos/spain-flag.png";
 import ukFlag from "../src/photos/uk-flag.png";
+import X from "../src/photos/X.jpg";
 import CreateBetPage from "./components/auth/CreateBetPage.js";
 import Roulette from "./components/auth/Roulette";
 import Coinflip from "./components/auth/Coinflip.js";
@@ -323,6 +324,24 @@ function App() {
             <ChatGlobal />
             <AssistanceChat />
           </div>
+          <footer className="footer">
+            <div className="footer-content">
+              <div className="footer-item">
+                Dirección: C. de Jarque de Moncayo, 10, 50012 Zaragoza
+              </div>
+              <div className="footer-item">
+                <a href="https://x.com/FStakes13015" target="_blank" rel="noopener noreferrer">
+                <img src={X} alt="Twitter" style={{ width: "30px", height: "auto" }} />
+                </a>
+              </div>
+              <div className="footer-item">
+                Correo electrónico: victorinlamuela@gmail.com
+              </div>
+              <div className="footer-item">
+                © 2024 Victor Heredia Lamuela
+              </div>
+            </div>
+          </footer>
         </div>
       </LanguageProvider>
     </Router>

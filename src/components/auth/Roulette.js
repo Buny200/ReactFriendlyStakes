@@ -17,6 +17,8 @@ const Roulette = ({ updateUserBalance, language }) => {
   const [currentBets, setCurrentBets] = useState([]); // Estado para rastrear las apuestas actuales
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [balance, setBalance] = useState(null);
+  const [totalPayout, setTotalPayout] = useState(null);
+
   const userId = window.sessionStorage.getItem("USER_ID");
 
   useEffect(() => {
@@ -39,13 +41,14 @@ const Roulette = ({ updateUserBalance, language }) => {
     checkLoggedIn();
     fetchUserBalance();
   }, []);
+
   const fetchUserBalance = async () => {
     try {
       const userId = window.sessionStorage.getItem("USER_ID");
       if (!userId) {
         throw new Error("User ID not found in session storage");
       }
-  
+
       const response = await fetch(
         `http://localhost:8080/api/users/${userId}/balance`,
         {
@@ -55,23 +58,18 @@ const Roulette = ({ updateUserBalance, language }) => {
           },
         }
       );
-  
+
       if (!response.ok) {
         throw new Error("Failed to fetch user balance");
       }
-  
+
       const data = await response.json();
+      setBalance(data);
       console.log("Fetched user balance data:", data);
-      if (data && typeof data.balance === 'number') {
-        setBalance(data.balance);
-      } else {
-        throw new Error("Invalid data format");
-      }
     } catch (error) {
       console.error("Error fetching user balance:", error);
     }
   };
-  
 
   useEffect(() => {
     if (isSpinning && winningNumber !== null) {
@@ -148,23 +146,26 @@ const Roulette = ({ updateUserBalance, language }) => {
   };
 
   const calculatePayout = (result) => {
-    let payout = 0;
+    let totalPayout = 0;
     currentBets.forEach((bet) => {
+      let payout = 0;
       if (bet.type === "number" && result === bet.value) {
-        payout += bet.amount * 35;
+        payout = bet.amount * 35;
       } else if (bet.type === "even" && result !== 0 && result % 2 === 0) {
-        payout += bet.amount * 2;
+        payout = bet.amount * 2;
       } else if (bet.type === "odd" && result % 2 !== 0) {
-        payout += bet.amount * 2;
+        payout = bet.amount * 2;
       } else if (bet.type === "red" && isRedNumber(result)) {
-        payout += bet.amount * 2;
+        payout = bet.amount * 2;
       } else if (bet.type === "black" && isBlackNumber(result)) {
-        payout += bet.amount * 2;
+        payout = bet.amount * 2;
       }
+      totalPayout += payout;
     });
-    return payout;
+    setTotalPayout(totalPayout);
+    return totalPayout;
   };
-
+  
   const isRedNumber = (number) => {
     const redNumbers = [
       1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36,
@@ -232,9 +233,9 @@ const Roulette = ({ updateUserBalance, language }) => {
             (index % 2 === 0 && index >= 19 && index <= 28) ||
             (index % 2 !== 0 && index >= 29 && index <= 36)
           ) {
-            color = "red";
-          } else {
             color = "black";
+          } else {
+            color = "red";
           }
           return (
             <div
@@ -263,8 +264,11 @@ const Roulette = ({ updateUserBalance, language }) => {
       <div>
         {language === "en" ? "Total Money" : "Dinero Total"}: {balance}
       </div>
-
-      <button onClick={spin} disabled={isSpinning || !isLoggedIn} className="spin-button">
+      <button
+        onClick={spin}
+        disabled={isSpinning || !isLoggedIn || currentBets.length === 0}
+        className="spin-button"
+      >
         {language === "en" ? "Spin" : "Girar"}
       </button>
 
@@ -277,27 +281,38 @@ const Roulette = ({ updateUserBalance, language }) => {
               number === 0 ? "green" : isRedNumber(number) ? "red" : "black"
             }`}
             onClick={() => handleBet("number", number)}
+            disabled={isSpinning || !isLoggedIn}
           >
             {number}
           </div>
         ))}
       </div>
-
       <div className="betting-options">
-        <button onClick={() => handleBet("even", null)}>
+        <button
+          onClick={() => handleBet("even", null)}
+          disabled={isSpinning || !isLoggedIn}
+        >
           {language === "en" ? "Even" : "Par"}
         </button>
-        <button onClick={() => handleBet("odd", null)}>
+        <button
+          onClick={() => handleBet("odd", null)}
+          disabled={isSpinning || !isLoggedIn}
+        >
           {language === "en" ? "Odd" : "Impar"}
         </button>
-        <button onClick={() => handleBet("red", null)}>
+        <button
+          onClick={() => handleBet("red", null)}
+          disabled={isSpinning || !isLoggedIn}
+        >
           {language === "en" ? "Red" : "Rojo"}
         </button>
-        <button onClick={() => handleBet("black", null)}>
+        <button
+          onClick={() => handleBet("black", null)}
+          disabled={isSpinning || !isLoggedIn}
+        >
           {language === "en" ? "Black" : "Negro"}
         </button>
       </div>
-
       <div className="bet-input">
         <input
           type="number"
@@ -308,6 +323,7 @@ const Roulette = ({ updateUserBalance, language }) => {
           }}
           placeholder="Enter bet amount"
           min="1"
+          disabled={isSpinning || !isLoggedIn}
         />
       </div>
 
@@ -315,15 +331,16 @@ const Roulette = ({ updateUserBalance, language }) => {
         <div className="result">
           {language === "en" ? "The winning number is" : "El número ganador es"}{" "}
           {winningNumber}. {language === "en" ? "You won" : "Ganaste"}{" "}
-          {calculatePayout(winningNumber)}{" "}
+          {totalPayout}{" "}
           {language === "en" ? "chips." : "fichas."}
         </div>
       )}
-
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      {errorMessage && (
+        <div className="error-message-custom">{errorMessage}</div>
+      )}
       <div>
         <h3>{language === "en" ? "Current Bets" : "Apuestas Actuales"}</h3>
-        <table>
+        <table className="current-bets-custom">
           <thead>
             <tr>
               <th>{language === "en" ? "Bet Type" : "Tipo de Apuesta"}</th>
@@ -340,8 +357,9 @@ const Roulette = ({ updateUserBalance, language }) => {
                 <td>{bet.amount}</td>
                 <td>
                   <button
-                    className="cancel-button"
+                    className="cancel-button-custom"
                     onClick={() => cancelBet(index)}
+                    disabled={isSpinning}
                   >
                     {language === "en" ? "Cancel" : "Cancelar"}
                   </button>

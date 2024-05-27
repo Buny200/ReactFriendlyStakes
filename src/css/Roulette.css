@@ -61,8 +61,9 @@
 }
 
 button {
-  margin: 5px;
-  padding: 10px 20px;
+  margin: 4px;
+  margin-bottom: 4px;
+  padding: 5px 15px;
   font-size: 16px;
   cursor: pointer;
 }
@@ -74,7 +75,22 @@ button {
   gap: 5px;
   margin-bottom: 20px;
 }
+.spin-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #5f9ea0; 
+  color: white;
+  transition: background-color 0.3s ease;
+}
 
+/* Estilos para desactivar el botón mientras la ruleta está girando */
+.spin-button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
 /* Estilos mejorados para los botones de apuesta */
 .betting-options button,
 .bet-button,
@@ -107,6 +123,11 @@ button {
 .bet-button.red {
   background-color: #ff6347; /* Rojo coral */
 }
+.result {
+  margin-top: 10px; /* Ajusta el margen superior según sea necesario */
+  padding: 10px; /* Añade relleno para separar el contenido del borde */
+  border-radius: 5px; /* Agrega bordes redondeados para un aspecto más suave */
+}
 
 .bet-button.black {
   background-color: #000; /* Negro */
@@ -122,34 +143,73 @@ button {
   opacity: 0.5;
   pointer-events: none;
 }
-
-/* Estilos para el campo de entrada de apuesta */
 .bet-input {
-  width: 80px;
-  height: 40px;
-  font-size: 16px;
-  margin-top: 10px;
+  display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 10px;
+  width: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 840%);
 }
+
+
 
 /* Estilos para el input de la apuesta */
 .bet-input input {
-  padding: 8px;
-  font-size: 14px;
+  padding: 4px 6px; /* Reducir el padding para reducir el tamaño del input */
+  font-size: 12px; /* Reducir el tamaño de fuente */
   border: 1px solid #ccc;
   border-radius: 4px;
-  align-items: center;
-  justify-content: center;
+  width: 100px; /* Reducir el ancho */
+  text-align: center; /* Centrar el texto horizontalmente */
 }
-
 /* Estilos para los botones de cancelar apuesta */
-.cancel-button {
+/* Estilos para el botón de cancelar apuesta personalizado */
+/* Estilos para el botón de cancelar apuesta personalizado */
+/* Estilos para el botón de cancelar apuesta personalizado */
+.cancel-button-custom {
   background-color: #ff6347; /* Rojo coral */
+  padding: 5px 10px; /* Ajustar el padding para hacer el botón más pequeño */
+  font-size: 14px; /* Reducir el tamaño de fuente */
+  margin-left: auto; /* Centrar el botón */
+  margin-right: auto; /* Centrar el botón */
+  display: block; /* Hacer que el botón sea un bloque para centrarlo */
 }
-.error-message {
-  color: #ff6347; /* Rojo coral */
-  margin-top: 5px;
-  width: 450px;
 
+/* Estilos para la tabla de apuestas personalizada */
+.current-bets-custom {
+  margin-top: 10px; /* Espacio superior reducido */
+  width: 40%; /* Ancho de la tabla reducido */
+  font-size: 16px; /* Tamaño de fuente aumentado */
+  border-collapse: collapse; /* Colapsar los bordes de la tabla */
+  margin-left: auto; /* Centrar la tabla */
+  margin-right: auto; /* Centrar la tabla */
+}
+
+.current-bets-custom th,
+.current-bets-custom td {
+  padding: 6px; /* Ajuste de padding */
+  border: 1px solid #ddd; /* Borde de las celdas */
+  width: 30px; /* Ancho de las celdas reducido */
+  height: 30px; /* Altura de las celdas */
+  text-align: center; /* Alinear el texto al centro */
+}
+
+.current-bets-custom th {
+  font-weight: bold; /* Texto del encabezado en negrita */
+  background-color: #f2f2f2; /* Color de fondo para las celdas de encabezado */
+}
+
+
+
+
+
+
+/* Estilos para el mensaje de error personalizado */
+.error-message-custom {
+  color: #ff6347; /* Rojo coral */
+  margin-top: 10px; /* Espacio superior */
 }

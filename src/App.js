@@ -331,7 +331,7 @@ function App() {
               </div>
               <div className="footer-item">
                 <a href="https://x.com/FStakes13015" target="_blank" rel="noopener noreferrer">
-                <img src={X} alt="Twitter" style={{ width: "30px", height: "auto" }} />
+                <img src={X} alt="Twitter" style={{ width: "22px", height: "auto" }} />
                 </a>
               </div>
               <div className="footer-item">

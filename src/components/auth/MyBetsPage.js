@@ -218,8 +218,9 @@ const MyBetsPage = ({ updateUserBalance, language }) => {
       ) : (
         <div className="error-message">
           <Link to="/login" className="error-message-link">
-            {language === 'es' ? 'No puedes acceder a esta sección sin iniciar sesión. Para disfrutar de tus apuestas, inicia sesión y comienza a disfrutar de todo lo que FRIENDLYSTAKES tiene para ofrecerte.' : 'You cannot access this section without logging in. To enjoy your bets, log in and start enjoying everything that FRIENDLYSTAKES has to offer.'}
-          </Link>
+          {language === "es"
+              ? "No puedes acceder a esta sección sin iniciar sesión. Para disfrutar de tus apuestas, inicia sesión ahora."
+              : "You can't access this section without logging in. Log in now to enjoy your bets."}          </Link>
         </div>
       )}
       {showPopup && selectedBet && (

@@ -35,6 +35,8 @@ import Blackjack from "./components/auth/Blackjack.js";
 import ChatGlobal from "./components/auth/ChatGlobal.js";
 import AssistanceChat from "./components/auth/AssistanceChat.js";
 import Keno from "./components/auth/Keno.js";
+import Principal from "./components/auth/Principal.js"; // Importamos la componente Inicio
+
 import "./App.css";
 import { LanguageProvider } from "./components/auth/LanguageContext.js";
 Modal.setAppElement("#root");
@@ -76,7 +78,7 @@ function App() {
 
   const handleLogout = () => {
     window.sessionStorage.clear();
-    window.location.href = "/";
+    window.location.href = "/principal";
     setLoggedIn(false);
   };
 
@@ -94,7 +96,7 @@ function App() {
         <div className="App">
           <header className="App-header">
             <div className="header-content">
-              <Link to="/">
+              <Link to="/principal">
                 <img
                   src={friendlyImage}
                   className="App-logo"
@@ -184,6 +186,7 @@ function App() {
             <div className="background-image"></div>
             <div className="content">
               <Routes>
+              <Route path="/principal" element={<Principal language={language} />} />
                 <Route
                   path="/register"
                   element={<Register language={language} />}

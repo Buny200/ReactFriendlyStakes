@@ -189,6 +189,8 @@ const Keno = ({ updateUserBalance, language }) => {
               : "You must select exactly 20 numbers."}
           </div>
         )}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+
       </div>
       <div className="drawn-numbers">
         {drawnNumbers.length > 0 && (
@@ -205,7 +207,6 @@ const Keno = ({ updateUserBalance, language }) => {
         <p>
           {language === "es" ? "Saldo actual:" : "Current balance:"} $
           {typeof balance === 'number' ? balance.toFixed(2) : "0.00"}
-
         </p>
       </div>
     </div>

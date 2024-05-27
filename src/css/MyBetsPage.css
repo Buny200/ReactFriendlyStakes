@@ -134,6 +134,8 @@ button:hover {
 
 .cancel-button {
   background-color: #ff5555; 
+  width: 240px; /* Aumentar el ancho del botón */
+  padding: 3px 15px; 
 }
 
 .cancel-button:hover {

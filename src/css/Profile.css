@@ -5,7 +5,11 @@
     margin: 0 auto;
     padding: 20px;
 }
-
+.profile-section .section-title {
+    color: blue; /* Color azul para los títulos de las secciones */
+    text-decoration: underline;  /* Elimina el subrayado de los enlaces en la sección "Depositar" */
+  
+}
 .profile-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -26,7 +30,7 @@
     cursor: pointer;
 }
 
-.popup {
+.ventana-emergente {
     position: fixed;
     top: 0;
     left: 0;
@@ -38,39 +42,41 @@
     align-items: center;
 }
 
-.popup-content {
+.contenido-ventana {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.user-table {
+.tabla-usuario {
     margin-top: 20px;
 }
 
-.user-table table {
+.tabla-usuario table {
     width: 100%;
     border-collapse: collapse;
+    border: 2px solid #dee2e6; /* Grosor y color del borde de la tabla */
 }
 
-.user-table th,
-.user-table td {
+.tabla-usuario th,
+.tabla-usuario td {
     padding: 10px;
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6; /* Grosor y color de las líneas horizontales */
+    border-right: 1px solid #dee2e6; /* Grosor y color de las líneas verticales */
 }
 
-.user-table th {
+.tabla-usuario th {
     background-color: #343a40;
     color: #fff;
     text-align: left;
 }
 
-.user-table tbody tr:last-child td {
+.tabla-usuario tbody tr:last-child td {
     border-bottom: none;
 }
 
-.popup-close-btn {
+.boton-cerrar-ventana {
     margin-top: 20px;
     padding: 10px 20px;
     background-color: #dc3545;
@@ -80,17 +86,18 @@
     cursor: pointer;
 }
 
-.popup-close-btn:hover {
+.boton-cerrar-ventana:hover {
     background-color: #c82333;
 }
 
+
 /* Estilos adicionales para secciones de Información Personal y Cuenta */
-.sections {
+.secciones {
     display: flex;
     flex-direction: column;
 }
 
-.section-wrapper {
+.envoltorio-seccion {
     margin-bottom: 10px;
     border: 2px solid transparent;
     border-radius: 5px;
@@ -99,11 +106,11 @@
     cursor: pointer;
 }
 
-.section-wrapper:hover {
+.envoltorio-seccion:hover {
     border-color: #007bff;
 }
 
-.section-title {
+.titulo-seccion {
     margin: 0;
     color: #007bff;
 }
@@ -246,4 +253,3 @@
   .form-section {
     text-align: center; /* Centra el contenido del formulario */
   }
-  

@@ -277,19 +277,19 @@ const Profile = ({ language }) => {
           <table>
             <tbody>
               <tr>
-              <td>{language === "es" ? "Email:" : "Email:"}</td>
+                <td>{language === "es" ? "Email:" : "Email:"}</td>
                 <td>{userInfo.email}</td>
               </tr>
               <tr>
-              <td>{language === "es" ? "Nombre:" : "Name:"}</td>
+                <td>{language === "es" ? "Nombre:" : "Name:"}</td>
                 <td>{userInfo.name}</td>
               </tr>
               <tr>
-              <td>{language === "es" ? "Apellido:" : "Surname:"}</td>
+                <td>{language === "es" ? "Apellido:" : "Surname:"}</td>
                 <td>{userInfo.surname}</td>
               </tr>
               <tr>
-              <td>{language === "es" ? "Dni:" : "ID number:"}</td>
+                <td>{language === "es" ? "Dni:" : "ID number:"}</td>
                 <td>{userInfo.dni}</td>
               </tr>
               <tr>
@@ -517,9 +517,9 @@ const Profile = ({ language }) => {
         </div>
       )}
       {showPopup && (
-        <div className="popup">
-          <div className="popup-content">
-            <div className="user-table">
+        <div className="ventana-emergente">
+          <div className="contenido-ventana">
+            <div className="tabla-usuario">
               <table>
                 <thead>
                   <tr>
@@ -533,32 +533,32 @@ const Profile = ({ language }) => {
                 <tbody>
                   <tr>
                     <td>
-                      <div className="sections">
+                      <div className="secciones">
                         <div
-                          className="section-wrapper"
+                          className="envoltorio-seccion"
                           onClick={() => setSelectedSection("personal")}
                         >
-                          <h3 className="section-title">
+                          <h3 className="titulo-seccion">
                             {language === "es"
                               ? "Información Personal"
                               : "Personal Information"}
                           </h3>
                         </div>
                         <div
-                          className="section-wrapper"
+                          className="envoltorio-seccion"
                           onClick={() => setSelectedSection("account")}
                         >
-                          <h3 className="section-title">
+                          <h3 className="titulo-seccion">
                             {language === "es"
                               ? "Información de Cuenta"
                               : "Account Information"}
                           </h3>
                         </div>
                         <div
-                          className="section-wrapper"
+                          className="envoltorio-seccion"
                           onClick={() => setSelectedSection("password")}
                         >
-                          <h3 className="section-title">
+                          <h3 className="titulo-seccion">
                             {language === "es"
                               ? "Cambiar Contraseña"
                               : "Change Password"}
@@ -572,7 +572,7 @@ const Profile = ({ language }) => {
               </table>
             </div>
             <button
-              className="popup-close-btn"
+              className="boton-cerrar-ventana"
               onClick={() => setShowPopup(false)}
             >
               {language === "es" ? "Cerrar" : "Close"}
@@ -580,6 +580,7 @@ const Profile = ({ language }) => {
           </div>
         </div>
       )}
+
       {/* reenderizar la info del user */}
       {showVerificationPopup && (
         <div className="popup">

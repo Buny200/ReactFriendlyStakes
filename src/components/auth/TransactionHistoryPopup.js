@@ -3,10 +3,10 @@ import "../../css/TransactionHistoryPopup.css";
 
 const TransactionHistoryPopup = ({ transactionHistory, onClose, language }) => {
   return (
-    <div className="transaction-history-popup">
-      <div className="popup-content">
+    <div className="transaction-history-popup-container">
+      <div className="transaction-history-popup-content">
         <h3>{language === "es" ? "Historial de Transacciones" : "Transaction History"}</h3>
-        <table>
+        <table className="transaction-history-table">
           <thead>
             <tr>
               <th>ID Transacción</th>
@@ -28,7 +28,7 @@ const TransactionHistoryPopup = ({ transactionHistory, onClose, language }) => {
             ))}
           </tbody>
         </table>
-        <button onClick={onClose}>{language === "es" ? "Cerrar" : "Close"}</button>
+        <button className="transaction-history-close-btn" onClick={onClose}>{language === "es" ? "Cerrar" : "Close"}</button>
       </div>
     </div>
   );

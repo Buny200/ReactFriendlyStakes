@@ -1,30 +1,45 @@
 /* QuestionsAnswers.css */
 
 .questions-answers {
-  max-width: 800px; /* Ancho máximo del contenedor */
+  max-width: 1000px; /* Ancho máximo del contenedor */
   margin: 0 auto; /* Centra el contenedor horizontalmente */
   padding: 20px; /* Espaciado interno */
+  background-color: #f0f6fc; /* Color de fondo */
+  border-radius: 15px; /* Borde redondeado */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+  text-align: center; /* Centrar texto */
+
 }
 
 .questions-answers h2 {
-  font-size: 24px; /* Tamaño de fuente del título */
+  font-size: 32px; /* Tamaño de fuente del título */
   margin-bottom: 20px; /* Espacio inferior */
+  color: #00487c; /* Color del texto */
+  text-align: center; /* Centrar texto */
 }
 
 .questions-answers p {
   margin-bottom: 15px; /* Espacio inferior */
+  font-size: 18px; /* Tamaño de fuente */
+  color: #333; /* Color del texto */
 }
 
 .question {
   margin-bottom: 30px; /* Espacio inferior entre preguntas */
+  padding: 20px; /* Espaciado interno */
+  background-color: #fff; /* Color de fondo */
+  border-radius: 15px; /* Borde redondeado */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
 }
 
 .question h3 {
-  font-size: 20px; /* Tamaño de fuente del título de pregunta */
+  font-size: 28px; /* Tamaño de fuente del título de pregunta */
   margin-bottom: 10px; /* Espacio inferior */
+  color: #00487c; /* Color del texto */
 }
 
 .question p {
-  font-size: 16px; /* Tamaño de fuente del contenido de la pregunta */
-  line-height: 1.5; /* Altura de línea */
+  font-size: 20px; /* Tamaño de fuente del contenido de la pregunta */
+  line-height: 1.6; /* Altura de línea */
+  color: #555; /* Color del texto */
 }

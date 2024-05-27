@@ -150,4 +150,6 @@ button {
 .error-message {
   color: #ff6347; /* Rojo coral */
   margin-top: 5px;
+  width: 450px;
+
 }

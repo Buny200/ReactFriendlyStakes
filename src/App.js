@@ -96,7 +96,7 @@ function App() {
         <div className="App">
           <header className="App-header">
             <div className="header-content">
-              <Link to="/">
+              <Link to="/principal">
                 <img
                   src={friendlyImage}
                   className="App-logo"
@@ -186,6 +186,7 @@ function App() {
             <div className="background-image"></div>
             <div className="content">
               <Routes>
+              <Route path="*" element={<Navigate to="/principal" />} />
               <Route path="/principal" element={<Principal language={language} />} />
                 <Route
                   path="/register"

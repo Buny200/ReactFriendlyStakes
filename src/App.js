@@ -46,6 +46,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userBalance, setUserBalance] = useState(null);
   const [language, setLanguage] = useState("en"); // Default language is English
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const userIsLoggedIn = checkIfUserIsLoggedIn();
@@ -90,21 +91,48 @@ function App() {
   const changeLanguage = (lang) => {
     setLanguage(lang);
   };
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <Router>
       <LanguageProvider>
         <div className="App">
           <header className="App-header">
-            <div className="header-content">
-              <Link to="/principal">
-                <img
-                  src={friendlyImage}
-                  className="App-logo"
-                  alt="logo"
-                  style={{ width: "145px", height: "auto" }}
-                />
-              </Link>
+            <Link to="/principal">
+              <img
+                src={friendlyImage}
+                className="App-logo"
+                alt="logo"
+                style={{ width: "145px", height: "auto" }}
+              />
+            </Link>
+            <div>
+              <div className="leaderboards">
+                <Link to="/leaderboards">
+                  <button className="nav-item-button">
+                    {language === "es" ? "Clasificaciones" : "Leaderboards"}
+                  </button>
+                </Link>
+              </div>
+              <div className="questions">
+                <Link to="/questionsAnswers">
+                  <button className="nav-item-button">
+                    {language === "es"
+                      ? "Preguntas y Respuestas"
+                      : "Questions Answers"}
+                  </button>
+                </Link>
+              </div>
+              <div className="dropdown-container">
+                <DropdownMenu language={language} />
+              </div>
+              <div className="dropdown-container-traditional">
+                <TraditionalBets language={language} />
+              </div>
+            </div>
+            <div className="nav-item-container">
               <div className="language-selector">
                 <button
                   className={`flag-button ${language === "es" ? "active" : ""}`}
@@ -113,82 +141,60 @@ function App() {
                   <img src={spainFlag} alt="Spain Flag" className="flag-icon" />
                 </button>
                 <button
-                  className={`flag-button ${language === "en" ? "active" : ""}`}
+                  className={`flag-button-uk ${
+                    language === "en" ? "active" : ""
+                  }`}
                   onClick={() => changeLanguage("en")}
                 >
                   <img src={ukFlag} alt="UK Flag" className="flag-icon" />
                 </button>
               </div>
-              {
-                <div className="dropdown-container">
-                  <DropdownMenu language={language} />
-                </div>
-              }
-              {
-                <div className="dropdown-container-traditional">
-                  <TraditionalBets language={language} />
-                </div>
-              }
-              {
-                <div className="leaderboards">
-                  <Link to="/leaderboards">
-                    <button className="nav-item-button">
-                      {language === "es" ? "Clasificaciones" : "Leaderboards"}
-                    </button>
-                  </Link>
-                </div>
-              }
-              {
-                <div className="questions">
-                  <Link to="/questionsAnswers">
-                    <button className="nav-item-button">
-                      {language === "es"
-                        ? "Preguntas y Respuestas"
-                        : "Questions Answers"}
-                    </button>
-                  </Link>
-                </div>
-              }
-            </div>
-            <nav>
-              <ul className="nav-list">
-                {
-                  <li className="nav-item">
-                    <Link to="/profile" language={language}>
-                      <img
-                        language={language}
-                        src={userImage}
-                        className="PersonSVG"
-                        alt="Persona"
-                        style={{ width: "25px", height: "auto" }}
-                      />
-                    </Link>
-                  </li>
-                }
-                {loggedIn && (
-                  <li className="nav-item balance-item">
+
+              {loggedIn && (
+                <li className="nav-item balance-item">
+                  <Link to="/deposito" className="balance-link">
                     💲 Balance: {userBalance}
-                  </li>
-                )}
-                {
-                  <li className="nav-item" onClick={handleLogout}>
+                  </Link>
+                </li>
+              )}
+            </div>
+          </header>
+          <nav>
+            <ul className="nav-list">
+              {
+                <li className="nav-item">
+                  <Link to="/profile" language={language}>
                     <img
-                      src={logoutImage}
-                      className="LogoutSVG"
-                      alt="Logout"
+                      language={language}
+                      src={userImage}
+                      className="PersonSVG"
+                      alt="Persona"
                       style={{ width: "25px", height: "auto" }}
                     />
-                  </li>
-                }
-              </ul>
-            </nav>
-          </header>
+                  </Link>
+                </li>
+              }
+              {
+                <li className="nav-item" onClick={handleLogout}>
+                  <img
+                    src={logoutImage}
+                    className="LogoutSVG"
+                    alt="Logout"
+                    style={{ width: "25px", height: "auto" }}
+                  />
+                </li>
+              }
+            </ul>
+          </nav>
           <div className="content-container">
             <div className="background-image"></div>
             <div className="content">
               <Routes>
-              <Route path="*" element={<Navigate to="/principal" />} />
-              <Route path="/principal" element={<Principal language={language} />} />
+                <Route path="*" element={<Navigate to="/principal" />} />
+                <Route
+                  path="/principal"
+                  element={<Principal language={language} />}
+                />
                 <Route
                   path="/register"
                   element={<Register language={language} />}
@@ -208,7 +214,7 @@ function App() {
                   path="/profile"
                   element={
                     loggedIn ? (
-                      <Profile language={language}/>
+                      <Profile language={language} />
                     ) : (
                       <Navigate to="/login" language={language} />
                     )
@@ -330,16 +336,22 @@ function App() {
                 Dirección: C. de Jarque de Moncayo, 10, 50012 Zaragoza
               </div>
               <div className="footer-item">
-                <a href="https://x.com/FStakes13015" target="_blank" rel="noopener noreferrer">
-                <img src={X} alt="Twitter" style={{ width: "22px", height: "auto" }} />
+                <a
+                  href="https://x.com/FStakes13015"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src={X}
+                    alt="Twitter"
+                    style={{ width: "22px", height: "auto" }}
+                  />
                 </a>
               </div>
               <div className="footer-item">
                 Correo electrónico: victorinlamuela@gmail.com
               </div>
-              <div className="footer-item">
-                © 2024 Victor Heredia Lamuela
-              </div>
+              <div className="footer-item">© 2024 Victor Heredia Lamuela</div>
             </div>
           </footer>
         </div>

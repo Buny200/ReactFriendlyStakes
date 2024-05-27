@@ -17,7 +17,7 @@ const DropdownMenu = ({ language }) => {
   return (
     <div className="dropdown">
       <button className="dropdown-toggle" onClick={toggleMenu}>
-        {language === 'es' ? "🎰 Apuestas Personalizadas" : "🎰 Custom Bets"} <FiChevronDown />
+        {language === 'es' ? "🎰 Apuestas " : "🎰 Bets"} <FiChevronDown />
       </button>
       {showMenu && (
         <ul className="dropdown-menu">

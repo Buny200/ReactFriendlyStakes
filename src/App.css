@@ -1,7 +1,10 @@
 /* App.css */
+.App {
+  position: relative; /* Establece posición relativa para poder posicionar elementos hijos */
+}
 
 .App-logo-container {
-  margin-left: 100px; /* Agrega un espacio a la izquierda del logo */
+  margin-left: 20px; /* Ajusta el margen izquierdo del logo */
 }
 
 .App-header {
@@ -14,36 +17,64 @@
 }
 
 .language-selector {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  margin-top: -45px;
-  margin-left: 1750px;
+  display: flex; /* Utiliza flexbox para alinear los elementos */
+  align-items: center; /* Alinea los elementos verticalmente al centro */
 }
-.language-selector button {
+
+.language-button {
+  cursor: pointer;
+  font-size: 16px;
+  color: #000;
+}
+
+.flag-button,
+.flag-button-uk {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 24px;
-  margin-right: 10px;
+  width: 60px;
+  height: 60px;
+  margin-right: 0px;
 }
+
 .flag-icon {
-  width: 30px; /* ajusta el tamaño según tus necesidades */
-  height: auto; /* mantiene la proporción */
-  margin-right: 5px; /* opcional: agrega un margen entre las imágenes */
+  width: 30px;
+  height: auto;
 }
+
+.active {
+  border: 1px solid rgb(255, 0, 0); /* Establece un borde azul al botón activo */
+}
+
 
 .nav-list {
   list-style-type: none; /* Eliminar viñetas de la lista */
   margin: 0;
   padding: 0;
 }
+.nav-item.balance-item {
+  color: #fff;
+  font-size: 17px;
+  margin-left: 10px;
+  border: 2px solid red; /* Establece un borde transparente por defecto */
+  padding: 5px 10px; /* Añade algo de espacio alrededor del texto */
+  border-radius: 6px; /* Borde redondeado */
+  transition: border-color 0.3s; /* Transición suave del color del borde */
+}
+
+.nav-item.balance-item:hover {
+  border-color: yellow; /* Cambia el color del borde a amarillo al pasar el ratón */
+}
+
+.nav-item.balance-item:active {
+  border-color: red; /* Cambia el color del borde a amarillo cuando se hace clic */
+}
+
 
 .nav-item {
   display: inline-block; /* Asegura que los elementos estén en línea */
   padding: 8px; /* Espaciado interno */
-  margin: 0 40px; /* Margen entre elementos */
-  border: 2px solid #ff0000; /* Borde rojo */
+  margin: 0 20px; /* Margen entre elementos */
   border-radius: 6px; /* Borde redondeado */
   transition: border-color 0.1s; /* Transición suave del color del borde */
 }
@@ -53,14 +84,6 @@
   color: #ffffff; /* Color de texto */
   font-size: 16px; /* Tamaño de fuente */
   transition: color 0.3s; /* Transición suave de color */
-}
-
-.nav-item:hover {
-  border-color: #ffcc00; /* Cambia el color del borde al pasar el cursor */
-}
-
-.nav-item a:hover {
-  color: #ffcc00; /* Cambiar color al pasar el cursor */
 }
 
 .balance-item {
@@ -74,42 +97,25 @@
   font-size: 18px; /* Tamaño del símbolo del euro */
 }
 
-.dropdown-container {
-  position: absolute; /* Establece la posición absoluta para el contenedor */
-  margin-top: -36px;
+.dropdown-container-traditional{   
+  left: -95px; /* Ajusta la posición horizontal a la izquierda */
+  position: fixed;
 }
-
-.dropdown-container-traditional {
-  position: absolute;
-  margin-top: -36px;
-  margin-left: 300px;
-}
-
-.leaderboards {
-  position: absolute;
-  margin-top: -95px;
-  margin-left: 825px;
-}
-
-.questions {
-  position: absolute;
-  margin-top: -95px;
-  margin-left: 990px;
+.dropdown-container {   
+  left: 250px; /* Ajusta la posición horizontal a la izquierda */
+  position: fixed;
 }
 
 .nav-item-button {
-  padding: 8px 20px;
+  padding: 5px 20px;
+  width: 200px;
   background-color: darkgreen;
   color: white;
   border: none;
   border-radius: 6px;
   transition: background-color 0.3s;
+  align-items: center;
 }
-
-.nav-item-button:hover {
-  background-color: forestgreen;
-}
-/* App.css */
 
 /* Estilos para el footer */
 .footer {

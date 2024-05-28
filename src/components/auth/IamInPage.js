@@ -308,7 +308,7 @@ const IamInBetsPage = ({ updateUserBalance, language }) => {
                       {language === "es" ? "Pendiente" : "Pending"}
                     </option>
                     <option value="PENDING_RESULTS">
-                      {language === "es" ? "Pendiente" : "Pending"}
+                      {language === "es" ? "Pendiente de los resultados" : "Pending results"}
                     </option>
                     <option value="VERIFICATION">
                       {language === "es" ? "Verificación" : "Verification"}
@@ -527,7 +527,7 @@ const IamInBetsPage = ({ updateUserBalance, language }) => {
           </Link>
         </div>
       )}
-      {showPopup && selectedBet && (
+      {showPopup && selectedBet && selectedBet.status==='PENDING' && (
         <div className="popup" onClick={handlePopupClose}>
           <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
             <h2>Detalles de la Apuesta</h2>

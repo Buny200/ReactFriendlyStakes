@@ -99,11 +99,11 @@
 
 .dropdown-container-traditional{   
   left: -95px; /* Ajusta la posición horizontal a la izquierda */
-  position: fixed;
+  position: absolute;
 }
 .dropdown-container {   
   left: 250px; /* Ajusta la posición horizontal a la izquierda */
-  position: fixed;
+  position: absolute;
 }
 
 .nav-item-button {

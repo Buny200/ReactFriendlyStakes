@@ -232,8 +232,11 @@ function App() {
                 />
                 <Route
                   path="/custom-bets/all"
-                  element={<AllBetsPage />}
-                  language={language}
+                  element={
+                    <AllBetsPage
+                      language={language}
+                    />
+                  }
                 />
                 <Route
                   path="/custom-bets/created-by-me"

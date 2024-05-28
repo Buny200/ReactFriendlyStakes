@@ -276,7 +276,7 @@ const IamInBetsPage = ({ updateUserBalance, language }) => {
       {isLoggedIn ? (
         <>
           <h2 className="title">
-            {language === "es" ? "Todas tus apuestas" : "All your bets"}
+            {language === "es" ? "Todas las apuestas en las que participas" : "All bets you participate in"}
           </h2>
           {errorMessage && <div className="error-message">{errorMessage}</div>}
           {bets.length === 0 ? (

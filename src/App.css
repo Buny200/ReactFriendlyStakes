@@ -1,8 +1,14 @@
 /* App.css */
-.App {
-  position: relative; /* Establece posición relativa para poder posicionar elementos hijos */
+html, body, #root {
+  height: 100%;
+  margin: 0;
 }
 
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
 .App-logo-container {
   margin-left: 20px; /* Ajusta el margen izquierdo del logo */
 }
@@ -119,14 +125,11 @@
 
 /* Estilos para el footer */
 .footer {
-  position: fixed; /* Posición fija */
-  bottom: 0; /* Colocar en la parte inferior */
-  width: 100%; /* Ancho completo */
-  background-color: #292929; /* Color de fondo para el footer */
-  color: #fff; /* Color de texto para el footer */
-  padding: 20px; /* Espaciado interno */
+  background-color: #f1f1f1;
+  padding: 10px;
+  text-align: center;
+  margin-top: auto; /* Esto empuja el footer al final del contenedor */
 }
-
 .footer-content {
   display: flex;
   justify-content: space-between;
@@ -136,4 +139,9 @@
 .footer-item {
   margin-right: 50px; /* Espacio entre elementos del footer */
   align-items: center;
+}
+.content-container {
+  flex: 1; /* Esto asegura que el contenido ocupe todo el espacio disponible */
+  display: flex;
+  flex-direction: column;
 }

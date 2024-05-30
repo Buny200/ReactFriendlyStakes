@@ -1,3 +1,76 @@
+# FriendlyStakes: Fomentando la Competencia Amistosa
+
+
+![Java](https://img.shields.io/badge/Java-11-007396?logo=java&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-14.17.0-339933?logo=node.js&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+
+## Descripción del Proyecto
+FriendlyStakes es una plataforma digital que permite a los usuarios participar en apuestas amistosas y desafíos interactivos, fomentando la sana competencia y diversión entre amigos. Con características como registro de usuarios, gestión de apuestas, transacciones seguras y comunicación en tiempo real, FriendlyStakes busca convertirse en la referencia para la organización de eventos de apuestas entre amigos.
+
+## Estado del Proyecto
+![Project Status](https://img.shields.io/badge/Status-Completed-brightgreen)
+
+El proyecto ha finalizado con éxito, alcanzando todos los objetivos planteados inicialmente. Sin embargo, continuamos trabajando en mejoras y nuevas funcionalidades.
+
+## Instalación del Proyecto
+
+### Requisitos Previos
+- Java 11
+- MySQL 8.0
+- Node.js 14.17.0
+- Maven 3.6.3
+
+### Configurar la Base de Datos
+
+1. **Crear una base de datos MySQL:**
+   ```sql
+   CREATE DATABASE friendlystakes;
+2.Importar el esquema de base de datos desde db/schema.sql.
+
+3. **Configurar las variables de entorno:**
+Crear un archivo .env en el directorio raíz del proyecto con las siguientes variables:
+DB_URL=jdbc:mysql://localhost:3306/friendlystakes
+DB_USER=tu_usuario
+DB_PASSWORD=tu_contraseña
+
+**Construir el Proyecto**
+
+mvn clean install
+
+**Ejecutar la Aplicación**
+mvn spring-boot:run
+### Funcionalidades
+- Registro e inicio de sesión de usuarios.
+- Creación y gestión de apuestas amistosas.
+- Sistema seguro de transacciones financieras.
+- Comunicación en tiempo real entre usuarios.
+- Verificación de edad mediante documentos de identificación.
+- Compartir videos de desafíos y logros en redes sociales.
+### Tecnologías Utilizadas
+#### Backend:
+- Java 11
+- Spring Boot
+- MySQL
+- JPA/Hibernate
+#### Frontend:
+- Node.js 14.17.0
+- Express.js
+#### Herramientas y Servicios:
+- Maven
+- DBeaver
+- Visual Studio Code
+- IntelliJ IDEA
+- Postman
+### Autores
+**Victor Heredia Lamuela: [GitHub**](https://github.com/Buny200)
+
+### Licencia
+Este proyecto está bajo la Licencia MIT. Para más información, consulta el archivo LICENSE.
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

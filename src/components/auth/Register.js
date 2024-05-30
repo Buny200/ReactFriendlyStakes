@@ -14,19 +14,31 @@ const Register = ({ language }) => {
     nickname: '',
   });
   const [successMessage, setSuccessMessage] = useState('');
-  const [forgotPasswordEmail, setForgotPasswordEmail] = useState(''); // Nuevo estado para el correo electrónico olvidado
+  const [errorMessage, setErrorMessage] = useState('');
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const isValidDNI = (dni) => {
+    const dniRegex = /^[0-9]{8}[A-Za-z]$/;
+    return dniRegex.test(dni);
+  };
+
   const handleRegister = async () => {
+    setErrorMessage('');
+    if (!isValidDNI(formData.dni)) {
+      setErrorMessage(language === 'es' ? 'DNI no válido. Debe tener 8 dígitos seguidos de una letra.' : 'Invalid DNI. It should have 8 digits followed by a letter.');
+      return;
+    }
     try {
       const response = await axios.post('http://localhost:8080/auth/register', formData);
       console.log(response.data);
       setSuccessMessage(language === 'es' ? 'Te hemos enviado un correo electrónico para verificar tu cuenta.' : 'We have sent you an email to verify your account.');
     } catch (error) {
       console.error(error.response.data.message);
+      setErrorMessage(error.response.data.message);
     }
   };
 
@@ -73,7 +85,8 @@ const Register = ({ language }) => {
           <input type="text" id="nickname" name="nickname" value={formData.nickname} onChange={handleInputChange} />
         </div>
         <button type="button" onClick={handleRegister}>{language === 'es' ? 'Registrarse' : 'Register'}</button>
-        <button type="button" onClick={handleForgotPassword}>{language === 'es' ? 'Olvidé mi contraseña' : 'Forgot my password'}</button> {/* Nuevo botón para "olvidé mi contraseña" */}
+        <button type="button" onClick={handleForgotPassword}>{language === 'es' ? 'Olvidé mi contraseña' : 'Forgot my password'}</button>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
         {successMessage && <div className="success-message">{successMessage}</div>}
       </form>
       <Link to="/login" className="login-link">{language === 'es' ? '¿Ya tienes una cuenta? Inicia sesión' : 'Already have an account? Log in'}</Link>
